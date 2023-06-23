@@ -1,0 +1,582 @@
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../assets/fonts/avenir-medium.2dbfe1d8c365b6ffe51a.woff') format('woff');
+
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir-black';
+  src: url('../assets/fonts/avenir-medium.2dbfe1d8c365b6ffe51a.woff') format('woff');
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  /*La palettes de couleurs*/
+  --sncf-bleu-primaire-bg: #0088ce;
+  --sncf-bleu-canard-bg: #009aa6;
+  --sncf-orange-bg: #e05206;
+  --sncf-violet-bg: #6e1e78;
+  --sncf-prune-bg: #a1006b;
+  --sncf-vert-anis-bg: #d2e100;
+  --rouge-assistance-bg: #d52b1e;
+
+  /*Severités*/
+  --sncf-success-bg: #82be00;
+  --sncf-info-bg: #009aa6;
+  --sncf-warning-bg: #ffb612;
+  --sncf-error-bg: #cd0037;
+
+  /*NOIR ET BLANC */
+  --sncf-light-bg: #f2f2f2;
+  --sncf-noir-bg: #3e3d40;
+  --sncf-blanc-bg: #fff;
+  /*Les gris*/
+  --sncf-cool-gray1-bg: #e1e1e1;
+  --sncf-cool-gray3-bg: #d7d7d7;
+  --sncf-cool-gray5-bg: #b9b9b9;
+  --sncf-cool-gray7-bg: #a0a0a0;
+  --sncf-cool-gray9-bg: #747678;
+  --sncf-cool-gray11-bg: #4d4f53;
+  /*Les gris chauds*/
+  --sncf-warm-gray1-bg: #e0ded8;
+  --sncf-warm-gray3-bg: #c3beb4;
+  --sncf-warm-gray5-bg: #afa59b;
+  --sncf-warm-gray7-bg: #988f86;
+  --sncf-warm-gray9-bg: #82786f;
+  --sncf-warm-gray11-bg: #675c53;
+
+  /*Les fontes*/
+  --cd-font-family: 'Avenir-medium', 'Arial', sans-serif;
+}
+h4 {
+  font-size: 28px;
+}
+
+thead {
+  background-color: var(--sncf-cool-gray3-bg);
+  text-align: center;
+}
+.filtreS {
+  display: flex;
+  margin: auto 20px;
+}
+.filtreS div.fS {
+  display: grid;
+  margin: 20px 0px 20px 50px;
+}
+.filtreS label {
+  display: inline-flex;
+}
+
+.filtres-gen {
+  display: inline-block;
+  max-width: 300px;
+  width: 100%;
+  border: 1px solid var(--sncf-cool-gray7-bg);
+  border-radius: 5px;
+  margin: 20px 0px;
+}
+
+.filtres-gen label {
+  padding-left: 10px;
+  position: relative;
+  margin: 5px auto;
+}
+
+.card-header {
+  background-color: var(--sncf-bleu-primaire-bg);
+  padding: 20px;
+  border-radius: 5px 5px 0px 0px;
+  color: #fff;
+}
+
+.card-header div {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.filtres-gen .sites {
+  padding: 20px;
+}
+
+.MuiFormControl-root.MuiFormControl-fullWidth.css-q8hpuo-MuiFormControl-root {
+  vertical-align: -webkit-baseline-middle;
+}
+
+table {
+  border: 1px solid var(--sncf-cool-gray3-bg);
+  position: relative;
+}
+
+.parent {
+  margin: 130px 50px 40px;
+  min-height: calc(100vh - 320px);
+  position: relative;
+  display: flex;
+}
+.parent.administration .submit {
+  padding: 10px 20px;
+  position: relative;
+  color: var(--sncf-blanc-bg);
+}
+.administration
+   .MuiTableCell-root.MuiTableCell-body.MuiTableCell-sizeMedium.css-1ex1afd-MuiTableCell-root {
+  padding: 16px !important;
+}
+.parent.home li {
+  list-style: none;
+  width: calc(100% / 4 - 30px);
+  margin-right: 10px
+}
+.parent.home li:last-child{
+  margin-right: 0px;
+}
+.parent.home ul {
+  display: flex;
+  padding-inline-start: 0px;
+  margin-top: 75px;
+}
+.parent.home .btn-home{
+  color: var(--sncf-bleu-primaire-bg);
+}
+.parent.home .card{
+  min-height:100%;
+}
+
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root {
+  box-shadow: none !important;
+}
+
+.MuiInputLabel-root {
+  display: inline-block;
+}
+
+.bleu-active .active {
+  background-color: var(--sncf-bleu-primaire-bg);
+}
+.bleu-active .active button {
+  color: var(--sncf-blanc-bg);
+}
+.inactif::before,
+.actif::before {
+  content: '';
+  border: 1px solid var(--sncf-cool-gray5-bg);
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  left: -14px;
+  top: 2px;
+  border-radius: 50%;
+}
+.inactif::before {
+  background-color: var(--rouge-assistance-bg);
+}
+.actif::before {
+  background-color: var(--sncf-success-bg);
+}
+.inactif,
+.actif {
+  position: relative;
+}
+.activeJ {
+  border-bottom: 2px solid var(--sncf-bleu-primaire-bg);
+}
+
+.css-1wc0x9a-MuiToolbar-root,
+.css-1ujnqem-MuiTabs-root {
+  min-height: 48px !important;
+}
+
+.css-1wc0x9a-MuiToolbar-root {
+  padding-left: 0px !important;
+}
+
+* {
+  font-family: var(--cd-font-family) !important;
+}
+
+.footer {
+  background-color: var(--sncf-noir-bg);
+  min-height: 50px;
+  padding: 50px;
+  bottom: 0px;
+  position: relative;
+}
+
+.footer a {
+  padding: 20px;
+  color: #fff !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+a:hover,
+a:visited,a {
+  color: #000;
+}
+
+.parent.historique.synop img {
+  width: 1200px;
+  margin: auto;
+  margin-top: 100px;
+  display: block;
+  position: relative;
+}
+.tableauTH .cbx{
+  width: 20px;
+}
+
+.filtres {
+  border: none;
+  padding: 10px;
+  width: 80%;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.filtres.methodes {
+  width: 33px;
+  margin-left: 5px;
+  display: inline-block;
+  padding: 10px 5px;
+}
+
+.filtre.historique {
+  max-width: 350px;
+  display: inline-block;
+  position: relative;
+  width: 350px;
+}
+.rapportsAnTrim{
+  padding: 25px;
+}
+.tableau,
+.JourJ,
+.statistique {
+  display: inline-block;
+  width: 90%;
+  position: relative;
+  border: 1px solid var(--sncf-cool-gray7-bg);
+  border-radius: 5px 5px 0px 0px;
+  margin-left: 50px;
+  margin-top:20px;
+}
+.resultat{
+  width: 90%;
+  margin-left: 50px;
+}
+.rapports {
+  width: 100%;
+  position: relative;
+  border: 1px solid var(--sncf-cool-gray7-bg);
+  border-radius: 5px 5px 0px 0px;
+  margin-top:40px;
+}
+
+.select-ajout {
+  margin: 10px 0px !important;
+}
+.journal{
+  border: 1px solid var(--sncf-cool-gray7-bg);
+  width: 100%;
+  margin-top:20px;
+  border-radius: 5px 5px 0px 0px;
+}
+/*.journal a,.journal a:hover, .journal:visited{
+  color:#fff
+}*/
+
+.parent.administration{
+  display: block;
+}
+.authentification {
+  display: grid;
+  margin: auto;
+  text-align: center;
+  width: 280px;
+}
+.authentification .champs {
+  margin: 5px 0px;
+  width: 260px;
+}
+.MuiFormControl-root {
+  width: 260px;
+}
+
+.journal .filtres-gen {
+  margin-left: 20px;
+}
+.submit {
+  padding: 20px;
+  background-color: var(--sncf-bleu-primaire-bg);
+  color: var(--sncf-light-bg);
+  margin: 20px auto;
+  border: none;
+  border-radius: 12px;
+}
+.administration table {
+  margin-top: 20px;
+}
+
+.tableau p,
+.journal p,
+.JourJ p,
+.statistique p,.rapports p {
+  padding: 20px 10px;
+  background-color: var(--sncf-bleu-primaire-bg);
+  width: calc(100% - 20px);
+  border-radius: 5px;
+  margin: 0px;
+  color: #fff;
+}
+.tableau-stat table td,.tableau-stat table th{
+  padding: 6px;
+  text-align: center;
+  vertical-align: top;
+}
+.tableau-stat {
+  display: flex;
+}
+
+.trainTab {
+  width: calc(100% - 40px) !important;
+  margin: 20px auto;
+}
+.rdrDefinedRangesWrapper {
+  display: none !important;
+}
+.rdrMonth {
+  width: 100% !important;
+}
+.l,
+.m,
+.r {
+  display: inline-block;
+  width: 32%;
+  margin: auto;
+}
+
+
+.l div {
+  display: inline-block;
+  padding: 10px 0px;
+}
+.l.sam div.ev{
+  padding:10px 20px
+}
+
+.m a,
+.r a {
+  color: var(--sncf-bleu-primaire-bg);
+}
+
+table .cell {
+  border-right: 1px solid var(--sncf-cool-gray1-bg);
+}
+
+canvas#graphique {
+  max-width: 700px !important;
+  height: 400px !important;
+}
+.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper{
+  max-height: 300px!important;
+}
+
+
+.ble{
+  padding: 0px !important;
+  min-width: 48px;
+  text-align: center;
+  border: 1px solid var(--sncf-cool-gray5-bg);
+  border-top:none
+}
+.ble.ligne{
+  padding: 0px;
+}
+
+.tableBE .beV {
+  min-width: 48px;
+}
+
+.css-1ndpvdd-MuiTableCell-root {
+  border-bottom: none !important;
+}
+
+.rdrEndEdge {
+  color: var(--sncf-bleu-primaire-bg) !important;
+}
+.css-11b3ww9-MuiPaper-root-MuiAppBar-root {
+  padding-right: 0 !important;
+}
+.filtres-gen label:before {
+  content: '';
+  width: 13px;
+  height: 12px;
+  border: 1px solid black;
+  position: absolute;
+  margin-left: -22px;
+  background-color: var(--sncf-cool-gray1-bg);
+  border-radius: 3px;
+}
+.filtres-gen input:checked + label:before {
+  background-color: var(--sncf-bleu-primaire-bg);
+}
+.filtres-gen input {
+  display: none;
+}
+.sites div {
+  margin: 5px auto;
+}
+.filtres-gen input:checked + label:after {
+  content: '';
+  width: 7px;
+  height: 2px;
+  border: 2px solid #fff;
+  rotate: 143deg;
+  margin-top: 4px;
+  left: -9px;
+  position: absolute;
+  border-bottom: none;
+  border-left: none;
+}
+.btn-actions {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  color: var(--sncf-blanc-bg);
+}
+.btn-actions.mod {
+  background-color: var(--sncf-bleu-primaire-bg);
+}
+.btn-actions.sup {
+  background-color: var(--sncf-error-bg);
+}
+span.statut {
+  padding: 5px 15px;
+  margin: 5px;
+  border-radius: 5px;
+  color: var(--sncf-blanc-bg);
+}
+.header .bleu-active span:after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border: 2px solid var(--sncf-bleu-primaire-bg);
+  rotate: 135deg;
+  position: absolute;
+  right: 5px;
+  border-bottom: none;
+  border-right: none;
+  top: 20px;
+}
+.header .bleu-active .active span:after {
+  border: 2px solid var(--sncf-blanc-bg);
+  border-bottom: none;
+  border-right: none;
+}
+.css-1ii4ldz.bleu-active{
+  min-height: 46px;
+}
+.parent.administration .css-1ygcj2i-MuiTableCell-root{
+  text-align: left;
+}
+.tableBE .MuiTableCell-root.MuiTableCell-body.MuiTableCell-sizeMedium.css-1ex1afd-MuiTableCell-root{
+  min-width: 53px;
+  text-align: center;
+}
+.tableBE .axe.rail{
+  min-width: 20px!important;
+}
+.m50 .l{
+  width: 755px;
+}
+.m.sam,.r.sam{
+  vertical-align: top;
+  padding:10px 0px;
+  margin-top: 30px;
+}
+.m50 .r{
+  width: calc(100% - 780px);
+  margin-left: 20px;
+  vertical-align: top;
+  padding-top: 70px;
+}
+.m50 .parent {
+  margin: 0px ;
+  min-height: calc(100vh - 320px);
+  display: block;
+}
+.parent.captures50592{
+  display:block;
+}
+.tableau .m50 p,.journal .m50 p{
+  background-color: white;
+  color: var(--sncf-noir-bg);
+}
+.btn-page{
+  border:none;
+  color: var(--sncf-bleu-primaire-bg);
+  margin: 0px 20px;
+  background-color: var(--sncf-blanc-bg);
+}
+.parent-page{
+  text-align: center;
+  margin: 20px auto;
+}
+.chart{
+  max-width:49%;
+  max-height:300px;
+}
+.rapport{
+  margin: 10px 0px;
+}
+@media screen and (max-width: 1200px) {
+  .filtres.methodes {
+    display: block;
+  }
+  .parent{
+    display: block;
+    
+  }
+
+  .filtre.historique {
+    position: relative;
+    width: auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  .tableau,
+  .journal,
+  .JourJ,.statistique,.resultat {
+    margin-left: 0px;
+    display: block;
+    width: 100%;
+    top: 0px;
+  }
+ 
+  .amcharts-axis-title {
+    visibility: visible !important;
+  }
+
+  .trainTab {
+    width: 100%;
+  }
+
+  .filtres-gen.site {
+    position: relative;
+  }
+  
+  .m50 .l, .m50 .r {
+    display: block;
+  }
+  .tableau-stat {
+    display: block;
+  }
+}
