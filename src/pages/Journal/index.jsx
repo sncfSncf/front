@@ -208,24 +208,26 @@ function Journal() {
               <Toolbar />
               <Site className="site" onChange={handleSiteChange} />
               <InputLabel
-                style={{ display: 'inline-block', margin: 'auto 20px' }}
+                style={{ display: 'inline-block', margin: '-8px 20px' }}
               >
                 Option 50592
               </InputLabel>
               <Resultats
                 onChange={handleResult50592Change}
                 options={option50592}
+                compStyle={{  height: '2em' }}
                 value={result50592}
                 disabled={disabled50}
               />
               <InputLabel
-                style={{ display: 'inline-block', margin: 'auto 20px' }}
+                 style={{ display: 'inline-block', margin: '-8px 20px' }}
               >
                 Option SAM S005
               </InputLabel>
               <Resultats
                 onChange={handleResultSAMChange}
                 options={optionSAM}
+                compStyle={{  height: '2em' }}
                 disabled={disabledSam}
               />
             </div>

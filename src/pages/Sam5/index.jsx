@@ -1,77 +1,84 @@
-import React, { useEffect, useRef, useState } from 'react'
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
-import * as am5 from '@amcharts/amcharts5'
-import * as am5xy from '@amcharts/amcharts5/xy'
-import axios from 'axios'
-import config from '../../config'
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
-import Loading from '../../components/Loading'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import config from '../../config';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import Loading from '../../components/Loading';
 import ReactApexChart from 'react-apexcharts';
 
 export default function Chart() {
   const { dateFichier, heureFichier, site } = useParams();
   const [isLoading, setIsLoading] = useState(false);
- // const [diffX, setDiffX] = useState(0)
-
- let initChart={
-  series: [],
-  options: {
-    chart: {
-      id: 'time-series-chart',
-      animations: {
-        enabled: true,
-        easing: 'linear',
-        dynamicAnimation: {
-          speed: 1000
-        }
-      },
-      toolbar: {
-        autoSelected: 'pan',
-        show: true
-      }
-    },
-    xaxis: {
-      type: 'numeric'
-    }
-  }
-}
-const [myChart,setMyChart]=useState(initChart)
+  const [chartData, setChartData] = useState(null);
 
   async function loadCapteurs() {
-    console.log("called");
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const resultat = await axios.get(
         `${config.API_URL}/echantillonage?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`
       );
-      setIsLoading(false)
       const capteurs = resultat.data;
-      capteurs.forEach((capteur, index) => {
-        const data = capteur.contenuFichier.Capteurs[0].X.map((x, index) => ([
-           parseFloat(capteur.contenuFichier.Capteurs[0].X[index]),parseFloat(capteur.contenuFichier.Capteurs[0].Y[index]),
-        ]))
-        initChart.series.push({data:data,name:""})
-
-      });
-      setMyChart(initChart)
+      console.log("resultat.data",resultat.data);
+      const seriesData = capteurs.map((capteur,index) => ({
+        data: capteur.contenuFichier.Capteurs[0].X.map((x, index) => [
+          parseFloat(capteur.contenuFichier.Capteurs[0].X[index]),
+          parseFloat(capteur.contenuFichier.Capteurs[0].Y[index]).toFixed(2),
+        ]),
+        name: 'EV'+(index+1),
+      }));
+      setChartData({ series: seriesData, options: getChartOptions() });
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       console.error(error);
     }
   }
 
-  
-
   useEffect(() => {
-    loadCapteurs()
-  }, [])
-          return(
-            <div className='parent historique'>
-              {isLoading ? (
-          <Loading/>
-        ):(
-          <ReactApexChart options={myChart?.options} series={myChart?.series} type="line" height={500} width={1000} />
-          )}
-            </div>
-          )
-        }
+    loadCapteurs();
+  }, []);
+
+  function getChartOptions() {
+    return {
+      chart: {
+        id: 'time-series-chart',
+        animations: {
+          enabled: true,
+          easing: 'linear',
+          dynamicAnimation: {
+            speed: 1000,
+          },
+        },
+        toolbar: {
+          autoSelected: 'pan',
+          show: true,
+        },
+      },
+      xaxis: {
+        type: 'numeric',
+      },
+      stroke: {
+        width: 2, // Adjust the width as needed
+      },
+
+    };
+  }
+
+  return (
+    <div className='parent historique'>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        chartData && (
+          <div style={{ width: '100%'}}>
+          <ReactApexChart
+            options={chartData.options}
+            series={chartData.series}
+            type='line'
+            height='130%'
+          />
+        </div>
+        )
+      )}
+    </div>
+  );
+}

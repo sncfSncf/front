@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 
 import config from '../../config';
 
+import { ReactComponent as CrossIcon } from '../../assets/cross-svgrepo-com.svg';
+
+
 export default function NF50592() {
   
   const { dateFichier, heureFichier, site } = useParams();
@@ -74,18 +77,46 @@ export default function NF50592() {
     fetchImages();
 
   }, [dateFichier, heureFichier, site, urlDossier]);
-
+const handleClose = ()=>{
+  window.close()
+}
   return (
 
     <div className="parent captures50592">
+  <CrossIcon onClick={handleClose} style={{cursor:"pointer", position: "absolute", right: 0, top: -50 ,width: "40px", height: "40px",color:'red'}} />
 
+
+      <div  style={{ display: 'flex' }}> 
       {imageSrcs.length > 0 ? (
-        imageSrcs.map((src, index) => 
-        <img src={src} style={{width: '100%',display:'block',margin:'5 0px'}} alt={`img-${index}`} key={index} />)
-      ) : (
-        <p>Aucune image trouvée</p>
-      )}
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {imageSrcs.slice(0, 3).map((src, index) => (
+        <img
+          src={src}
+          style={{ width: '100%', display: 'block', margin: '5px 0px' }}
+          alt={`img-${index}`}
+          key={index}
+        />
+      ))}
     </div>
+  ) : (
+    <p>Aucune image trouvée</p>
+  )}
+  {imageSrcs.length > 0 ? (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {imageSrcs.slice(3, 6).map((src, index) => (
+        <img
+          src={src}
+          style={{ width: '100%', display: 'block', margin: '5px 0px' }}
+          alt={`img-${index + 3}`}
+          key={index + 3}
+        />
+      ))}
+    </div>
+  ) : null}
+      </div>
+  
+</div>
+
 
   );
 

@@ -38,12 +38,17 @@ function JourJ() {
         return;
       }
       setIsLoading(true);
-      const resultat = await axios.get(`${config.API_URL}/data?site=${site}&dateFichier=${date}`)
+      
+       // http://localhost:8080/data?site=Chevilly&dateFichier=2023-06-24
+       const resultat = await axios.get(`${config.API_URL}/data?site=${site}&dateFichier=${date}`)
+
+      //const resultat = await axios.get(`${config.API_URL}/data?site=${site}&dateFichier=2023-05-05`)
+      
       setTrains(resultat.data)
-      console.log(resultat.data)
+      setIsLoading(false)
+
       
     } catch (error) {
-      
       if (error.response && error.response.status === 404) {
         setIsLoading(false)
         setSelectedSite('')

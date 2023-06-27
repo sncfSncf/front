@@ -12,6 +12,72 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bodyy {
+  margin-top: 3vh;
+  background: linear-gradient(to right, #83c3de, #0088ce);
+  height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.custom-link:hover {
+  color: blue; 
+  text-decoration: underline; 
+}
+.slider {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  transform-style: preserve-3d;
+  animation: rotate 30s linear infinite;
+}
+
+
+
+@keyframes rotate {
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(360deg);
+  }
+}
+
+.slider span {
+ 
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--i)*45deg)) translateZ(400px);
+}
+
+.slider span img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: 2s;
+}
+.slider span:hover img{
+  transform: translateY(-30px) scale(1.2);
+}
+
+
 
 .App-header {
   background-color: #282c34;

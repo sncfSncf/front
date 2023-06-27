@@ -20,6 +20,7 @@ export default function Rapports(){
           const response = await axios.get(`${config.API_URL}/download`)
           if (response.status === 200) {
             const data = response.data
+            console.log("data",data);
             setMesPdf(data)
           }
         } catch (error) {

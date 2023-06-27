@@ -13,6 +13,16 @@
   font-style: normal;
 }
 
+
+.row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.col-left{
+  margin-top: 20px;
+}
+
 :root {
   /*La palettes de couleurs*/
   --sncf-bleu-primaire-bg: #0088ce;
@@ -84,6 +94,9 @@ thead {
   padding-left: 10px;
   position: relative;
   margin: 5px auto;
+}
+.aaaaa{
+  height: 1px;
 }
 
 .card-header {
@@ -199,12 +212,14 @@ table {
 }
 
 .footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   background-color: var(--sncf-noir-bg);
-  min-height: 50px;
-  padding: 50px;
-  bottom: 0px;
-  position: relative;
+  padding: 20px;
 }
+
 
 .footer a {
   padding: 20px;
@@ -228,7 +243,7 @@ a:visited,a {
   position: relative;
 }
 .tableauTH .cbx{
-  width: 20px;
+  
 }
 
 .filtres {
@@ -344,8 +359,9 @@ a:visited,a {
 }
 
 .trainTab {
-  width: calc(100% - 40px) !important;
-  margin: 20px auto;
+  width: 100% !important;
+ 
+  
 }
 .rdrDefinedRangesWrapper {
   display: none !important;
@@ -514,7 +530,26 @@ span.statut {
 }
 .parent.captures50592{
   display:block;
+  
 }
+.img-container{position: relative;
+  display: inline-block;
+
+ }
+
+  .thumbnail:hover + .second-image {
+    opacity: 1;
+  }
+  .second-image {
+    position: absolute;
+   
+    bottom: -300%;
+    right: 120%;
+    margin-left: 10px;
+    opacity: 0;
+
+    transition: opacity 0.3s ease-in-out;
+  }
 .tableau .m50 p,.journal .m50 p{
   background-color: white;
   color: var(--sncf-noir-bg);

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MenuItem, Select } from '@mui/material'
 
 
-export default function Resultats({ options, onChange, disabled }) {
+export default function Resultats({ options, onChange, disabled,compStyle }) {
   const [myValue, setMyValue] = useState()
 
   const handleResultChange = (value) => {
@@ -14,7 +14,7 @@ export default function Resultats({ options, onChange, disabled }) {
 
   return (
    
-      <Select
+      <Select style={compStyle}
         onChange={(e) => handleResultChange(e.target.value)}
         defaultValue={myValue}
         value={myValue}

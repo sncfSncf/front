@@ -1,5 +1,7 @@
 import * as React from 'react'
 import IconButton from '@mui/material/IconButton'
+
+import temp from '../../exemples/images/TNN.png'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -26,7 +28,9 @@ export default function CollapsibleTable({ trains }) {
   });
   const options = ['Ok', 'NOK']
   const [currentPage, setCurrentPage] = useState(0);
+
   const itemsPerPage = 50;
+
 
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
@@ -107,90 +111,128 @@ export default function CollapsibleTable({ trains }) {
     setOpen({ ...open, [index]: !open[index] });
   };
   trains.sort((a, b) => {
+  
+  
     const timestampA = getTimestamp(a);
     const timestampB = getTimestamp(b);
     return timestampB - timestampA;
   });
+  const [isHovered, setIsHovered] = useState(false);
   if (trains.length > 0) {
+    const linkStyle = {
+      color: 'black',
+      textDecoration: 'none',
+      transition: 'color 0.3s',
+    };
+    
+    const linkHoverStyle = {
+      color: 'blue',
+    };
+   
     return (
-      <>
-      <Table className="trainTab" aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell className="tableauTH" />
-            <TableCell className="tableauTH" align="center" style={{verticalAlign:'top'}}>
-              Horodatage
-              <div></div>
-            </TableCell>
-            <TableCell className="tableauTH" align="center">
-              N° train (SYRENE)
-              <div>
-                <input
-                  className="filtres"
-                  type="text"
-                  value={inputValues.searchNumero}
-                  name="searchNumero"
-                  onChange={handleSearchChange}
-                  placeholder=" "
-                />
-              </div>
-            </TableCell>
-            <TableCell className="tableauTH" align="center">
-              identification MR
-              <div>
-                <input
-                  className="filtres"
-                  type="text"
-                  value={inputValues.searchIdentification}
-                  name="searchIdentification"
-                  onChange={handleSearchChange}
-                  placeholder=" "
-                />
-              </div>
-            </TableCell>
-            <TableCell className="tableauTH" align="center">
-              Vitesse moyenne
-              <div>
-                <input
-                  className="filtres"
-                  type="text"
-                  name="searchVitesse"
-                  value={inputValues.searchVitesse}
-                  onChange={handleSearchChange}
-                  placeholder=" "
-                />
-              </div>
-            </TableCell>
-            <TableCell className="tableauTH" align="center">
-              SAMS005 50592
-              <div>
-                <input
-                  className="filtres methodes"
-                  type="text"
-                  name="searchSam"
-                  value={inputValues.searchSam}
-                  onChange={handleSearchChange}
-                  placeholder="SAM"
-                />
-                <input
-                  className="filtres methodes"
-                  type="text"
-                  name="search50592"
-                  value={inputValues.search50592}
-                  onChange={handleSearchChange}
-                  placeholder="50592"
-                />
-              </div>
-            </TableCell>
-            <TableCell className="tableauTH" align="center" style={{verticalAlign:'top'}}>
-              SYRENE
-              
-            </TableCell>
-            <TableCell className="tableauTH" align="center" style={{verticalAlign:'top'}}>
-              Température /Humidité / courant dans le rail
-            </TableCell>
-          </TableRow>
-        </TableHead>
+      <><div style={{ width: '100%', overflowX: 'auto' }}>
+         <Table style={{ width: '100%' }} className="trainTab" aria-label="collapsible table">
+         <TableHead style={{ width: '100%' }}>
+  <TableRow>
+    <TableCell style={{ width: '5px' }} />
+
+    <TableCell align="center" style={{ verticalAlign: 'top' }}>
+      <div style={{  fontWeight: 'bold' }}>Horodatage</div>
+      <div>
+        <input
+          type="text"
+          value={inputValues.searchNumero}
+          name="searchNumero"
+          onChange={handleSearchChange}
+          placeholder=" "
+          style={{ width: '70%',height:'30px',border:'none',marginTop:'5px' }}
+        />
+      </div>
+    </TableCell>
+
+    <TableCell align="center" style={{ verticalAlign: 'top'}}>
+      <div style={{  fontWeight: 'bold' }}>N° train</div>
+      <div>
+        <input
+          
+          type="text"
+          value={inputValues.searchNumero}
+          name="searchNumero"
+          onChange={handleSearchChange}
+          placeholder=" "
+          style={{ width: '100%',height:'30px',border:'none',marginTop:'5px' }}
+        />
+      </div>
+    </TableCell>
+
+    <TableCell  align="center" style={{ verticalAlign: 'top',whiteSpace: 'nowrap'}}>
+      <div style={{  fontWeight: 'bold' }}>identification MR</div>
+      <div>
+        <input
+          
+          type="text"
+          value={inputValues.searchIdentification}
+          name="searchIdentification"
+          onChange={handleSearchChange}
+          placeholder=" "
+          style={{ width: '100%',height:'30px',border:'none',marginTop:'5px' }}
+        />
+      </div>
+    </TableCell>
+
+    <TableCell  align="center" style={{ verticalAlign: 'top',whiteSpace: 'nowrap'}}>
+      <div style={{  fontWeight: 'bold' }}>Vitesse moyenne</div>
+      <div>
+        <input
+          
+          type="text"
+          name="searchVitesse"
+          value={inputValues.searchVitesse}
+          onChange={handleSearchChange}
+          placeholder=" "
+          style={{ width: '100%',height:'30px',border:'none',marginTop:'5px' }}
+        />
+      </div>
+    </TableCell>
+
+    <TableCell align="center" style={{ verticalAlign: 'top'}}>
+      <div style={{  fontWeight: 'bold' }}> SAMS005 50592</div>
+     
+      <div style={{ display: 'flex'}}>
+        <input
+          className=" methodes"
+          type="text"
+          name="searchSam"
+          value={inputValues.searchSam}
+          onChange={handleSearchChange}
+          placeholder="SAM"
+          style={{ width: '50%',height:'30px',border:'none',marginTop:'5px',marginRight:'10px',paddingLeft:'5px'}}
+        />
+        <input
+          className=" methodes"
+          type="text"
+          name="search50592"
+          value={inputValues.search50592}
+          onChange={handleSearchChange}
+          placeholder="50592"
+          style={{ width: '50%',height:'30px',border:'none',marginTop:'5px',paddingLeft:'5px'}}
+        />
+      </div>
+    </TableCell>
+
+    <TableCell style={{ verticalAlign: 'top'}}>
+      <div style={{  fontWeight: 'bold' }}> SYRENE</div>
+    </TableCell>
+
+    <TableCell style={{ verticalAlign: 'top' }}>
+  <div style={{ fontWeight: 'bold' }}>
+    <img src={temp} alt="Température / Humidité / courant dans le rail" style={{ height: '65px', width: '100px',marginTop:'-2px' }} />
+  </div>
+</TableCell>
+  </TableRow>
+</TableHead>
+
+
         <TableBody>
           {trainsFiltres?.map((train, index) => (
             <React.Fragment key={index}>
@@ -208,13 +250,16 @@ export default function CollapsibleTable({ trains }) {
                     )}
                   </IconButton>
                 </TableCell>
-                <TableCell align="center">
-                  { (train.dateFichier !== null&& train.dateFichier !== undefined)
-                    ? train.dateFichier + '-' + train.heureFichier
-                    : (train.datesam !== null && train.datesam !== undefined) 
-                    ? train.datesam + '-' + train.heuresam
-                    : train.date50592 + '-' + train.heure50592}
-                </TableCell>
+                <TableCell align="center" style={{ width: '100px', whiteSpace: 'nowrap' }}>
+  { (train.dateFichier !== null && train.dateFichier !== undefined)
+    ? train.dateFichier + '-' + train.heureFichier
+    : (train.datesam !== null && train.datesam !== undefined) 
+    ? train.datesam + '-' + train.heuresam
+    : train.date50592 + '-' + train.heure50592
+  }
+</TableCell>
+
+
                 <TableCell align="center">{train.numTrain}</TableCell>
                 <TableCell align="center">{train.mr}</TableCell>
                 <TableCell align="center">
@@ -292,7 +337,20 @@ export default function CollapsibleTable({ trains }) {
                     to={`/syrenne/${train.dateFichier}/${train.heureFichier}/${train.site}`}
                     target="_blank"
                   >
-                    {train.imagemini !== null && (<img style={{width:'75px', marginRight:'3px'}} src={train.imagemini} alt='img-mini'/>)}
+                    {train.imagemini !== null && (
+                    <div className="img-container">
+                    <img
+                      className="thumbnail"
+                      style={{width:'75px',height:'5vh', marginRight:'3px'}} src={train.imagemini} alt='img-mini'
+                      
+                      />
+                    <span className="second-image">
+                      <img  style={{width:'270px',height:'17vh', marginRight:'-30px'}} src={train.imagemini}  alt='img-max'/>
+                    </span>
+                  </div>
+                    
+                    
+                    )}
                   </Link>
                 </TableCell>
                 <TableCell align="center">
@@ -315,11 +373,11 @@ export default function CollapsibleTable({ trains }) {
                         <h3>SAM S005</h3>
                         <div className="l sam">
                           <span>Nombre d'essieux: {train.NbEssieux}</span>
-                          <div>
+                          <div style={{display:"flex",width:'160%'}}>
                             {train.NbOccultations?.map((occ, index) =>
                               occ === train.NbEssieux ? (
                                 <div className="ev">
-                                  EV{index + 1} =
+                                  EV{index + 1}=
                                   <span style={{ fontWeight: 'bold' }}>
                                     {occ}
                                   </span>
@@ -335,10 +393,8 @@ export default function CollapsibleTable({ trains }) {
                                 </div>
                               )
                             )}
-                          </div>
-                        </div>
-                        <div className="m sam">
-                          Temps t1, t2, et t3 :
+                             <div className="m ">
+                          Temps t1, t2, et t3 : &nbsp;
                           <Link
                             to={`/temps/${train.datesam}/${train.heuresam}/${train.site}`}
                             target="_blank"
@@ -347,6 +403,9 @@ export default function CollapsibleTable({ trains }) {
                             {train.site}
                           </Link>
                         </div>
+                          </div>
+                        </div>
+                       
                         {train.statutSAM === 'NOK' && (
                           <div className="r sam">
                             Enveloppe signaux EV1 à EV8:
@@ -360,11 +419,24 @@ export default function CollapsibleTable({ trains }) {
                         )}
                       </td>
                     </TableRow>
-                  )}
+                  )} 
                   {train.meteo !== null && (
                     <TableRow>
                       <td colSpan={8} className='m50' style={{ padding: '0px 25px' }}>
-                        <h3>50592</h3>
+                        <h3>50592</h3> &nbsp; &nbsp; &nbsp; <div>
+                        <Link
+                        to={`/50592/${train.date50592}/${train.heure50592}/${train.site}`}
+                        target="_blank"
+                        style={{...linkStyle, ...(isHovered ? linkHoverStyle : null)}}
+                        className="custom-link"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                      >
+                        Résultats FFT - ERA\ERTMS\033281 : &nbsp;
+                        FFT Rail 1 et 2 : {train.date50592}-{train.heure50592}
+                      </Link>
+                  
+                </div>
                         <div className="l">
                           <TableResultat
                             blr1={train.blr1}  blr2={train.blr2}  ber1={train.ber1}  ber2={train.ber2}
@@ -372,26 +444,19 @@ export default function CollapsibleTable({ trains }) {
                             fob={train.fondhorsbande} freqBL={train.frequencebl}
                           />
                         </div>
-                        <div className="r">
-                          <Link
-                            to={`/50592/${train.date50592}/${train.heure50592}/${train.site}`}
-                            target="_blank"
-                            
-                          >
-                            Résultats FFT - ERA\ERTMS\033281 <br/>
-                            FFT Rail 1 & 2 : {train.date50592}-{train.heure50592}
-                          </Link>
-                          
-                        </div>
+                  
                       </td>
                     </TableRow>
                   )}
+                       
                 </>
               )}
             </React.Fragment>
           ))}
         </TableBody>
       </Table>
+      </div>
+     
       {trainsFiltres.length > itemsPerPage && (
           <ReactPaginate
           previousLabel={'Previous'}

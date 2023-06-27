@@ -224,6 +224,14 @@ function Header() {
             >
               <Tab label="Aide" sx={{ color: 'black' }} />
             </NavLink>
+             <NavLink
+              activeClassName="active"
+              to="/test"
+              exact
+              style={{ textDecoration: 'none' }}
+            >
+              <Tab label="test" sx={{ color: 'black' }} />
+            </NavLink>
           </Tabs>
         </Toolbar>
       )}

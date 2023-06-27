@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import config from '../../config';
+import { ReactComponent as CrossIcon } from '../../assets/cross-svgrepo-com.svg';
 
 export default function Syrenne() {
 
@@ -45,12 +46,15 @@ export default function Syrenne() {
     fetchImages();
 
   }, [dateFichier, heureFichier, site, urlDossier]);
-
+  const handleClose = ()=>{
+    window.close()
+  }
   return (
 
     <div className="parent historique">
+  <CrossIcon onClick={handleClose} style={{cursor:"pointer", position: "absolute", right: 0, top: -5 ,width: "40px", height: "40px",color:'red'}} />
 
-       <img src={urlDossier} style={{ width: '100%', display: 'block', margin: '5 0px' }} alt={`image-`}/>
+       <img src={urlDossier} style={{ width: '96%',height:'70vh', display: 'block', margin: '5px' }} alt={`image-`}/>
     </div>
 
   );

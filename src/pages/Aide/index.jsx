@@ -1,67 +1,49 @@
 import { Card, CardContent, Typography } from "@mui/material";
- import React from "react";
+import image1 from '../../exemples/images/img1.jpg'
+import image2 from '../../exemples/images/img2.jpg'
+import image3 from '../../exemples/images/img3.jpg'
+import image4 from '../../exemples/images/img4.jpg'
+import image5 from '../../exemples/images/img5.jpg'
+import image6 from '../../exemples/images/img6.jpg'
+import image7 from '../../exemples/images/img7.jpg'
+import image8 from '../../exemples/images/img8.jpg'
+import image10 from '../../exemples/images/img10.jpg'
+import '../../App.css';
+import React, { useState, useEffect } from 'react';
+
  import { Link} from 'react-router-dom'
  export default function Aide(){
+  
+
+
+ 
     return(
         <div className="parent home" style={{ display: 'block' }}>
           <h1> Page d'aide</h1>
           <div>
             <p>
-            Bienvenu sur l’interface de visualisation des résultats de mesures selon les deux méthodes "50592" & "SAM S005" ; obtenus au niveau de la basse de télésurveillance "50592" Vs "SAM S005" de Chevilly
+            Bienvenu sur l’interface de visualisation des résultats de mesures selon les deux méthodes "50592" & "SAM S005" ; obtenus au niveau de la base de télésurveillance "50592" Vs "SAM S005" de Chevilly
               
             </p>
           </div>
-          <ul>
-            <li>
-              <Card className='card' >
-                <CardContent  component={Link} to='/jourJ'>
-                  <Typography variant="h5" component="h2">
-                    Temps réel
-                  </Typography>
-                  <Typography variant="body1" component="p">
-                  Onglet de visualisation des passages de trains observés le « Jour J ». Cette page contient les informations et résultats SAM S005, 50592 et SYRENE associés.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </li>
-            <li>
-              <Card className='card'>
-                <CardContent component={Link} to="/historique" >
-                  <Typography variant="h5" component="h2">
-                    Historique
-                  </Typography>
-                  <Typography variant="body1" component="p">
-                  On peut visualiser cet onglet, les résultats en lien avec les passages de trains sur une période préconfigurée par l’utilisateur et en lien avec un site d’essais choisi.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </li>
-            <li>
-              <Card className='card'>
-                <CardContent component={Link} to="/journal">
-                  <Typography variant="h5" component="h2">
-                    Journal & statistique
-                  </Typography>
-                  <Typography variant="body1" component="p">
-                  L'onglet permet de consulter les rapports générés automatiquement (trimestriels) ainsi que de les générer à la demande par l'opérateur. Cet onglet contient aussi des Dashboards en lien avec les statistiques calculées.
-                  </Typography>
-                  
-                </CardContent>
-              </Card>
-            </li>
-            <li>
-              <Card className='card'>
-                <CardContent component={Link}  to="/synoptique">
-                  <Typography variant="h5" component="h2">
-                    Synoptique
-                  </Typography>
-                  <Typography variant="body1" component="p">
-                  Un onglet qui illustre un synoptique du site d'essais, reprenant l'emplacement et la disposition des capteurs au niveau de la voie instrumentée.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </li>
-          </ul>
+          <div className="bodyy">
+          <div className="slider">
+            <span style={{ '--i': 1 }}><img src={image1}alt="image1"></img></span>
+            <span style={{ '--i': 2 }}><img src={image2}alt="image2"></img></span>
+            <span style={{ '--i': 3 }}><img src={image3}alt="image3"></img></span>
+            <span style={{ '--i': 4 }}><img src={image4}alt="image4"></img></span>
+            <span style={{ '--i': 5 }}><img src={image5}alt="image5"></img></span>
+            <span style={{ '--i': 6 }}><img src={image6}alt="image6"></img></span>
+            <span style={{ '--i': 7 }}><img src={image7}alt="image7"></img></span>
+            <span style={{ '--i': 8 }}><img src={image8}alt="image8"></img></span>
+            <span style={{ '--i': 10 }}><img src={image10}alt="image10"></img></span>
+     
+          </div>
+          </div>
+       
+  
+         
+      
         </div>
     )
 }
