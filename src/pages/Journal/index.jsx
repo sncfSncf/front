@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef } from 'react'
 import Site from '../../components/SelectList/sites'
 import styles from '../../styles/styles.css'
 import Resultats from '../../components/SelectList/resultats'
@@ -36,6 +36,11 @@ function Journal() {
   const [pdfData, setPdfData] = useState(null)
   const [capteurs,setCapteurs]=useState([])
 
+
+  const myRef = useRef()
+
+
+
   // Recuperation de tous les users existants
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -61,7 +66,10 @@ function Journal() {
     setResult50592(newRes)
   }
 
+  
+
   const loadTrains = async () => {
+    
     try {
       if (!site || !startDate || !endDate) {
         setShowAlert(true)
@@ -110,8 +118,12 @@ function Journal() {
       setTrains([])
     }
   }
+  const refresh = () => {
+    myRef.current.childMethod() 
 
-  
+  };
+
+
   const loadCapteurs = async () => {
     try {
       const response = await axios.get(`${config.API_URL}/allcapteurs`)
@@ -178,23 +190,24 @@ function Journal() {
       <div className="parent historique">
         <div className="filtre historique">
           <RangeDatePicker onChange={handleDateChange} />
+          <Site className="site" onChange={handleSiteChange} />
           {showAlert && <p>Les filtres doivent être sélectionnés.</p>}
         </div>
         <div className="resultat">
-          <div className="journal" style={{ position: 'relative' }}>
+          <div className="journal" style={{ position: 'relative',marginRight:'30px' }}>
             <p>
               Journal
               <div
                 style={{
                   display: 'inline-block',
                   position: 'absolute',
-                  right: '0px',
+                  right: '15px',
                   margin: 'auto',
                   top: '10px',
                 }}
               >
-                <Button variant="primary" onClick={loadTrains}>
-                  <RefreshIcon /> Rafraîchir
+                <Button variant="primary" onClick={refresh}>
+                  <RefreshIcon /> Rafaîchir
                 </Button>
 
                 <PDFRapport
@@ -206,32 +219,10 @@ function Journal() {
             </p>
             <div>
               <Toolbar />
-              <Site className="site" onChange={handleSiteChange} />
-              <InputLabel
-                style={{ display: 'inline-block', margin: '-8px 20px' }}
-              >
-                Option 50592
-              </InputLabel>
-              <Resultats
-                onChange={handleResult50592Change}
-                options={option50592}
-                compStyle={{  height: '2em' }}
-                value={result50592}
-                disabled={disabled50}
-              />
-              <InputLabel
-                 style={{ display: 'inline-block', margin: '-8px 20px' }}
-              >
-                Option SAM S005
-              </InputLabel>
-              <Resultats
-                onChange={handleResultSAMChange}
-                options={optionSAM}
-                compStyle={{  height: '2em' }}
-                disabled={disabledSam}
-              />
+              
+             
             </div>
-            <Tableau trains={trains} />
+            <Tableau trains={trains} ref={myRef}  />
           </div>
           
           </div>

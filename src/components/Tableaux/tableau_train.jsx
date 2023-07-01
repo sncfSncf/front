@@ -11,34 +11,88 @@ import TableRow from '@mui/material/TableRow'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useImperativeHandle,useRef } from 'react'
 import TableResultat from '../traitements/traitementCouleur'
 import NF50592 from '../../pages/50592'
 import Resultats from '../../components/SelectList/resultats'
-export default function CollapsibleTable({ trains }) {
+// CollapsibleTable
+  
+  const CollapsibleTable = React.forwardRef(({trains}, ref) => {
+
+
+    useImperativeHandle(ref, () => ({
+      childMethod() {
+        refreshTrains()
+      }
+    }))
+
+    
   const [trainsFiltres, setTrainsFiltres] = useState(trains);
   const [open, setOpen] = useState({});
+  const option50592 = ['NOK', 'OK', 'uniquement 50592']
+  const optionSAM = ['NOK', 'OK', 'uniquement SAM']
+  const [refreshKey, setRefreshKey] = useState(0);
+
+
   const [inputValues, setInputValues] = useState({
+    searchDate:'',
     searchNumero: '',
     searchIdentification: '',
     searchVitesse: '',
     searchSam: '',
     search50592: '',
-    searchSyrenne: '',
+    searchSyrenne: ''
+    
   });
   const options = ['Ok', 'NOK']
   const [currentPage, setCurrentPage] = useState(0);
 
   const itemsPerPage = 50;
 
+  
+
+  const refreshTrains=()=>{
+    console.log("refreshcalled");
+    setRefreshKey((prevKey) => prevKey + 1);
+    setInputValues({
+      searchDate:'',
+      searchNumero: '',
+      searchIdentification: '',
+      searchVitesse: '',
+      searchSam: '',
+      search50592: '',
+      searchSyrenne: ''
+      
+    });
+  }
 
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
+
     setInputValues((prevValues) => ({
       ...prevValues,
       [name]: value,
     }));
   };
+  
+ 
+
+
+
+  const handleSearchSamChange = (value) => {
+
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      searchSam: value,
+    }));
+  };
+  const handleSearch50592Change = (value) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      search50592: value,
+    }));
+  };
+
 
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
@@ -49,6 +103,12 @@ export default function CollapsibleTable({ trains }) {
   // Filtrer l'ancien tableau quand l'utilisateur saisit dans l'input
   useEffect(() => {
     const filteredTrains = trains.filter((train) => {
+      if (
+        inputValues.searchDate &&
+        !train.datesam?.includes(inputValues.searchDate.toUpperCase())
+      ) {
+        return false;
+      }
       if (
         inputValues.searchNumero &&
         !train.numTrain?.includes(inputValues.searchNumero.toUpperCase())
@@ -141,8 +201,8 @@ export default function CollapsibleTable({ trains }) {
       <div>
         <input
           type="text"
-          value={inputValues.searchNumero}
-          name="searchNumero"
+          value={inputValues.searchDate}
+          name="searchDate"
           onChange={handleSearchChange}
           placeholder=" "
           style={{ width: '70%',height:'30px',border:'none',marginTop:'5px' }}
@@ -151,7 +211,7 @@ export default function CollapsibleTable({ trains }) {
     </TableCell>
 
     <TableCell align="center" style={{ verticalAlign: 'top'}}>
-      <div style={{  fontWeight: 'bold' }}>N° train</div>
+      <div style={{  fontWeight: 'bold' , whiteSpace: 'nowrap' }}>N° train</div>
       <div>
         <input
           
@@ -199,7 +259,7 @@ export default function CollapsibleTable({ trains }) {
       <div style={{  fontWeight: 'bold' }}> SAMS005 50592</div>
      
       <div style={{ display: 'flex'}}>
-        <input
+        {/* <input
           className=" methodes"
           type="text"
           name="searchSam"
@@ -207,16 +267,27 @@ export default function CollapsibleTable({ trains }) {
           onChange={handleSearchChange}
           placeholder="SAM"
           style={{ width: '50%',height:'30px',border:'none',marginTop:'5px',marginRight:'10px',paddingLeft:'5px'}}
-        />
-        <input
-          className=" methodes"
-          type="text"
-          name="search50592"
-          value={inputValues.search50592}
-          onChange={handleSearchChange}
-          placeholder="50592"
-          style={{ width: '50%',height:'30px',border:'none',marginTop:'5px',paddingLeft:'5px'}}
-        />
+        /> */}
+    <Resultats
+  key={`searchSam_${refreshKey}`}
+  name="searchSam"
+  onChange={handleSearchSamChange}
+  options={option50592}
+  compStyle={{ height: '2em', backgroundColor: 'white', border: 'none', marginTop: '5px', width: '70%' }}
+  value={inputValues.searchSam}
+  style={{ height: '30px', marginRight: '10px', paddingLeft: '5px' }}
+/>
+
+<Resultats
+  key={`search50592_${refreshKey}`}
+  name="search50592"
+  onChange={handleSearch50592Change}
+  options={optionSAM}
+  compStyle={{ height: '2em', backgroundColor: 'white', border: 'none', marginTop: '5px', width: '70%' }}
+  value={inputValues.search50592}
+  style={{  height: '30px', border: 'none', marginTop: '5px', marginRight: '10px', paddingLeft: '5px', backgroundColor: 'white' }}
+/>
+
       </div>
     </TableCell>
 
@@ -369,75 +440,89 @@ export default function CollapsibleTable({ trains }) {
                 <>
                   {train.vitesse_moy !== null && (
                     <TableRow>
-                      <td colSpan={8} style={{ padding: '0px 25px' }}>
-                        <h3>SAM S005</h3>
-                        <div className="l sam">
-                          <span>Nombre d'essieux: {train.NbEssieux}</span>
-                          <div style={{display:"flex",width:'160%'}}>
+                      <td colSpan={12} style={{ padding: '0px 25px' }}>
+                      <h3 style={{ backgroundColor: '#0088ce', color: 'white', padding: '10px' }}>SAM S005</h3>
+
+                        <div colSpan={12} style={{ width:'95%' ,marginTop:'20px',marginLeft:'20px'}}>
+                          <span style={{fontWeight: 'bold',marginTop:'30px'}}>Nombre d'essieux: {train.NbEssieux}</span>
+                          <div  style={{ marginTop:'10px',paddingBottom:'5px',display: "flex", width: "100%", justifyContent: "space-between", border: "1px solid rgba(0, 0, 0, 0.1)", borderRadius: "8px", boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.1)", backgroundColor: "#f5f5f5" }}>
                             {train.NbOccultations?.map((occ, index) =>
                               occ === train.NbEssieux ? (
-                                <div className="ev">
+
+                                <div className="ev"  key={index}  style={{ marginTop: '10px', flex: "1", textAlign: "center" }}>
                                   EV{index + 1}=
-                                  <span style={{ fontWeight: 'bold' }}>
+                                  <span  style={{ fontWeight: 'bold', marginRight: '20px', color: occ === train.NbEssieux ? 'black' : 'var(--sncf-error-bg)' }}>
                                     {occ}
                                   </span>
                                 </div>
                               ) : (
-                                <div className="ev">
-                                  EV{index + 1} =
+                                <div className="ev"  key={index}  style={{ marginTop: '10px', flex: "1", textAlign: "center" }}>
+                                  EV{index + 1}=
                                   <span
-                                    style={{ color: 'var(--sncf-error-bg)' }}
+                                   style={{ fontWeight: 'bold', marginRight: '20px', color: occ === train.NbEssieux ? 'black' : 'var(--sncf-error-bg)' }}
                                   >
                                     {occ}
                                   </span>
                                 </div>
                               )
                             )}
-                             <div className="m ">
-                          Temps t1, t2, et t3 : &nbsp;
-                          <Link
-                            to={`/temps/${train.datesam}/${train.heuresam}/${train.site}`}
-                            target="_blank"
-                          >
-                            {train.datesam}_{train.heuresam}_
-                            {train.site}
-                          </Link>
-                        </div>
+                             
                           </div>
+                          <div colSpan={12} style={{ width: '100%', display: 'flex', flexWrap: 'nowrap' }}>
+  <div className="m" style={{ flex: '1' }}>
+  <ul><li style={{ fontWeight: 'bold',marginTop:'15px' ,marginLeft:'20px'}}>   Temps t1, t2, et t3 : &nbsp;
+   
+   <Link
+     to={`/temps/${train.datesam}/${train.heuresam}/${train.site}`}
+     target="_blank"
+     style={{ color: '#0088ce', fontWeight: 'bold'}}
+   >
+     {train.datesam}_{train.heuresam}_{train.site}
+   </Link></li></ul>
+ 
+  </div>
+
+  {train.statutSAM === 'NOK' && (
+    <div className="r" style={{ flex: '1' }}>
+      <ul><li style={{ fontWeight: 'bold',marginTop:'15px'  }}> Enveloppe signaux EV1 à EV8:
+
+<Link
+  to={`/SAMS005/${train.datesam}/${train.heuresam}/${train.site}`}
+  target="_blank"
+  style={{ color: '#0088ce', fontWeight: 'bold' }}
+>
+  {train.datesam}_{train.heuresam}
+</Link></li></ul>
+     
+    </div>
+  )}
+</div>
+
                         </div>
-                       
-                        {train.statutSAM === 'NOK' && (
-                          <div className="r sam">
-                            Enveloppe signaux EV1 à EV8:
-                            <Link
-                              to={`/SAMS005/${train.datesam}/${train.heuresam}/${train.site}`}
-                              target="_blank"
-                            >
-                              {train.datesam}_{train.heuresam}
-                            </Link>
-                          </div>
-                        )}
+                      
                       </td>
                     </TableRow>
                   )} 
                   {train.meteo !== null && (
                     <TableRow>
                       <td colSpan={8} className='m50' style={{ padding: '0px 25px' }}>
-                        <h3>50592</h3> &nbsp; &nbsp; &nbsp; <div>
-                        <Link
+                      <h3 style={{ backgroundColor: '#0088ce', color: 'white', padding: '10px',fontWeight: 'bold',marginTop:'20px' }}>50592</h3>
+
+                        <div>
+                        <Link 
                         to={`/50592/${train.date50592}/${train.heure50592}/${train.site}`}
                         target="_blank"
-                        style={{...linkStyle, ...(isHovered ? linkHoverStyle : null)}}
+                        style={{ ...linkStyle, ...(isHovered ? linkHoverStyle : null), color: '#0088ce', fontWeight: 'bold' }}
                         className="custom-link"
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
-                      >
-                        Résultats FFT - ERA\ERTMS\033281 : &nbsp;
-                        FFT Rail 1 et 2 : {train.date50592}-{train.heure50592}
+                      ><uk><li style={{marginTop:'20px',marginLeft:'25px'}}><span style={{ color: 'black', fontWeight: 'bold' }}>Résultats FFT - ERA\ERTMS\033281 : &nbsp;
+                      FFT Rail 1 et 2 :</span> {train.date50592}-{train.heure50592}</li></uk>
+                        
                       </Link>
                   
                 </div>
-                        <div className="l">
+                        <div className="l" style={{width:'100%'}} >
                           <TableResultat
                             blr1={train.blr1}  blr2={train.blr2}  ber1={train.ber1}  ber2={train.ber2}
                             parBE={train.entetesbe}  parBL={train.entetesbl} parOB={train.entetehorsbande}  ob={train.outofband}
@@ -499,4 +584,5 @@ export default function CollapsibleTable({ trains }) {
     )
   }
   return <></>
-}
+})
+export default CollapsibleTable

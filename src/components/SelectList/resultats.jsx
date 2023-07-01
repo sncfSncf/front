@@ -14,12 +14,20 @@ export default function Resultats({ options, onChange, disabled,compStyle }) {
 
   return (
    
-      <Select style={compStyle}
-        onChange={(e) => handleResultChange(e.target.value)}
-        defaultValue={myValue}
-        value={myValue}
-        disabled={disabled} // désactiver l'option "Uniquement 50592" si "Uniquement SAM" est sélectionné
-      >
+    <Select
+    style={{
+      width: '130px',
+      padding: '0px',
+      height: '32px',
+      borderColor: 'none',
+      backgroundColor:'white',
+      marginTop:'3px'
+    }}
+    onChange={(e) => handleResultChange(e.target.value)}
+    defaultValue={myValue}
+    value={myValue}
+    disabled={disabled} 
+  >
         {options.map((option, id) => (
           <MenuItem key={id} value={option}>
             {option}

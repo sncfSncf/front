@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import config from "../../config";
+import ToolbarRapport from '../../components/Toolbar'
+
 export default function Rapports(){
     const [mesPdf, setMesPdf] = useState([])
     const handleFileClick = (content) => {
@@ -31,11 +33,13 @@ export default function Rapports(){
         loadPdf()
       }, [])
     return(
-        <div className="parent historique">
+        <>
+        <div className="parent historique" >
             <div className="rapports">
             <p>Rapports</p>
            
-            
+            <ToolbarRapport />
+
             <div className='rapportsAnTrim'>
             <h5>Rapports annuels</h5>
               {mesPdf?.map((pdf, index) => {
@@ -70,5 +74,6 @@ export default function Rapports(){
             </div>
             </div>
         </div>
+        </>
     )
 }

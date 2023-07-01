@@ -87,7 +87,7 @@ function JourJ() {
           <div className="JourJ">
              <p>{site}</p>
              <div style={{ display: 'inline-block', position: 'absolute', right: '0px', margin: 'auto', top: '10px' }}>
-                <Button variant="primary" onClick={loadTrains}><RefreshIcon /> Raffraichir</Button>
+                <Button variant="primary" onClick={loadTrains}><RefreshIcon /> Rafraîchir</Button>
               </div>
             <Tableau trains={trains} />
           </div>

@@ -98,7 +98,7 @@ function Historique() {
          
             <p>{site}
               <div style={{ display: 'inline-block', position: 'absolute', right: '0px', margin: 'auto', top: '10px' }}>
-                <Button variant="primary" onClick={loadTrains}><RefreshIcon /> Raffraichir</Button>
+                <Button variant="primary" onClick={loadTrains}><RefreshIcon /> Rafaîchir</Button>
                 <PDF data={trains} periode={[startDate, endDate]} site={site} />
               </div>
             </p>

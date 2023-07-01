@@ -82,11 +82,11 @@ const handleClose = ()=>{
 }
   return (
 
-    <div className="parent captures50592">
+    <div className="parents ">
   <CrossIcon onClick={handleClose} style={{cursor:"pointer", position: "absolute", right: 0, top: -50 ,width: "40px", height: "40px",color:'red'}} />
 
 
-      <div  style={{ display: 'flex' }}> 
+      <div  style={{ display: 'flex',marginLeft: '-230px'}}> 
       {imageSrcs.length > 0 ? (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {imageSrcs.slice(0, 3).map((src, index) => (

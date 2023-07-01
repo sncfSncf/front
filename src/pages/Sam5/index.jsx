@@ -69,12 +69,12 @@ export default function Chart() {
         <Loading />
       ) : (
         chartData && (
-          <div style={{ width: '100%'}}>
+          <div style={{ width: '110%'}}>
           <ReactApexChart
             options={chartData.options}
             series={chartData.series}
             type='line'
-            height='130%'
+            height='100%'
           />
         </div>
         )

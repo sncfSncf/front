@@ -50,6 +50,7 @@
   --sncf-cool-gray7-bg: #a0a0a0;
   --sncf-cool-gray9-bg: #747678;
   --sncf-cool-gray11-bg: #4d4f53;
+  --space:#d7d7d7;
   /*Les gris chauds*/
   --sncf-warm-gray1-bg: #e0ded8;
   --sncf-warm-gray3-bg: #c3beb4;
@@ -74,7 +75,7 @@ thead {
   margin: auto 20px;
 }
 .filtreS div.fS {
-  display: grid;
+  display: f;
   margin: 20px 0px 20px 50px;
 }
 .filtreS label {
@@ -130,6 +131,14 @@ table {
   position: relative;
   display: flex;
 }
+.parents {
+  margin:  170px 50px 250px 300px;
+  min-height: calc(100vh - 320px);
+  position: relative;
+  display: flex;
+}
+
+
 .parent.administration .submit {
   padding: 10px 20px;
   position: relative;
@@ -242,9 +251,7 @@ a:visited,a {
   display: block;
   position: relative;
 }
-.tableauTH .cbx{
-  
-}
+
 
 .filtres {
   border: none;
@@ -274,7 +281,7 @@ a:visited,a {
 .JourJ,
 .statistique {
   display: inline-block;
-  width: 90%;
+  width: 100%;
   position: relative;
   border: 1px solid var(--sncf-cool-gray7-bg);
   border-radius: 5px 5px 0px 0px;
@@ -344,7 +351,7 @@ a:visited,a {
 .statistique p,.rapports p {
   padding: 20px 10px;
   background-color: var(--sncf-bleu-primaire-bg);
-  width: calc(100% - 20px);
+  width: 100% ;
   border-radius: 5px;
   margin: 0px;
   color: #fff;
@@ -411,8 +418,22 @@ canvas#graphique {
   border: 1px solid var(--sncf-cool-gray5-bg);
   border-top:none
 }
-.ble.ligne{
+.ble2{ 
+  padding: 0px !important;
+  min-width: 48px;
+  border: 3px solid #d7d7d7;
+  
+  text-align: center;
+  border-top:none
+}
+.ble .ligne{
   padding: 0px;
+}
+.cell-width {
+  width: 85px;
+}
+.cell-width {
+  width: 150px;
 }
 
 .tableBE .beV {

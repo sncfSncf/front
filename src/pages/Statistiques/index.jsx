@@ -8,6 +8,7 @@ import RangeDatePicker from '../../components/Calender'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import {
   Button,
+  Hidden,
   InputLabel,
   Table,
   TableBody,
@@ -25,17 +26,27 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import html2pdf from 'html2pdf.js'
 import logo from '../../exemples/images/logoSNCF.png'
 import { Height } from '@material-ui/icons'
+import StatsChart from './StatsChart'
 
 function Statistique() {
   const [showToolbar, setShowToolbar] = useState(false)
 
-  const [site, setSelectedSite] = useState('')
+  const [site, setSelectedSite] = useState('Chevilly')
+  const [myChartData50592NOK, setmyChartData50592NOK] = useState([])
+  const [myChartData50592NOKIndex, setMyChartData50592NOKIndex] = useState([])
+  const [myChartData50592OK, setmyChartData50592OK] = useState(null)
+  const [myChartDataSamNOK, setmyChartDataSamNOK] = useState([])
+  const [myChartDataSamNOKIndex, setMyChartDataSamNOKIndex] = useState([])
+  const [myChartDataSamOK, setmyChartDataSamOK] = useState(null)
+  const [showOkChart, setshowOkChart] = useState(false)
   const [infos, setInfos] = useState([])
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
+  const [startDate, setStartDate] = useState('2023-03-28')
+  const [endDate, setEndDate] = useState('2023-06-27')
   const [BE, setBE] = useState('')
   const [BL, setBL] = useState('')
-  const [MR, setMR] = useState('')
+  const [convertedData, setConvertedData] = useState(null);
+
+  const [MR, setMR] = useState([])
   const [resultSAM, setResultSAM] = useState('')
   const [result50592, setResult50592] = useState('')
   const [typemr, setTypemr] = useState([])
@@ -49,11 +60,12 @@ function Statistique() {
   const history = useHistory()
   const optionBE = ['', 'D39', 'D39-bis', 'D50_bis', 'D50']
   let capteurs = null
-  let pourcentage50592 = null
-  let nbrPassage50592 = null
-  let nbrPassageSAM = null
+  let pourcentage50592 = []
+  let nbrPassage50592 = []
+  let nbrPassageSAM = []
   let evs = null
-  let pourcentageSAM = null
+  let pourcentageSAM =  []
+
 
   const handleDateChange = (ranges) => {
     setStartDate(dayjs(ranges.selection.startDate).format('YYYY-MM-DD'))
@@ -66,6 +78,9 @@ function Statistique() {
     console.log(site)
   }
 
+
+  
+
   const handleBEChange = (newRes) => {
     setBE(newRes)
     console.log(BE)
@@ -74,10 +89,14 @@ function Statistique() {
     setBL(newRes)
     console.log(BL)
   }
-  const handleMRChange = (newRes) => {
-    setMR(newRes)
-    console.log(MR)
+  const handleMRChange = (event) => {
+    const selectedValues = Array.from(event.target.selectedOptions, (option) => option.value)
+    selectedValues.sort();
+    setMR(selectedValues)
   }
+
+
+
 
   const handleResultSAMChange = (newRes) => {
     if (newRes === 'uniquement sam') {
@@ -88,7 +107,6 @@ function Statistique() {
       setDisabled50(false)
     }
     setResultSAM(newRes)
-    console.log(resultSAM)
   }
 
   const handleResult50592Change = (newRes) => {
@@ -101,70 +119,18 @@ function Statistique() {
     }
     setResult50592(newRes)
   }
-  const tableau = () => {
-    if (result50592 === 'NOK' || result50592 === 'uniquement 50592') {
-      for (let i = 0; i < infos.length; i++) {
-        if (BE) {
-          console.log('juuuuuuste', BE)
-        }
-        if (infos[i]['le poucentage de chaque capteur']) {
-          capteurs = Object.keys(infos[i]['le poucentage de chaque capteur'])
-          pourcentage50592 = Object.values(
-            infos[i]['le poucentage de chaque capteur']
-          )
-        }
-        if (infos[i]['nombre de train passé(50592 nok)']) {
-          nbrPassage50592 = infos[i]['nombre de train passé(50592 nok)']
-        }
-      }
-    }
-    if (result50592 === 'OK') {
-      for (let i = 0; i < infos.length; i++) {
-        if (infos[i]['nombre de train passé(50592 ok )']) {
-          nbrPassage50592 = infos[i]['nombre de train passé(50592 ok )']
-        }
-        if (infos[i]['le poucentage de chaque type mr (50592 ok)']) {
-          pourcentage50592 =
-            infos[i]['le poucentage de chaque type mr (50592 ok)']
-        }
-      }
-    }
-    if (resultSAM === 'NOK' || resultSAM === 'uniquement sam') {
-      for (let i = 0; i < infos.length; i++) {
-        if (infos[i]["pourcentage de perturbation par index d'un type mr"]) {
-          evs = Object.keys(
-            infos[i]["pourcentage de perturbation par index d'un type mr"]
-          )
-          pourcentageSAM = Object.values(
-            infos[i]["pourcentage de perturbation par index d'un type mr"]
-          )
-        }
-        if (infos[i]['nombre de train passé (sam nok)']) {
-          nbrPassageSAM = infos[i]['nombre de train passé (sam nok)']
-        }
-      }
-    }
-    if (resultSAM === 'OK') {
-      for (let i = 0; i < infos.length; i++) {
-        if (infos[i]['nombre de train passé (sam ok)']) {
-          nbrPassageSAM = infos[i]['nombre de train passé (sam ok)']
-        }
-        if (infos[i]['pourcentage de chaque type mr sam ok']) {
-          pourcentageSAM =
-            infos[i]['pourcentage de chaque type mr sam ok'] + '%'
-        }
-      }
-    }
-  }
-  tableau()
+ 
   const loadInfos = async () => {
     setIsLoading(true)
     try {
+      setmyChartData50592NOK([])
+      setmyChartData50592OK(null)
       //Récupération des infos d'une date séléctionnée par l'utilisateur
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-      setInfos(resultat.data)
+    
+      setInfos(resultat?.data)
       setIsLoading(false)
     } catch (error) {
       console.error(error)
@@ -176,7 +142,7 @@ function Statistique() {
     try {
       const resultat = await axios.get(`${config.API_URL}/typemr`)
 
-      setTypemr(resultat.data)
+      setTypemr(resultat?.data)
     } catch (error) {
       console.error(error)
     }
@@ -185,7 +151,7 @@ function Statistique() {
   const loadCE = async () => {
     try {
       const resultat = await axios.get(`${config.API_URL}/capteurs`)
-      setOptionBE_CE(resultat.data)
+      setOptionBE_CE(resultat?.data)
     } catch (error) {}
   }
   const handleScroll = () => {
@@ -214,291 +180,150 @@ function Statistique() {
         setShowToolbar(false) // Change the value of showToolbar after the PDF is saved
       })
   }
-  const createChart = async () => {
-    const ctx50592 = document.getElementById('chart-50592').getContext('2d')
-    const ctxSAM = document.getElementById('chart-sam').getContext('2d')
-    const canvas50592 = Chart.getChart(ctx50592)
-    const canvasSAM = Chart.getChart(ctxSAM)
-    const dataSAM = {
-      labels: [], // Les étiquettes pour l'axe X
-      datasets: [
-        {
-          label: `% trains SAM par type MR`,
-          data: [], // Le pourcentage de trains SAM par type MR
-          backgroundColor: '#00ff00',
-        },
-      ],
-    }
-    const data50592 = {
-      labels: [], // Les étiquettes pour l'axe X
-      datasets: [
-        {
-          label: `% trains 50592 par type MR`,
-          data: [], // Le pourcentage de trains SAM par type MR
-          backgroundColor: '#00ff00',
-        },
-      ],
-    }
-    const data50592OK = {
-      labels: [], // Les étiquettes pour l'axe X
-      datasets: [
-        {
-          label: `% trains 50592 par type MR`,
-          data: [], // Le pourcentage de trains SAM par type MR
-          backgroundColor: '#00ff00',
-        },
-      ],
-    }
-    const dataSAMNOK = {
-      labels: [], // Les étiquettes pour l'axe X
-      datasets: [
-        {
-          label: `% trains SAM par EV`,
-          data: [], // Le pourcentage de trains SAM par type MR
-          backgroundColor: [], // Tableau vide pour les couleurs
-        },
-      ],
-    }
-    //recuperation type mr
-    const optionsSAMOK = {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: '% trains SAM par type MR',
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Type MR',
-          },
-        },
-      },
-    }
-    const optionsSAMNOK = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: '% trains SAM par EV',
-        },
-        legend: {
-          display: true,
-          position: 'bottom',
-        },
-      },
-    }
-    const options50592 = {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: '% trains SAM par type MR',
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Capteurs',
-          },
-        },
-      },
-    }
-    if (canvas50592) {
-      canvas50592.destroy()
-    }
-    if (canvasSAM) {
-      canvasSAM.destroy()
-    }
+  const createChart = async () => {   
+     
+    //  convertedData = {
+    //   labels: data.labels,
+    //   datasets: data.datasets.map((dataset) => ({
+    //     label: dataset.label,
+    //     data: dataset.data,
+    //     backgroundColor: dataset.backgroundColor,
+    //   })),
+    // };
+ if(infos){
+  // `${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}
+      //OKChart50592
 
-    if (infos.length === 0) {
-      return
-    } else {
-      for (let i = 0; i < infos.length; i++) {
-        const ctxSAM = document.getElementById('chart-sam').getContext('2d')
+if(result50592 ==='uniquement 50592' || (result50592==='OK'&& resultSAM !=='uniquement sam' )){
 
-        if (resultSAM !== 'uniquement sam' && result50592) {
-          let trains50592
-          if (result50592 === 'OK') {
-            if (infos[i]['le poucentage de chaque type mr (50592 ok)']) {
-              data50592.labels.push(infos[i]['mr (50592 ok)'])
-              data50592.datasets[0].data.push(pourcentage50592)
-              new Chart(ctx50592, {
-                type: 'bar',
-                data: data50592,
-                options: options50592,
-                width: '600px',
-              })
-            }
-          }
-          if (result50592 === 'NOK') {
-            if (infos[i]['le poucentage de chaque capteur']) {
-              trains50592 = infos[i]['le poucentage de chaque capteur']
 
-              for (const [label, value] of Object.entries(trains50592)) {
-                if (BE || BL) {
-                  if (BE === label || BL === label) {
-                    data50592.labels.push(label)
-                    data50592.datasets[0].data.push(value)
-                  }
-                } else {
-                  data50592.labels.push(label)
-                  data50592.datasets[0].data.push(value)
-                }
-              }
-              new Chart(ctx50592, {
-                type: 'bar',
-                data: data50592,
-                options: options50592,
-                width: '600px',
-              })
-            }
-          }
+  const chartData = {
+    datasets: [],
+    labels: []
+  };
+  infos?.forEach(item => {
+    const mrKey = item["mr (50592 ok)"];
+    const pourcentageMr = item["le poucentage de chaque type mr (50592 ok)"];
+  
+    if (mrKey && pourcentageMr) {
+      
+  
+      chartData.labels.push(mrKey);
+      chartData.datasets.push(pourcentageMr);
 
-          if (result50592 === 'uniquement 50592') {
-            trains50592 = infos[i]['le poucentage de chaque capteur']
-            for (const [label, value] of Object.entries(trains50592)) {
-              data50592.labels.push(label)
-              data50592.datasets[0].data.push(value)
-            }
-            new Chart(ctx50592, {
-              type: 'bar',
-              data: data50592,
-              options: options50592,
-              width: '600px',
-            })
-            data50592OK.labels.push(infos[i]['mr (50592 ok)'])
-            data50592OK.datasets[0].data.push(
-              infos[i]['le poucentage de chaque type mr (50592 ok)']
-            )
-
-            const ctxSAM = document.getElementById('chart-sam').getContext('2d')
-            new Chart(ctxSAM, {
-              type: 'bar',
-              data: data50592OK,
-              options: optionsSAMOK,
-              responsive: true,
-              maintainAspectRatio: false,
-            })
-          }
-        }
-        if (result50592 !== 'uniquement 50592' && resultSAM) {
-          if (resultSAM === 'OK') {
-            const trainsSAMOK = infos[i]['mr(sam ok)']
-            dataSAM.datasets[0].data.push(
-              infos[i]['pourcentage de chaque type mr sam ok']
-            )
-            dataSAM.labels.push(trainsSAMOK)
-
-            new Chart(ctxSAM, {
-              type: 'bar',
-              data: dataSAM,
-              options: optionsSAMOK,
-              responsive: true,
-              maintainAspectRatio: false,
-            })
-          }
-          if (resultSAM === 'NOK') {
-            if (
-              infos[i]["pourcentage de perturbation par index d'un type mr"]
-            ) {
-              console.log('SAMNOK ')
-              const trainsSAMNOK =
-                infos[i]["pourcentage de perturbation par index d'un type mr"]
-              const colors = [
-                '#0088ce',
-                '#009aa6',
-                '#e05206',
-                '#6e1e78',
-                '#a1006b',
-                '#d2e100',
-                '#d52b1e',
-                '#675c53',
-              ] // Liste des couleurs à utiliser
-              let index = 0
-              let j = 0 // Variable pour suivre l'index de couleur actuel
-              for (const [label, value] of Object.entries(trainsSAMNOK)) {
-                dataSAMNOK.labels.push(`EV${j + 1}`)
-                dataSAMNOK.datasets[0].data.push(value)
-                dataSAMNOK.datasets[0].backgroundColor.push(colors[index]) // Attribuer une couleur à la donnée
-                index = (index + 1) % colors.length // Passer à la couleur suivante
-                j += 1
-              }
-              new Chart(ctxSAM, {
-                type: 'pie',
-                data: dataSAMNOK,
-                options: optionsSAMNOK,
-                responsive: true,
-                maintainAspectRatio: false,
-              })
-              console.log(infos.length)
-            }
-          }
-          if (resultSAM === 'uniquement sam') {
-            if (
-              infos[i]["pourcentage de perturbation par index d'un type mr"] ||
-              infos[i]['pourcentage de chaque type mr sam ok']
-            ) {
-              if (
-                infos[i]["pourcentage de perturbation par index d'un type mr"]
-              ) {
-                const trainsSAMNOK =
-                  infos[i]["pourcentage de perturbation par index d'un type mr"]
-                const colors = [
-                  '#0088ce',
-                  '#009aa6',
-                  '#e05206',
-                  '#6e1e78',
-                  '#a1006b',
-                  '#d2e100',
-                  '#d52b1e',
-                  '#675c53',
-                ] // Liste des couleurs à utiliser
-                let index = 0
-                let j = 0 // Variable pour suivre l'index de couleur actuel
-
-                for (const [label, value] of Object.entries(trainsSAMNOK)) {
-                  dataSAMNOK.labels.push(`EV${j + 1}`)
-                  dataSAMNOK.datasets[0].data.push(value)
-                  dataSAMNOK.datasets[0].backgroundColor.push(colors[index]) // Attribuer une couleur à la donnée
-                  index = (index + 1) % colors.length // Passer à la couleur suivante
-                  j += 1
-                }
-
-                new Chart(ctxSAM, {
-                  type: 'pie',
-                  data: dataSAMNOK,
-                  options: optionsSAMNOK,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                })
-              }
-              const ctx50592 = document
-                .getElementById('chart-50592')
-                .getContext('2d')
-              const trainsSAMOK = infos[i]['mr(sam ok)']
-              dataSAM.labels.push(trainsSAMOK)
-              dataSAM.datasets[0].data.push(
-                infos[i]['pourcentage de chaque type mr sam ok']
-              )
-
-              new Chart(ctx50592, {
-                type: 'bar',
-                data: dataSAM,
-                options: optionsSAMOK,
-                responsive: true,
-                maintainAspectRatio: false,
-              })
-            }
-          }
-        }
-      }
+      // chartData.set(mrKey, chartData);
     }
+  });
+  
+
+setmyChartData50592OK(chartData)
+}
+    //NOKChart50592
+if( result50592 ==='uniquement 50592' || (result50592==='NOK'&& resultSAM !=='uniquement sam' ))
+{
+
+
+  const myChartData=[] 
+  const chartTitles=[] 
+
+  infos?.forEach(item => {
+    const mrKey = item["mr(50592 nok)"];
+    const pourcentageCapteur = item["le pourcentage de chaque capteur"];
+  
+    if (mrKey && pourcentageCapteur) {
+      const chartData = {
+        datasets: [],
+        labels: []
+      };
+  
+      Object.entries(pourcentageCapteur).forEach(([label, value]) => {
+        chartData.labels.push(label);
+        chartData.datasets.push(value);
+      });
+  
+      // chartData.set(mrKey, chartData);
+      myChartData.push(chartData);
+      chartTitles.push(mrKey)
+    }
+  });
+  
+
+setmyChartData50592NOK(myChartData)
+setMyChartData50592NOKIndex(chartTitles)
+}
+
+
+
+
+//SAM
+if(result50592 ==='uniquement sam' || (resultSAM==='OK'&& result50592 !=='uniquement 50592' )){
+
+
+  const chartData = {
+    datasets: [],
+    labels: []
+  };
+  infos?.forEach(item => {
+    const mrKey = item["mr(sam ok)"];
+    const pourcentageMr = item["pourcentage de chaque type mr sam ok"];
+  
+    if (mrKey && pourcentageMr) {
+      
+  
+      chartData.labels.push(mrKey);
+      chartData.datasets.push(pourcentageMr);
+
+      // chartData.set(mrKey, chartData);
+    }
+  });
+  
+
+setmyChartDataSamOK(chartData)
+}
+    //NOKChartSam
+if( resultSAM ==='uniquement sam' || (resultSAM==='NOK'&& result50592 !=='uniquement 50592' ))
+{
+
+
+  const myChartData=[] 
+  const chartTitles=[] 
+
+  infos?.forEach(item => {
+    const mrKey = item["mr(sam nok)"];
+    const pourcentageCapteur = item["index occultation et le total de fois de perturbation dans tous les trains"];
+  
+    if (mrKey && pourcentageCapteur) {
+      const chartData = {
+        datasets: [],
+        labels: []
+      };
+  
+      Object.entries(pourcentageCapteur).forEach(([label, value]) => {
+        chartData.labels.push("EV"+label);
+        chartData.datasets.push(value);
+      });
+  
+      // chartData.set(mrKey, chartData);
+      myChartData.push(chartData);
+      chartTitles.push(mrKey)
+    }
+  });
+  
+
+setmyChartDataSamNOK(myChartData)
+setMyChartDataSamNOKIndex(chartTitles)
+}
+  
+ }
+
+
+
+
+
+
   }
+
+
   useEffect(() => {
     loadTypeMr()
     loadCE()
@@ -509,10 +334,12 @@ function Statistique() {
     }
   }, [token, history])
   useEffect(() => {
+    
     loadInfos()
-    console.log(infos)
-  }, [site, startDate, endDate, MR, result50592, resultSAM, BE, BL])
+
+    }, [site, startDate, endDate, MR, result50592, resultSAM, BE, BL])
   useEffect(() => {
+
     createChart()
   }, [infos])
 
@@ -521,8 +348,10 @@ function Statistique() {
       <div className="parent historique">
         <div className="filtre historique">
           <RangeDatePicker onChange={handleDateChange} />
+          <Site className="site" onChange={handleSiteChange} />
+
         </div>
-        <div className="statistique" style={{ position: 'relative' }}>
+        <div className="statistique" style={{ position: 'relative',width:'100%' }}>
           <p>
             Journal
             <div
@@ -531,25 +360,26 @@ function Statistique() {
                 position: 'absolute',
                 right: '0px',
                 margin: 'auto',
-                top: '10px',
+                top: '10px' 
               }}
             >
               <Button variant="primary" onClick={handleDownloadPdf}>
                 <FileDownloadIcon style={{ marginTop: '5px' }} />
                 Exporter
+                
               </Button>
 
               <Button variant="primary" onClick={loadInfos}>
-                <RefreshIcon /> Raffraichir
+                <RefreshIcon /> Rafaîchir
               </Button>
             </div>
           </p>
           <div id="pdf-content">
             <div>
               <div className="row">
-                <div className="col-left">
+                <div className="col-left" style={!showToolbar ? { marginTop: '-20px' } : {}}>
                   {showToolbar && (
-                    <ul>
+                    <ul style={{marginLeft:'30px',marginBottom:'50px'}}>
                       <li>
                         {' '}
                         {startDate} - {endDate}
@@ -557,7 +387,7 @@ function Statistique() {
                       <br />
                       <li> Site : {site} </li>
                       <br />
-                      <li> Type Mr : {MR} </li>
+                      <li> Type Mr : {MR.join(',')} </li>
                       <br />
                       <li> Résultat 50592 : {result50592} </li>
                       <br />
@@ -579,51 +409,130 @@ function Statistique() {
 
               {!showToolbar && (
                 <>
-                  <ToolbarRapport />
-                  <div className="filtreS">
-                    <Site className="site" onChange={handleSiteChange} />
-                    <div className="fS">
-                      <InputLabel>Type Mr </InputLabel>
-                      <Resultats onChange={handleMRChange} options={typemr} />
-                      <InputLabel>Résultat 50592 </InputLabel>
-                      <Resultats
-                        onChange={handleResult50592Change}
-                        options={option50592}
-                        disabled={disabled50}
-                      />
-                      <InputLabel>Résultat SAM S005</InputLabel>
-                      <Resultats
-                        onChange={handleResultSAMChange}
-                        options={optionSAM}
-                        disabled={disabledSam}
-                      />
-                      <InputLabel>Option D39-D50 </InputLabel>
-                      <Resultats
-                        onChange={handleBEChange}
-                        options={optionBE}
-                        disabled={disabled50}
-                      />
-                      <InputLabel>
-                        Résultats 50592 – Bande étroite - autre CE
-                      </InputLabel>
-                      <Resultats
-                        onChange={handleBLChange}
-                        options={optionBE_CE}
-                        disabled={disabled50}
-                      />
-                    </div>
-                  </div>
+                  <ToolbarRapport  />
+                  <div style={{padding:'60px',marginTop:'-15px'}}>
+  <div     style={{
+    display: 'flex',
+    width: '100%',
+    border: '2px solid transparent',
+    boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.3)',
+    transition: 'box-shadow 0.3s',padding:'10px',marginTop:'-15px'
+  }}>
+    <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <InputLabel style={{ fontWeight: 'bold' }}>Type Mr</InputLabel>
+      {/* <MultiSelect onChange={handleMRChange}  options={typemr} style={{ width: '100%',border:'none' }} /> */}
+      <select multiple onChange={handleMRChange}>
+      {/* <select multiple value={selectedOptions} onChange={handleSelectChange}> */}
+        {typemr.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+
+    </div>
+    <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <InputLabel style={{ fontWeight: 'bold' }}>Résultat 50592</InputLabel>
+    
+      <div>
+     
+      
+    </div>
+      <Resultats
+        onChange={handleResult50592Change}
+        options={option50592}
+        disabled={disabled50}
+        style={{ width: '100%' }}
+      />
+    </div>
+    <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <InputLabel style={{ fontWeight: 'bold' }}>Résultat SAM S005</InputLabel>
+      <div style={{ width: '100%' }}>
+        <Resultats
+          onChange={handleResultSAMChange}
+          options={optionSAM}
+          disabled={disabledSam}
+          style={{ width: '100%' }}
+        />
+      </div>
+    </div>
+    <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <InputLabel style={{ fontWeight: 'bold' }}>Option D39-D50</InputLabel>
+      <Resultats
+        onChange={handleBEChange}
+        options={optionBE}
+        disabled={disabled50}
+        style={{ width: '100%' }}
+      />
+    </div>
+    <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <InputLabel style={{ fontWeight: 'bold' }}>Bande étroite - autre CE</InputLabel>
+      <Resultats
+        onChange={handleBLChange}
+        options={optionBE_CE}
+        disabled={disabled50}
+        style={{  width: '100%' }}
+      />
+    </div>
+  </div>
+</div>
+
                 </>
               )}
             </div>
-            <div
-              className="graphiques"
-              style={{ display: 'flex', width:'100%',justifyContent:'spaceAround',margin:'30px'}}
-            >
-              <canvas className="chart" id="chart-sam"></canvas>
-              <canvas className="chart" id="chart-50592"></canvas>
-            </div>
-            <div className="tableau-stat" id="page2el">
+           
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+  {myChartData50592NOK?.length > 0 &&
+    myChartData50592NOK.map((nokData, idx) => {
+      return (
+        <div style={{ flexBasis: '50%', padding: '10px', width: '50%' }}>
+          {/* <h1>{MR[idx]}</h1> */}
+          <div style={{ width: '100%', height: 'auto', transform: 'scale(0.85)',marginTop : '-15%'   }}>
+            <StatsChart data={nokData} chartType="pie" title={myChartData50592NOKIndex[idx]} />
+          </div>
+        </div>
+      );
+    })}
+  {myChartData50592OK!==null &&   <div style={{ flexBasis: '50%', padding: '10px', width: '50%' }}>
+          {/* <h1>{MR[idx]}</h1> */}
+          <div style={{ width: '100%', height: '100%', marginTop : '8%'   }}>
+            <StatsChart data={myChartData50592OK} chartType="bar" title="Le poucentage de chaque type mr" />
+          </div>
+        </div>
+        }
+
+
+
+</div>
+
+
+{/* SAM */}
+<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+  {myChartDataSamNOK?.length > 0 &&
+    myChartDataSamNOK.map((nokData, idx) => {
+      return (
+        <div style={{ flexBasis: '50%', padding: '10px', width: '50%' }}>
+          {/* <h1>{MR[idx]}</h1> */}
+          <div style={{ width: '100%', height: 'auto', transform: 'scale(0.85)',marginTop : '-15%'   }}>
+            <StatsChart data={nokData} chartType="pie" title={myChartDataSamNOKIndex[idx]} />
+          </div>
+        </div>
+      );
+    })}
+  {myChartDataSamOK!==null &&   <div style={{ flexBasis: '50%', padding: '10px', width: '50%' }}>
+          {/* <h1>{MR[idx]}</h1> */}
+          <div style={{ width: '100%', height: '100%', marginTop : '5%'   }}>
+            <StatsChart data={myChartDataSamOK} chartType="bar" title="Le poucentage de chaque type mr" />
+          </div>
+        </div>
+        }
+
+
+
+</div>
+
+
+            {/* <div className="tableau-stat" id="page2el">
               {resultSAM !== '' && pourcentageSAM !== null && (
                 <Table
                   style={{
@@ -700,9 +609,21 @@ function Statistique() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        <TableCell>{MR}</TableCell>
-                        <TableCell>{nbrPassage50592}</TableCell>
-                        <TableCell>{pourcentage50592}</TableCell>
+                     {
+                      MR.map((el,index)=>{
+                        return (
+                          <TableRow>
+                          <TableCell>{el}</TableCell>
+                            <TableCell>{nbrPassage50592[index]}</TableCell>
+                            <TableCell>{pourcentage50592[index]}</TableCell>
+                        </TableRow>
+                        )
+
+                      })
+
+                     }
+
+                     
                       </TableBody>
                     </>
                   ) : (
@@ -737,8 +658,22 @@ function Statistique() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        <TableCell>{MR}</TableCell>
-                        <TableCell>{nbrPassage50592}</TableCell>
+                      {
+                      MR.map((el,index)=>{
+                        return (
+                          <TableRow>
+                          <TableCell>{el}</TableCell>
+                            <TableCell>{nbrPassage50592[index]}</TableCell>
+                            <TableCell>{pourcentage50592[index]}</TableCell>
+                        </TableRow>
+                        )
+
+                      })
+
+                     }
+                     
+
+                        
                         {pourcentage50592?.map((pourcentage, index) => (
                           <TableCell>{pourcentage}</TableCell>
                         ))}
@@ -747,7 +682,7 @@ function Statistique() {
                   )}
                 </Table>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

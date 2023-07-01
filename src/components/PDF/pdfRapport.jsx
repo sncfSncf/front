@@ -276,7 +276,7 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
                   let pourcentageDep = 0;
                   console.log(capteursPourc)
 
-                 /* capteurs?.forEach((cp) => {
+                 capteurs?.forEach((cp) => {
                     if (capteursPourc === cp[0]) {
                       console.log('je suis là ?')
                       console.log(capteursPourc)
@@ -290,7 +290,7 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
                       }
                     }
                 //   console.log(capteursPourc[1][2])
-                  });*/
+                  });
       
                   return [pourcentage, pourcentageDep];
                 })
