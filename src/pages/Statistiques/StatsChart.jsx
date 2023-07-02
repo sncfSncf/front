@@ -19,7 +19,6 @@ const StatsChart = ({ data ,chartType,title}) => {
         labels: data?.labels,
         datasets: [
           {
-            label: 'Dataset',
             data: data?.datasets,
             backgroundColor: data?.datasets?.map(() => getRandomColor()),
           },
@@ -36,7 +35,11 @@ const StatsChart = ({ data ,chartType,title}) => {
             display: true,
             text: title,
           },
+          legend: {
+            display: chartType==='bar'?false:true, // Hide the dataset square colors from the legend
+          },
         },
+       
       },
     });
 
