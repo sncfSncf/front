@@ -6,6 +6,7 @@ import ToolbarRapport from '../../components/Toolbar'
 export default function Rapports(){
     const [mesPdf, setMesPdf] = useState([])
     const handleFileClick = (content) => {
+      alert("ok")
         const decodedContent = atob(content)
     
         const byteArray = new Uint8Array(decodedContent.length)

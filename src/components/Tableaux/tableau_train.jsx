@@ -135,6 +135,11 @@ const CollapsibleTable = React.forwardRef(({ trains }, ref) => {
     )
 
     setTrainsFiltres(currentTrains)
+
+
+    // setTimeout(() => {
+    //   console.log("testopen",open[2]);
+    // }, 500);
   }, [trains, inputValues, currentPage])
   const pageCount = Math.ceil(trains.length / itemsPerPage)
   const pageRangeDisplayed = 5
@@ -153,7 +158,10 @@ const CollapsibleTable = React.forwardRef(({ trains }, ref) => {
   }
   const handleRowClick = (index) => {
     setOpen({ ...open, [index]: !open[index] })
+    
   }
+
+
   trains.sort((a, b) => {
     const timestampA = getTimestamp(a)
     const timestampB = getTimestamp(b)
@@ -170,6 +178,9 @@ const CollapsibleTable = React.forwardRef(({ trains }, ref) => {
     const linkHoverStyle = {
       color: 'blue',
     }
+  
+
+  
 
     return (
       <>
@@ -494,7 +505,161 @@ const CollapsibleTable = React.forwardRef(({ trains }, ref) => {
                     <>
                       {train.vitesse_moy !== null && (
                         <TableRow>
-                
+                          <td colSpan={12} style={{ padding: '0px 25px' }}>
+                            <h3
+                              style={{
+                                backgroundColor: '#0088ce',
+                                color: 'white',
+                                padding: '10px',
+                              }}
+                            >
+                              SAM S005
+                            </h3>
+
+                            <div
+                              colSpan={12}
+                              style={{
+                                width: '95%',
+                                marginTop: '20px',
+                                marginLeft: '20px',
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontWeight: 'bold',
+                                  marginTop: '30px',
+                                }}
+                              >
+                                Nombre d'essieux: {train.NbEssieux}
+                              </span>
+                              <div
+                                style={{
+                                  marginTop: '10px',
+                                  paddingBottom: '5px',
+                                  display: 'flex',
+                                  width: '100%',
+                                  justifyContent: 'space-between',
+                                  border: '1px solid rgba(0, 0, 0, 0.1)',
+                                  borderRadius: '8px',
+                                  boxShadow:
+                                    '0px 0px 8px 2px rgba(0, 0, 0, 0.1)',
+                                  backgroundColor: '#f5f5f5',
+                                }}
+                              >
+                                {train.NbOccultations?.map((occ, index) =>
+                                  occ === train.NbEssieux ? (
+                                    <div
+                                      className="ev"
+                                      key={index}
+                                      style={{
+                                        marginTop: '10px',
+                                        flex: '1',
+                                        textAlign: 'center',
+                                      }}
+                                    >
+                                      EV{index + 1}=
+                                      <span
+                                        style={{
+                                          fontWeight: 'bold',
+                                          marginRight: '20px',
+                                          color:
+                                            occ === train.NbEssieux
+                                              ? 'black'
+                                              : 'var(--sncf-error-bg)',
+                                        }}
+                                      >
+                                        {occ}
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className="ev"
+                                      key={index}
+                                      style={{
+                                        marginTop: '10px',
+                                        flex: '1',
+                                        textAlign: 'center',
+                                      }}
+                                    >
+                                      EV{index + 1}=
+                                      <span
+                                        style={{
+                                          fontWeight: 'bold',
+                                          marginRight: '20px',
+                                          color:
+                                            occ === train.NbEssieux
+                                              ? 'black'
+                                              : 'var(--sncf-error-bg)',
+                                        }}
+                                      >
+                                        {occ}
+                                      </span>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                              <div
+                                colSpan={12}
+                                style={{
+                                  width: '100%',
+                                  display: 'flex',
+                                  flexWrap: 'nowrap',
+                                }}
+                              >
+                                <div className="m" style={{ flex: '1' }}>
+                                  <ul>
+                                    <li
+                                      style={{
+                                        fontWeight: 'bold',
+                                        marginTop: '15px',
+                                        marginLeft: '20px',
+                                      }}
+                                    >
+                                      {' '}
+                                      Temps t1, t2, et t3 : &nbsp;
+                                      <Link
+                                        to={`/temps/${train.datesam}/${train.heuresam}/${train.site}`}
+                                        target="_blank"
+                                        style={{
+                                          color: '#0088ce',
+                                          fontWeight: 'bold',
+                                        }}
+                                      >
+                                        {train.datesam}_{train.heuresam}_
+                                        {train.site}
+                                      </Link>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                {train.statutSAM === 'NOK' && (
+                                  <div className="r" style={{ flex: '1' }}>
+                                    <ul>
+                                      <li
+                                        style={{
+                                          fontWeight: 'bold',
+                                          marginTop: '15px',
+                                        }}
+                                      >
+                                        {' '}
+                                        Enveloppe signaux EV1 à EV8:
+                                        <Link
+                                          to={`/SAMS005/${train.datesam}/${train.heuresam}/${train.site}`}
+                                          target="_blank"
+                                          style={{
+                                            color: '#0088ce',
+                                            fontWeight: 'bold',
+                                          }}
+                                        >
+                                          {train.datesam}_{train.heuresam}
+                                        </Link>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </td>
                         </TableRow>
                       )}
                       {train.meteo !== null && (
