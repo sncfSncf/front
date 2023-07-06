@@ -6,7 +6,6 @@ import ToolbarRapport from '../../components/Toolbar'
 export default function Rapports(){
     const [mesPdf, setMesPdf] = useState([])
     const handleFileClick = (content) => {
-      alert("ok")
         const decodedContent = atob(content)
     
         const byteArray = new Uint8Array(decodedContent.length)
@@ -62,6 +61,22 @@ export default function Rapports(){
                 if (pdf?.name.includes('trimestriel')) {
                   return (
                     <li
+                      key={index}
+                      onClick={() => handleFileClick(pdf.content)}
+                    >
+                      {pdf.name}
+                    </li>
+                  )
+                }
+                return null
+              })}
+            </div>
+              <h5>Rapports à la demande </h5>
+            <div>
+              {mesPdf?.map((pdf, index) => {
+                if (pdf?.name.includes('demande')) {
+                  return (
+                    <li 
                       key={index}
                       onClick={() => handleFileClick(pdf.content)}
                     >

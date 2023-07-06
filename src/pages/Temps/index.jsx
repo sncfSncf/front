@@ -36,22 +36,22 @@ export default function Temps() {
 
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody >
           {temps.map((tmp, index) => (
-            <TableRow key={`row-${index}-1`}>
-              <TableCell className="cell">{index + 1}</TableCell>
+            <TableRow  key={`row-${index}-1`}>
+              <TableCell style={{textAlign: 'center'}} className="cell">{index + 1}</TableCell>
 
               {tmp.t1.map((pol, innerIndex) => (
 
                 <TableRow>
 
-                  <TableCell className="cell" style={{ width: "500px", margin: 'auto',padding:'5px 16px' }} key={`cell-${index}-${innerIndex}-1`}>
+                  <TableCell className="cell" style={{ textAlign: 'center',width: "500px", margin: 'auto',padding:'5px 16px' }} key={`cell-${index}-${innerIndex}-1`}>
                     {tmp.t1[innerIndex]}
                   </TableCell>
-                  <TableCell className="cell" style={{ width: "500px", margin: 'auto',padding:'5px 16px' }} key={`cell-${index}-${innerIndex}-1`} >
+                  <TableCell className="cell" style={{ textAlign: 'center',width: "500px", margin: 'auto',padding:'5px 16px' }} key={`cell-${index}-${innerIndex}-1`} >
                     {tmp.t2[innerIndex]}
                   </TableCell>
-                  <TableCell className="cell" style={{ width: "500px", margin: 'auto',padding:'5px 16px' }} key={`cell-${index}-${innerIndex}-1`}>
+                  <TableCell className="cell" style={{ textAlign: 'center',width: "500px", margin: 'auto',padding:'5px 16px' }} key={`cell-${index}-${innerIndex}-1`}>
                     {tmp.t3[innerIndex]}
                   </TableCell>
                 </TableRow>

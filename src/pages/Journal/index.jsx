@@ -59,17 +59,21 @@ function Journal() {
   }
 
   const handleResultSAMChange = (newRes) => {
-    setResultSAM(newRes)
+    if (newRes === 'OK' || newRes === 'NOK') setResultSAM(newRes)
+    else setResultSAM('uniquement sam')
   }
 
   const handleResult50592Change = (newRes) => {
     setResult50592(newRes)
+
+    if (newRes === 'OK' || newRes === 'NOK') setResult50592(newRes)
+    else setResult50592('uniquement 50592')
   }
 
   
 
   const loadTrains = async () => {
-    
+    console.log("debug","result50592 resultSAM",result50592 ,resultSAM)
     try {
       if (!site || !startDate || !endDate) {
         setShowAlert(true)
@@ -170,14 +174,18 @@ function Journal() {
         `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${typesMR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setInfos(resultat.data)
+      console.log("logger","infos",resultat.data,        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${typesMR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      )
     } catch (error) {
       console.error(error)
     }
   }
   useEffect(() => {
     loadTrains()
+  }, [site, startDate, endDate])
+  useEffect(() => {
     loadInfos()
-  }, [site, startDate, endDate, resultSAM, result50592])
+  }, [resultSAM, result50592])
 
   useEffect(() => {
     loadCategories()
@@ -210,11 +218,13 @@ function Journal() {
                   <RefreshIcon /> Rafaîchir
                 </Button>
 
-                <PDFRapport
-                  data={[infos, categorie,CEPerturbe,capteurs]}
+                {
+                  <PDFRapport 
+                  customData={[infos, categorie,CEPerturbe]}
                   periodeL={[startDate, endDate]}
                   siteSelectionne={site}
                 />
+                }
               </div>
             </p>
             <div>
@@ -222,7 +232,7 @@ function Journal() {
               
              
             </div>
-            <Tableau trains={trains} ref={myRef}  />
+            <Tableau trains={trains} onSearchSamChange={handleResultSAMChange} onSearch50592Change={handleResult50592Change} ref={myRef}  />
           </div>
           
           </div>

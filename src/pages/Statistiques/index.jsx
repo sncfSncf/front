@@ -138,7 +138,8 @@ function Statistique() {
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-    
+    console.log(        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+    );
       setInfos(resultat?.data)
       setIsLoading(false)
     } catch (error) {
@@ -241,6 +242,7 @@ if( result50592 ==='uniquement 50592' || (result50592==='NOK'&& resultSAM !=='un
     const mrKey = item["mr(50592 nok)"];
     const pourcentageCapteur = item["le pourcentage de chaque capteur"];
     const nbrPassages = item["nombre de train passé(50592 nok)"];
+    console.log("info",infos)
   
     if (mrKey && pourcentageCapteur) {
       const chartData = {

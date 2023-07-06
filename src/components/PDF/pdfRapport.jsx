@@ -10,25 +10,49 @@ import sncflogo from '../../exemples/images/sncfreseau.jpeg'
 import imagePdf from '../../exemples/images/imagePDF.png'
 import axios from 'axios'
 import config from '../../config'
-export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) {
+export default function PDFRapport({ customData, periodeL, siteSelectionne}) {
   const [pdfDocument, setPdfDocument] = useState(null)
+  const [pdfDocumentQuarter, setPdfDocumentQuarter] = useState(null)
+  const [pdfDocumentAnnual, setPdfDocumentAnnual] = useState(null)
   const [dated, dateF] = periodeL
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [infos, setInfos] = useState([])
-  const [categorie, setCategorie] = useState([])
-  const [startTrim, setStartTrim] = useState('')
-  const [EndTrim, setEndTrim] = useState('')
-  const [typesMR, setTypesMR] = useState("")
-  const [CEPerturbe,setCEPerturbe]=useState([])
+  let customPDF = 0
+
   //const [capteurs,setCapteurs]=useState([])
-  const generatePdf = async (data, periode, site) => {
+  const generatePdf = async (data, periode, site,type,filename) => {
+
     let startY = 30
+    let infoSamOK=[]
+    let Info50592OK=[]
+    let infoSamNOK=[]
+    let Info50592NOK=[]
     const doc = new jsPDF()
-    const [infos, categorie,CEPerturbe,capteurs] = data
-    console.log(CEPerturbe)
+    console.log("aaaaaa",data)
+    let  [infos, categorie,CEPerturbe,capteurs,isCustom] = data
+
+if(infos)
+{
+  infoSamNOK=infos.filter(c=>c.hasOwnProperty('mr(sam nok)'))
+  infoSamOK=infos.filter(c=>c.hasOwnProperty('mr(sam ok)'))
+
+}    else
+    infos=[]
+if(type!==3)
+{
+  Info50592NOK=capteurs.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
+  Info50592OK=capteurs.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
+
+
+}
+else{
+  Info50592NOK=infos.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
+  Info50592OK=infos.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
+
+}
+
+
     let y = startY
-    const entries = Object.entries(CEPerturbe).filter(([label]) => label.includes('pourcentage'));
     const sections = [
       {
         titre: 'Objet',
@@ -232,7 +256,7 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
       {
         titre: 'Résultats – Alertes SAM S005 (NOK) ',
         contenu: [
-          (infos.length>0 ?(
+          (infoSamNOK.length>0 ?(
             {
               Table: [
                 {
@@ -243,7 +267,7 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
                     'Nombre de train passé perturbé',
                     'pourcentage de perturbation de chaque capteur ',
                   ],
-                  Body: infos?.slice(0, -1)?.map((section, index) => [
+                  Body: infoSamNOK?.map((section, index) => [
                     index + 1,
                     section['mr(sam nok)'],
                     section['nombre de train passé (sam nok)'],
@@ -258,50 +282,101 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
           }))
         ],
       },
+  
       {
         titre: 'Résultats – Alertes 50592 (NOK)',
         contenu: [
-          {
-            Table: [
-              {
-                Headers: [
-                  'Amplitude du dépassement par rapport à la limite',
-                  ...capteurs
-                ],
-                Body: entries.map((section, index) => {
-                  
-                  const key = section[0];
-                  const pourcentage = parseFloat(key.split(' ')[1]);
-                  const capteursPourc = section[1];
-                  let pourcentageDep = 0;
-                  console.log(capteursPourc)
-
-                 capteurs?.forEach((cp) => {
-                    if (capteursPourc === cp[0]) {
-                      console.log('je suis là ?')
-                      console.log(capteursPourc)
-                      const valeurs = Object.values(capteursPourc[1]);
-                      console.log(valeurs)
-                      const pourcentageValue = valeurs.find((val) =>
-                        val.toString().includes('pourcentage')
-                      );
-                      if (pourcentageValue) {
-                        pourcentageDep = pourcentageValue;
-                      }
-                    }
-                //   console.log(capteursPourc[1][2])
-                  });
-      
-                  return [pourcentage, pourcentageDep];
-                })
-                .sort((a, b) => a[1] - b[1]) // Tri par ordre croissant des pourcentages
-                .map(item => [item[0], item[1]]) // Reconstitution des valeurs dans le tableau Body
-              },
-            ],
-          },
+          (Info50592NOK.length>0 ?(
+            {
+              Table: [
+                {
+                  Headers: [
+                    ' ',
+                    'type mr',
+                    'Nombre de train passé',
+                    'Nombre de train passé perturbé',
+                    'pourcentage de perturbation de chaque occultation ',
+                  ],
+                  Body: Info50592NOK?.map((section, index) => [
+                    index + 1,
+                    section['mr(50592 nok)'],
+                    section['nombre de train passé(50592 nok)'],
+                    section['nombre de train passé 50592 nok'],
+                    Object.entries(section['le pourcentage de chaque capteur']).map(([key, value]) => `${key}: ${value}`).join('\n'),
+                  ]),
+                },
+              ],
+            }
+          ):({
+            p: 'informations indisponibles'
+          }))
         ],
-      }
+      },
     ]
+
+if(infoSamOK.length>0){
+  sections.push(   {
+    titre: 'Résultats – Alertes SAM S005 (OK) ',
+    contenu: [
+      (infoSamOK.length>0 ?(
+        {
+          Table: [
+            {
+              Headers: [
+                ' ',
+                'type mr',
+                'Nombre de train passé',
+                'Nombre de train passé perturbé',
+                'pourcentage de perturbation de chaque capteur',
+              ],
+              Body: infoSamOK?.map((section, index) => [
+                index + 1,
+                section['mr(sam ok)'],
+                section['nombre de train passé (sam ok)'],
+                section['nombre de train passé avec sam ok'],
+                section['pourcentage de chaque type mr sam ok'],
+              ]),
+            },
+          ],
+        }
+      ):({
+        p: 'informations indisponibles'
+      }))
+    ],
+  })
+}
+if(Info50592OK.length>0){
+  sections.push({
+    titre: 'Résultats – Alertes 50592 (OK)',
+    contenu: [
+      (Info50592OK.length>0 ?(
+        {
+          Table: [
+            {
+              Headers: [
+                ' ',
+                'type mr',
+                'Nombre de train passé',
+                'Nombre de train passé perturbé',
+                'poucentage de chaque type mr ',
+              ],
+              Body: Info50592OK?.map((section, index) => [
+                index + 1,
+                section['mr (50592 ok)'],
+                section['nombre de train passé(50592 ok )'],
+                section['nombre de train passé 50592 ok'],
+                Object.entries(section['le poucentage de chaque type mr (50592 ok)']).map(([key, value]) => `${key}: ${value}`).join('\n'),
+              ]),
+            },
+          ],
+        }
+      ):({
+        p: 'informations indisponibles'
+      }))
+    ],
+  })
+}
+
     const pageGarde = [
       { Titre: 'SNCF Réseau' },
       {
@@ -322,6 +397,9 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
         p: 'Sa reproduction n’est autorisée que sous sa forme intégrale. Seule la version signée électroniquement fait foi',
       },
     ]
+
+
+
     const addHeader = () => {
       doc.setFont('arial', 'bold')
       doc.setFontSize(10)
@@ -550,6 +628,8 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
     const pageHeight = doc.internal.pageSize.height
     const headings = []
     await PageDeGarde(pageGarde)
+    console.log("logger","sections.length",sections.length);
+
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i]
       const titre = section.titre
@@ -558,163 +638,109 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
       headings.push({ titre, page })
     }
     generateTableOfContents(headings)
-    setPdfDocument(doc)
+if(type===1){
+  try {
+    const formData = new FormData();
+    formData.append('pdfFile', doc.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
+    // le stocker dans le dossier output
+    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    // alert(resultatEnvoi.data)
+    console.log("resultatEnvoi",resultatEnvoi.data,filename)
+
+  } catch (error) {
+    console.log("resultatEnvoi",error)
+  }
+  
+}else if(type===2){
+  try {
+    const formData = new FormData();
+    formData.append('pdfFile', doc.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
+    // le stocker dans le dossier output
+    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    // alert(resultatEnvoi.data)
+    console.log("resultatEnvoi",resultatEnvoi.data,filename)
+
+  } catch (error) {
+    console.log("resultatEnvoi",error)
+  }
+}
+
+else{
+  try {
+    const formData = new FormData();
+    formData.append('pdfFile', doc.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
+    // le stocker dans le dossier output
+    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    // alert(resultatEnvoi.data)
+    console.log("resultatEnvoi",resultatEnvoi.data,filename)
+
+  } catch (error) {
+    console.log("resultatEnvoi",error)
+  }
+}
   }
   const handleDownloadPdf = async (filename, data, periode, site) => {
-     //setPdfDocument(null)
-    setEndDate(dateF)
-    setStartDate(dated)
-    
-    await generatePdf(data, periode, site)
-    if (pdfDocument) {
-      // soit c'est un rapport à la demande ou un rapport trimestrielle, annuel 
-      if(filename.includes('trimestriel')||filename.includes('annuel')){
-        try {
-          const formData = new FormData();
-          formData.append('pdfFile', pdfDocument.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
-          // le stocker dans le dossier output
-          const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
-          alert(resultatEnvoi.data)
-        } catch (error) {
-          alert(error)
-        }
-      }
-      else{
-        const blobUrl = pdfDocument.output('bloburl')
-        const windowReference = window.open(blobUrl, filename)
-        if (windowReference) {
-          windowReference.focus()
-        }
-      }
-    }
+    customPDF+=1
+    await generatePdf(data, periodeL, siteSelectionne,3,`(${customPDF})Rapport à la demande de la période ${periodeL[0]}-${periodeL[1]}.pdf`)
   }
+
   const generationReportTrimestrielPrecedent = async () => {
-    const currentDate = dayjs()
-    const currentMonth = currentDate.month() + 1
-    const currentYear = currentDate.year()
-    const siteDefault = 'Chevilly'
+    console.log("logger","generationReportTrimestrielPrecedent");
 
-    // Check if it's the beginning of a quarter (January, April, July, October)
-    if (
-      currentMonth === 1 ||
-      currentMonth === 6 ||
-      currentMonth === 7 ||
-      currentMonth === 10
-    ) {
-      const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear
-      const previousQuarterStartMonth =
-        currentMonth - 3 > 0 ? currentMonth - 3 : currentMonth + 9
-      const previousQuarterStartYear =
-        previousQuarterStartMonth > 1 ? currentYear : previousYear - 1
-      const startOfPreviousQuarter = dayjs(
-        `${previousQuarterStartYear}-${previousQuarterStartMonth
-          .toString()
-          .padStart(2, '0')}-01`
-      )
-      const endOfPreviousQuarter = startOfPreviousQuarter
-        .add(2, 'month')
-        .endOf('month')
-      const startDate = startOfPreviousQuarter.format('YYYY-MM-DD')
-      const endDate = endOfPreviousQuarter.format('YYYY-MM-DD')
-      setStartTrim(startDate)
-      setEndTrim(endDate)
-      try {
-        const resultatCat = await axios.get(
-          `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-        )
-        const typesMRArray = resultatCat.data.map(obj => obj.typeMR);
-      const typesMRString = typesMRArray.join(",");
-       setTypesMR(typesMRString)
-        setCategorie(resultatCat.data) // Assurez-vous de définir correctement setCategorie avec la fonction pour mettre à jour l'état
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const resultat = await axios.get(
-          `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typesMR}&statutsam=NOK&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-          
-        )
-        setInfos(resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
     
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        //Récupération des infos d'une date séléctionnée par l'utilisateur
-        const resultat = await axios.get(
-          `${config.API_URL}/dataBetweenRapport?site=${siteDefault}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-        )
-        setCEPerturbe(resultat.data[resultat.data.length-1])
-      } catch (error) {
-        console.error(error)
-      }
-      const Mydata = [infos, categorie,CEPerturbe,capteurs]
-      const MyPeriode = [startDate, endDate]
-      await generatePdf(Mydata, MyPeriode, siteDefault)
-      await handleDownloadPdf(
-        `Rapport trimestriel__${startTrim}_${EndTrim}.pdf`,
-        Mydata,
-        MyPeriode,
-        siteDefault
+    
+    const previousQuarterStart = new Date(currentYear, Math.floor((currentMonth - 3) / 3) * 3, 1);
+    const previousQuarterEnd = new Date(currentYear, Math.floor((currentMonth - 3) / 3) * 3 + 3, 0);
+
+    const formattedStartDate=formatDate(previousQuarterStart)
+    const formattedEndDate=formatDate(previousQuarterEnd)
+    const { Mydata, MyPeriode, siteDefault } = await getData(formattedStartDate, formattedEndDate)
+
+
+      await generatePdf(Mydata, MyPeriode, siteDefault,1,        `${getLastQuarter()}_Rapport trimestriel_${formatDateLocale(previousQuarterStart)}_${formatDateLocale(previousQuarterEnd)}.pdf`,
       )
+
+    
      
-    }
+    
   }
   
   
+const formatDateLocale = (date) => {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+  return formattedDate.replace(/\//g, '-');
+
+};
+
+  const formatDate = (date) => {
+    console.log("formatDate",date)
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
+
   const generationReportAnnuelPrecedent = async () => {
+    console.log("logger","generationReportAnnuelPrecedent");
+
     const currentDate = dayjs()
     const currentYear = currentDate.year()
-    const siteDefault = 'Chevilly'
 
-    // Check if it's the beginning of the year (January)
-    if (currentDate.month() === 5) {
-      const previousYear = currentYear - 1
-      const startDate = `${previousYear}-01-01`
-      const endDate = `${previousYear}-12-31`
-      setStartTrim(startDate)
-      setEndTrim(endDate)
-      try {
-        const resultatCat = await axios.get(
-          `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-        )
-        const typesMRArray = resultatCat.data.map(obj => obj.typeMR);
-      const typesMRString = typesMRArray.join(",");
-       setTypesMR(typesMRString)
-        setCategorie(resultatCat.data) 
-      } catch (error) {
-        console.error(error)
-      }
-      // recupèration des infos 
-      try {
-        const resultat = await axios.get(
-          `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typesMR}&statutsam=NOK&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-          
-        )
-        setInfos(resultat.data)
-      } catch (error) {
-        console.error(error)
-      }
-      //recuperation de 50592 nok page 24/25 cdc 
-      try {
-        const resultat = await axios.get(
-          `${config.API_URL}/dataBetweenRapport?site=${siteDefault}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-        )
-        setCEPerturbe(resultat.data[resultat.data.length-1])
-      } catch (error) {
-        console.error(error)
-      }
-      const Mydata = [infos, categorie,CEPerturbe,capteurs]
-      const MyPeriode = [startDate, endDate]
-      await generatePdf(Mydata, MyPeriode, siteDefault)
-      await handleDownloadPdf(
-        `Rapport annuel_${startDate}_${endDate}.pdf`,
-        Mydata,
-        MyPeriode,
-        siteDefault
-      )
-      
-    }
+    const previousYear = currentYear-1
+    const startDate = `${previousYear}-01-01`
+    const endDate = `${previousYear}-12-31`
+    const { Mydata, MyPeriode, siteDefault } = await getData(startDate, endDate)
+      await generatePdf(Mydata, MyPeriode, siteDefault,2, `${getLastYear()}Rapport annuel${startDate}-${endDate}.pdf`,
+      Mydata,
+      MyPeriode,
+      siteDefault
+    )
+       
   }
 /*
   // Fonction pour générer le rapport trimestriel
@@ -761,60 +787,90 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
     console.log('Arrêt du worker');
   });*/
 
-  useEffect(() => {
-    setPdfDocument(null)
-    const now = new Date()
-    const currentMonth = now.getMonth() + 1
-    const date = now.getDate()
-    const day = now.getDay()
-    const houre= now.getHours()
-    const minute=now.getMinutes()
-    if (
-      (currentMonth === 1 ||currentMonth === 6 ||currentMonth === 7 ||currentMonth === 10) 
-    ) {
-      if (date === 13 && (day !== 6 || day !== 7)&& (houre=== 13 && minute === 17)) {
-        const generateReportAndDownload = async () => {
-          try {
-            await generationReportTrimestrielPrecedent()
-          } catch (error) {
-            console.error(error)
-          }
-        }
-
-        generateReportAndDownload()
-      }
+  const getLastQuarter = ()=> {
+    let quarter =""
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // Month is zero-based, so adding 1
+  if(currentMonth<3)
+    {
+      quarter = 4+"__"+(currentYear-1)
     }
-  }, [])
+    else if(currentMonth>=3&&currentMonth<6){
+      quarter = 1+"__"+(currentYear)
+  
+    }
+    else if(currentMonth>=6&&currentMonth<9){
+      quarter = 2+"__"+(currentYear)
+  
+    }
+    else if(currentMonth>=9&&currentMonth<12){
+      quarter = 3+"__"+(currentYear)
+  
+    }
+    return quarter
+  }
+
+  
+  const getLastYear = ()=> {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    return "_"+(currentYear-1)+"_"
+  }
+  const loadPdf = async () => {
+
+    try {
+      const response = await axios.get(`${config.API_URL}/download`)
+      if (response.status === 200) {
+
+        if (
+          !response.data?.find((rapport) =>
+            rapport.name.includes(getLastQuarter())
+          )
+        ) {
+         await generationReportTrimestrielPrecedent()        }
+        if (
+          !response.data?.find((rapport) =>
+            rapport.name.includes(getLastYear())
+          )
+        ) {
+         await generationReportAnnuelPrecedent()
+              }
+
+              customPDF = response.filter(rapport =>rapport.name.includes("demande")).length
+      }
+      else{
+
+       await generationReportTrimestrielPrecedent()        
+       await generationReportAnnuelPrecedent()
+
+
+      }
+      
+    } catch (error) {
+      console.log('Error:', error)
+
+     await generationReportTrimestrielPrecedent()        
+     await generationReportAnnuelPrecedent()
+    }
+  }
+useEffect(()=>{
+  loadPdf()
+},[])
+
+
+
+
+
  
-  useEffect(() => {
-    setPdfDocument(null)
-    const now = new Date()
-    const currentMonth = now.getMonth() + 1
-    const date = now.getDate()
-    const day = now.getDay()
-    const houre= now.getHours()
-    const minute=now.getMinutes()
-    if (currentMonth === 6 ){
-      if (date === 9 && (day !== 6 || day !== 7)) {
-        const generateReportAndDownload = async () => {
-          try {
-            await generationReportAnnuelPrecedent()
-          } catch (error) {
-            console.error(error)
-          }
-        }
-
-        generateReportAndDownload()
-      }
-    }
-  }, [])
+  
   return (
     <Button
       variant="primary"
       onClick={() =>
         handleDownloadPdf(
           `Rapport à la demande de la période${periodeL}.pdf`,
-          data,
+          customData,
           periodeL,
           siteSelectionne
         )
@@ -824,4 +880,78 @@ export default function PDFRapport({ data, periodeL, siteSelectionne,capteurs}) 
       Exporter
     </Button>
   )
+
+  async function getData(dateDebut, dateFin) {
+    const siteDefault = 'Chevilly'
+
+    let [infos, categorie, CEPerturbe, capteurs, typemr] = ["", "", "", "", ""]
+
+
+  
+
+    try {
+      console.log("logger", "dateDebut", dateDebut, `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      )
+
+      const resultatCat = await axios.get(
+        `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      )
+      const typesMRArray = resultatCat.data.map(obj => obj.typeMR)
+      typemr = typesMRArray.join(",")
+      console.log("logger", "typemr", typemr, `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      )
+
+      categorie = (resultatCat.data) // Assurez-vous de définir correctement setCategorie avec la fonction pour mettre à jour l'état
+      console.log("logger", "categorie", categorie)
+    } catch (error) {
+      console.error(error)
+    }
+    try {
+      const resultat = await axios.get(
+        `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+
+      )
+
+  
+  
+      
+
+      infos = (resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
+      console.log("logger", "infos", infos, `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      )
+
+    } catch (error) {
+      console.error(error)
+    }
+    try {
+      //Récupération des infos d'une date séléctionnée par l'utilisateur
+      const resultat = await axios.get(
+        `${config.API_URL}/dataBetweenRapport?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      )
+
+      CEPerturbe = (resultat.data[resultat.data.length - 1])
+      console.log("logger", "CEPerturbe", CEPerturbe)
+
+    } catch (error) {
+      console.error(error)
+    }
+
+
+        try {
+        const resultat = await axios.get(
+          `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+          
+        )
+        capteurs=(resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
+      } catch (error) {
+        console.error(error)
+      }
+      
+    
+
+    const Mydata = [infos, categorie, CEPerturbe,capteurs]
+
+    const MyPeriode = [dateDebut, dateFin]
+    return { Mydata, MyPeriode, siteDefault }
+  }
 }
