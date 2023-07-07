@@ -227,7 +227,6 @@ if(result50592 ==='uniquement 50592' || (result50592==='OK'&& resultSAM !=='uniq
     }
   });
   
-
 setmyChartData50592OK(chartData)
 }
     //NOKChart50592
@@ -305,26 +304,36 @@ if( resultSAM ==='uniquement sam' || (resultSAM==='NOK'&& result50592 !=='unique
 
   const myChartData=[] 
   const chartTitles=[] 
+  const nbrPassagesList=[]
 
   infos?.forEach(item => {
     const mrKey = item["mr(sam nok)"];
     const pourcentageCapteur = item["pourcentage de perturbation par index d'un type mr"];
+    const nbrPassages = item["nombre de train passé (sam nok)"];
 
     if (mrKey && pourcentageCapteur) {
       const chartData = {
         datasets: [],
-        labels: []
+        labels: [],
+        nbrPassages:0,
       };
-  
-      Object.entries(pourcentageCapteur).forEach(([label, value]) => {
+
+
+      nbrPassagesList.push(nbrPassages);
+      Object.entries(pourcentageCapteur).forEach(([label, value],index) => {
         chartData?.labels.push("EV"+label);
         chartData.datasets.push(value);
+
+        
       });
   
       // chartData.set(mrKey, chartData);
+      chartData.nbrPassages=(nbrPassages)
       myChartData.push(chartData);
       chartTitles.push(mrKey)
+      
     }
+
   });
   
 
@@ -589,7 +598,7 @@ setMyChartDataSamNOKIndex(chartTitles)
                           <TableCell style={{fontWeight: 'bold',
                     color: 'black' }}>{myChartDataSamOK?.labels[idx]}</TableCell>
                           <TableCell style={{fontWeight: 'bold',
-                    color: 'black' }}>{myChartDataSamOK?.nbrPassages}</TableCell>
+                    color: 'black' }}>{myChartDataSamOK?.datasets[idx]}</TableCell>
                           <TableCell style={{fontWeight: 'bold',
                     color: 'black' }}>{dt}%</TableCell>
                           </TableRow>
@@ -706,7 +715,7 @@ setMyChartDataSamNOKIndex(chartTitles)
                       <TableCell style={{fontWeight: 'bold',
                     color: 'black' }}>{myChartData50592OK?.labels[idx]}</TableCell>
                       <TableCell style={{fontWeight: 'bold',
-                    color: 'black' }}>{myChartData50592OK?.nbrPassages}</TableCell>
+                    color: 'black' }}>{myChartData50592OK?.datasets[idx]}</TableCell>
                       <TableCell style={{fontWeight: 'bold',
                     color: 'black' }}>{dt}%</TableCell>
                       </TableRow>

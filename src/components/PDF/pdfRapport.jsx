@@ -8,6 +8,8 @@ import autoTable from 'jspdf-autotable'
 import image from '../../exemples/images/sites.jpg'
 import sncflogo from '../../exemples/images/sncfreseau.jpeg'
 import imagePdf from '../../exemples/images/imagePDF.png'
+import entete from '../../exemples/images/i00.jpg'
+import description from '../../exemples/images/i0.jpg'
 import axios from 'axios'
 import config from '../../config'
 export default function PDFRapport({ customData, periodeL, siteSelectionne}) {
@@ -197,7 +199,9 @@ else{
             p: `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`,
           },
           { image: image },
+          
         ],
+        
       },
       {
         titre: 'Contenu du livrable ',
@@ -377,13 +381,18 @@ if(Info50592OK.length>0){
   })
 }
 
+
+
     const pageGarde = [
-      { Titre: 'SNCF Réseau' },
       {
-        Titre: 'DIRECTION GÉNÉRALE INDUSTRIELLE & INGÉNIERIE',
-        sousTitre1: 'Département Intégration Projet Multi-Métiers et Mesure ',
-        sousTitre2: 'Agence Mesure et Essais IP3M (DGII IP3M AME)',
-        sousTitre3: '9 quai de Seine ',
+        image: entete,
+       
+      },
+      {
+        // Titre: 'DIRECTION GÉNÉRALE INDUSTRIELLE & INGÉNIERIE',
+        // sousTitre1: 'Département Intégration Projet Multi-Métiers et Mesure ',
+        // sousTitre2: 'Agence Mesure et Essais IP3M (DGII IP3M AME)',
+        // sousTitre3: '9 quai de Seine ',
       },
       { sousTitre3: '93584 SAINT-OUEN CEDEX' },
       {
@@ -443,6 +452,7 @@ if(Info50592OK.length>0){
           currentY += yOffset
         }
       }
+      
 
       doc.setFont('Arial', 'normal')
       doc.setFontSize(8)
@@ -674,11 +684,37 @@ else{
     // alert(resultatEnvoi.data)
     console.log("resultatEnvoi",resultatEnvoi.data,filename)
 
+    try {
+      const response = await axios.get(`${config.API_URL}/download`)
+      if (response.status === 200) {
+        const myFile = response.data.find(pdf=>pdf.name=filename)
+        if(myFile)
+        chargerPdf(myFile.content)
+        
+      }
+    } catch (error) {
+      console.log('Error:', error)
+    }
+
   } catch (error) {
     console.log("resultatEnvoi",error)
   }
 }
+
   }
+  const chargerPdf = (content) => {
+    const decodedContent = atob(content)
+  
+    const byteArray = new Uint8Array(decodedContent.length)
+    for (let i = 0; i < decodedContent.length; i++) {
+      byteArray[i] = decodedContent.charCodeAt(i)
+    }
+  
+    const blob = new Blob([byteArray], { type: 'application/pdf' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank')
+  }
+  
   const handleDownloadPdf = async (filename, data, periode, site) => {
     customPDF+=1
     await generatePdf(data, periodeL, siteSelectionne,3,`(${customPDF})Rapport à la demande de la période ${periodeL[0]}-${periodeL[1]}.pdf`)
