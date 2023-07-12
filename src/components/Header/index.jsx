@@ -12,6 +12,8 @@ import LoginIcon from '@mui/icons-material/Login'
 import logo from '../../exemples/images/logoSNCF.png'
 import '../../styles/styles.css'
 import config from '../../config'
+import { Home, History, BarChart, Dashboard, Settings, Help } from '@mui/icons-material';
+
 import AuthContext from '../../pages/Authentification/AuthContext'
 function Header() {
 
@@ -166,67 +168,30 @@ function Header() {
         </Box>
       </Toolbar>
       {token && (
-        <Toolbar
-          style={{ padding: '0' }}
-          className="bleu-active"
-          sx={{ backgroundColor: 'white' }}
-        >
-          <Tabs style={{ position: 'relative' }}>
-          
-            <NavLink
-              activeClassName="active"
-              to="/jourJ"
-              exact
-              style={{ textDecoration: 'none' }}
-            >
-              <Tab label="Temps réel" sx={{ color: 'black' }} />
-            </NavLink>
-            <NavLink
-              activeClassName="active"
-              to="/historique"
-              style={{ textDecoration: 'none' }}
-            >
-              <Tab label="Historique" sx={{ color: 'black' }} />
-            </NavLink>
-            <NavLink
-              activeClassName="active"
-              to="/journal"
-              style={{ textDecoration: 'none' }}
-            >
-              <Tab label="Journal & Statistiques" sx={{ color: 'black' }} />
-            </NavLink>
-
-            
-
-            <NavLink
-              activeClassName="active"
-              to="/synoptique"
-              style={{ textDecoration: 'none' }}
-            >
-              <Tab label="Synoptique" sx={{ color: 'black' }} />
-             
-            </NavLink>
-           
-            {decryptedRole === 'admin' && (
-              <NavLink
-                activeClassName="active"
-                to="/administration"
-                style={{ textDecoration: 'none' }}
-              >
-                <Tab label="Administration" sx={{ color: 'black' }} />
-              </NavLink>
-            )}
-             <NavLink
-              activeClassName="active"
-              to="/aide"
-              exact
-              style={{ textDecoration: 'none' }}
-            >
-              <Tab label="Aide" sx={{ color: 'black' }} />
-            </NavLink>
-            
-          </Tabs>
-        </Toolbar>
+     <Toolbar style={{ padding: '0' }} className="bleu-active" sx={{ backgroundColor: 'white' }}>
+     <Tabs style={{ position: 'relative' }}>
+       <NavLink activeClassName="active" to="/jourJ" exact style={{ textDecoration: 'none' }}>
+         <Tab  label={<><Home /> Temps réel</>} sx={{ color: 'black' }} />
+       </NavLink>
+       <NavLink activeClassName="active" to="/historique" style={{ textDecoration: 'none' }}>
+         <Tab label={<><History /> Historique</>} sx={{ color: 'black' }} />
+       </NavLink>
+       <NavLink activeClassName="active" to="/journal" style={{ textDecoration: 'none' }}>
+         <Tab label={<><BarChart /> Journal & Statistiques</>} sx={{ color: 'black' }} />
+       </NavLink>
+       <NavLink activeClassName="active" to="/synoptique" style={{ textDecoration: 'none' }}>
+         <Tab label={<><Dashboard /> Synoptique</>} sx={{ color: 'black' }} />
+       </NavLink>
+       {decryptedRole === 'admin' && (
+         <NavLink activeClassName="active" to="/administration" style={{ textDecoration: 'none' }}>
+           <Tab label={<><Settings /> Administration</>} sx={{ color: 'black' }} />
+         </NavLink>
+       )}
+       <NavLink activeClassName="active" to="/aide" exact style={{ textDecoration: 'none' }}>
+         <Tab label={<><Help /> Aide</>} sx={{ color: 'black' }} />
+       </NavLink>
+     </Tabs>
+   </Toolbar>
       )}
     </AppBar>
   )

@@ -5,15 +5,53 @@ import { useParams } from 'react-router-dom';
 import config from '../../config';
 
 import { ReactComponent as CrossIcon } from '../../assets/cross-svgrepo-com.svg';
-
+import html2pdf from 'html2pdf.js'
+import {
+  Button,
+  Hidden,
+  InputLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@mui/material'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
 
 export default function NF50592() {
   
   const { dateFichier, heureFichier, site } = useParams();
+  const [showToolbar, setShowToolbar] = useState(false)
 
   const [urlDossier, setUrlDossier] = useState('');
 
   const [imageSrcs, setImageSrcs] = useState([]);
+
+  const handleDownloadPdf = () => {
+    setShowToolbar(true) // Change the value of showToolbar after the PDF is saved
+    const element = document.getElementById('pdf-content')
+
+    // handleScroll()
+    html2pdf()
+      .set({
+        filename: 'pdf-statistique.pdf',
+        // pagebreak: { mode: 'avoid-all', before: '#page2el' },
+        jsPDF: {
+          orientation: 'landscape',
+        },
+        html2canvas: {
+          scale: 2, // Adjust the scale as needed for better quality
+        },
+      })
+      .from(element)
+      .save()
+      .then(() => {
+        setShowToolbar(false) // Change the value of showToolbar after the PDF is saved
+      })
+  }
+
+
+  
 
   useEffect(() => {
 
@@ -82,11 +120,15 @@ const handleClose = ()=>{
 }
   return (
 
-    <div className="parents ">
-  <CrossIcon onClick={handleClose} style={{cursor:"pointer", position: "absolute", right: 0, top: -50 ,width: "40px", height: "40px",color:'red'}} />
+    <div  className="parents " style={{marginLeft:'-0.5%'}}>
+      <Button  style={{cursor:"pointer", position: "absolute", right: 80, top: -30 ,width: "40px", height: "40px",color:'red'}} variant="primary" onClick={handleDownloadPdf}>
+                <FileDownloadIcon style={{ marginTop: '5px' }} />
+                Exporter
+              </Button>
+  <CrossIcon onClick={handleClose} style={{cursor:"pointer", position: "absolute", right: 0, top: -30 ,width: "40px", height: "40px",color:'red'}} />
 
 
-      <div  style={{ display: 'flex',marginLeft: '-230px'}}> 
+      <div  id="pdf-content"  style={{  alignItems: 'center', justifyContent: 'center', display: 'flex'}}> 
       {imageSrcs.length > 0 ? (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {imageSrcs.slice(0, 3).map((src, index) => (

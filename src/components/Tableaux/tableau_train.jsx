@@ -1,6 +1,6 @@
 import * as React from 'react'
 import IconButton from '@mui/material/IconButton'
-
+import '../../App.css';
 import temp from '../../exemples/images/TNN.png'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -14,10 +14,11 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect,useImperativeHandle,useRef } from 'react'
 import TableResultat from '../traitements/traitementCouleur'
 import NF50592 from '../../pages/50592'
-import Resultats from '../../components/SelectList/resultats'
+import Select, { components } from "react-select";
+
 // CollapsibleTable
   
-  const CollapsibleTable = React.forwardRef(({trains,onSearchSamChange,onSearch50592Change}, ref) => {
+const CollapsibleTable = React.forwardRef(({ trains, onSearchSamChange = () => {}, onSearch50592Change = () => {} }, ref) => {
 
 
     useImperativeHandle(ref, () => ({
@@ -29,11 +30,61 @@ import Resultats from '../../components/SelectList/resultats'
     
   const [trainsFiltres, setTrainsFiltres] = useState(trains);
   const [open, setOpen] = useState({});
-  const option50592 = ['NOK', 'OK', 'uniquement 50592']
-  const optionSAM = ['NOK', 'OK', 'uniquement SAM']
+  const option50592 = [{value:'OK',label:'OK'},{value:'NOK',label:'NOK'}]
+  const optionSAM = [{value:'OK',label:'OK'},{value:'NOK',label:'NOK'}]
   const [refreshKey, setRefreshKey] = useState(0);
 
-
+  const InputOption = ({
+    getStyles,
+    Icon,
+    isDisabled,
+    isFocused,
+    isSelected,
+    children,
+    innerProps,
+    ...rest
+  }) => {
+    const [isActive, setIsActive] = useState(false);
+    const onMouseDown = () => setIsActive(true);
+    const onMouseUp = () => setIsActive(false);
+    const onMouseLeave = () => setIsActive(false);
+  
+    // styles
+    let bg = "transparent";
+    if (isFocused) bg = "#eee";
+    if (isActive) bg = "#B2D4FF";
+  
+    const style = {
+      alignItems: "center",
+      backgroundColor: bg,
+      color: "inherit",
+      display: "flex "
+    };
+  
+    // prop assignment
+    const props = {
+      ...innerProps,
+      onMouseDown,
+      onMouseUp,
+      onMouseLeave,
+      style
+    };
+  
+    return (
+      <components.Option
+        {...rest}
+        isDisabled={isDisabled}
+        isFocused={isFocused}
+        isSelected={isSelected}
+        getStyles={getStyles}
+        innerProps={props}
+      >
+        <input type="checkbox" checked={isSelected} />
+        <span style={{ marginLeft: '5px' }}></span>
+        {children}
+      </components.Option>
+    );
+  };
   const [inputValues, setInputValues] = useState({
     searchDate:'',
     searchNumero: '',
@@ -68,7 +119,7 @@ import Resultats from '../../components/SelectList/resultats'
 
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
-
+    setCurrentPage(0)
     setInputValues((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -80,19 +131,71 @@ import Resultats from '../../components/SelectList/resultats'
 
 
   const handleSearchSamChange = (value) => {
-    onSearchSamChange(value)
-
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      searchSam: value,
-    }));
+        setCurrentPage(0)
+    if(value.length>1){
+      onSearchSamChange('uniquement sam')
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        searchSam: 'uniquement sam',
+        
+      }));
+    
+    }
+    else if(value.length===1){
+      onSearchSamChange(value[0])
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        searchSam: value[0],
+      }));
+  
+    }
+    else{
+      onSearchSamChange('')
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        searchSam: '',
+      }));
+    }
   };
   const handleSearch50592Change = (value) => {
-    onSearch50592Change(value)
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      search50592: value,
-    }));
+    // const handleSearch50592Change = (value) => {
+    //   setCurrentPage(0)
+    //   // alert(value)
+    //   onSearch50592Change(value)
+    //   setInputValues((prevValues) => ({
+    //     ...prevValues,
+    //     search50592: value,
+    //   }));
+    // };
+    setCurrentPage(0)
+    if(value.length>1){
+      onSearch50592Change('uniquement 50592')
+      console.log("50592:PP",inputValues)
+
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        search50592: 'uniquement 50592',
+      }));
+      
+    console.log("50592:PP",inputValues)
+    }
+    else if(value.length===1){
+      onSearch50592Change(value[0])
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        search50592: value[0],
+      }));
+  
+    }
+    else{
+      onSearch50592Change('')
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        search50592: '',
+      }));
+    }
+
+  
   };
 
 
@@ -104,11 +207,18 @@ import Resultats from '../../components/SelectList/resultats'
 
   // Filtrer l'ancien tableau quand l'utilisateur saisit dans l'input
   useEffect(() => {
+    if(inputValues){
     const filteredTrains = trains.filter((train) => {
-      if (
-        inputValues.searchDate &&
-        !train.datesam?.includes(inputValues.searchDate.toUpperCase())
-      ) {
+      // console.log("compare",inputValues.searchDate,train.datesam+"-"+train.heuresam,inputValues.searchDate&&(!(train.datesam+"-"+train.heuresam).includes(inputValues.searchDate)))
+
+      // console.log("filtering",        inputValues.search50592,
+      //   train.statut50592,inputValues.search50592.toUpperCase(),"=>",inputValues.search50592 &&
+      //   train.statut50592 !== inputValues.search50592.toUpperCase())
+      if (inputValues.searchDate&&
+        (!(train.datesam+"-"+train.heuresam).includes(inputValues.searchDate) )      ) {
+          // console.log("dateFilter",(train.datesam+"-"+train.heuresam).includes(inputValues.searchDate) )
+
+
         return false;
       }
       if (
@@ -131,19 +241,23 @@ import Resultats from '../../components/SelectList/resultats'
       }
       if (
         inputValues.searchSam &&
-        train.statutSAM !== inputValues.searchSam.toUpperCase()
+        (( train.statutSAM !== inputValues.searchSam.toUpperCase() && inputValues.searchSam!=='uniquement sam' ) || (!train.statutSAM) )
+
       ) {
+        console.log("filtrageSam",train.statutSAM,inputValues.searchSam.toUpperCase())
         return false;
       }
       if (
-        inputValues.search50592 &&
-        train.statut50592 !== inputValues.search50592.toUpperCase()
+        inputValues.search50592 &&  
+        // inputValues.statut50592!=='uniquement 50592' &&
+      ( ( train.statut50592 !== inputValues.search50592.toUpperCase() && inputValues.search50592!=='uniquement 50592' ) || (!train.statut50592) )
       ) {
         return false;
       }
       return true; //pas de filtre appliquée
     });
 
+    console.log("Filtrage",filteredTrains)
     const indexOfLastTrain = (currentPage + 1) * itemsPerPage;
     const indexOfFirstTrain = indexOfLastTrain - itemsPerPage;
     const currentTrains = filteredTrains.slice(
@@ -152,7 +266,7 @@ import Resultats from '../../components/SelectList/resultats'
     );
 console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPage)
     setTrainsFiltres(currentTrains);
-  }, [trains, inputValues, currentPage]);
+  }}, [trains, inputValues, currentPage]);
   const pageCount = Math.ceil(trains.length / itemsPerPage);
   const pageRangeDisplayed = 5;
 
@@ -192,118 +306,164 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
     };
    
     return (
-      <><div style={{ width: '100%', overflowX: 'auto' }}>
-         <Table style={{ width: '100%' }} className="trainTab" aria-label="collapsible table">
-         <TableHead style={{ width: '100%' }}>
-  <TableRow>
-    <TableCell style={{ width: '5px' }} />
+      <>
+      
+      <div style={{ width: '100%', overflowX: 'auto' }}>
+ 
 
-    <TableCell align="center" style={{ verticalAlign: 'top' }}>
-      <div style={{  fontWeight: 'bold' }}>Horodatage</div>
-      <div>
-        <input
-          type="text"
-          value={inputValues.searchDate}
-          name="searchDate"
-          onChange={handleSearchChange}
-          placeholder=" "
-          style={{ width: '70%',height:'30px',border:'none',marginTop:'5px' }}
-        />
-      </div>
-    </TableCell>
+  <Table aria-label="collapsible table">
+    <TableHead>
+      <TableRow>
+        <TableCell />
 
-    <TableCell align="center" style={{ verticalAlign: 'top'}}>
-      <div style={{  fontWeight: 'bold' , whiteSpace: 'nowrap' }}>N° train</div>
-      <div>
-        <input
-          
-          type="text"
-          value={inputValues.searchNumero}
-          name="searchNumero"
-          onChange={handleSearchChange}
-          placeholder=" "
-          style={{ width: '100%',height:'30px',border:'none',marginTop:'5px' }}
-        />
-      </div>
-    </TableCell>
+        <TableCell align="center" style={{ verticalAlign: 'top' }}>
+          <div style={{ fontWeight: 'bold' }}>Horodatage</div>
+          <div>
+            <input
+            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+              type="text"
+              value={inputValues.searchDate}
+              name="searchDate"
+              onChange={handleSearchChange}
+              placeholder=" "
+             
+            />
+          </div>
+        </TableCell>
 
-    <TableCell  align="center" style={{ verticalAlign: 'top',whiteSpace: 'nowrap'}}>
-      <div style={{  fontWeight: 'bold' }}>identification MR</div>
-      <div>
-        <input
-          
-          type="text"
-          value={inputValues.searchIdentification}
-          name="searchIdentification"
-          onChange={handleSearchChange}
-          placeholder=" "
-          style={{ width: '100%',height:'30px',border:'none',marginTop:'5px' }}
-        />
-      </div>
-    </TableCell>
+        <TableCell align="center" style={{ verticalAlign: 'top' }}>
+          <div style={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>N° train</div>
+          <div>
+            <input
+            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+              type="text"
+              value={inputValues.searchNumero}
+              name="searchNumero"
+              onChange={handleSearchChange}
+              placeholder=" "
+            />
+          </div>
+        </TableCell>
 
-    <TableCell  align="center" style={{ verticalAlign: 'top',whiteSpace: 'nowrap'}}>
-      <div style={{  fontWeight: 'bold' }}>Vitesse moyenne</div>
-      <div>
-        <input
-          
-          type="text"
-          name="searchVitesse"
-          value={inputValues.searchVitesse}
-          onChange={handleSearchChange}
-          placeholder=" "
-          style={{ width: '100%',height:'30px',border:'none',marginTop:'5px' }}
-        />
-      </div>
-    </TableCell>
+        <TableCell align="center" style={{ verticalAlign: 'top' }}>
+          <div style={{ fontWeight: 'bold' }}>identification MR</div>
+          <div>
+            <input
+            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+              type="text"
+              value={inputValues.searchIdentification}
+              name="searchIdentification"
+              onChange={handleSearchChange}
+              placeholder=" "
+            />
+          </div>
+        </TableCell>
 
-    <TableCell align="center" style={{ verticalAlign: 'top'}}>
-      <div style={{  fontWeight: 'bold' }}> SAMS005 50592</div>
-     
-      <div style={{ display: 'flex'}}>
-        {/* <input
-          className=" methodes"
-          type="text"
-          name="searchSam"
-          value={inputValues.searchSam}
-          onChange={handleSearchChange}
-          placeholder="SAM"
-          style={{ width: '50%',height:'30px',border:'none',marginTop:'5px',marginRight:'10px',paddingLeft:'5px'}}
-        /> */}
-    <Resultats
-  key={`searchSam_${refreshKey}`}
-  name="searchSam"
-  onChange={handleSearchSamChange}
-  options={option50592}
-  compStyle={{ height: '2em', backgroundColor: 'white', border: 'none', marginTop: '5px', width: '70%' }}
-  value={inputValues.searchSam}
-  style={{ height: '30px', marginRight: '10px', paddingLeft: '5px' }}
-/>
+        <TableCell align="center" style={{ verticalAlign: 'top' }}>
+          <div style={{ fontWeight: 'bold' }}>Vitesse moyenne</div>
+          <div>
+            <input
+            style={{fontWeight: 'bold' ,border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+              type="text"
+              name="searchVitesse"
+              value={inputValues.searchVitesse}
+              onChange={handleSearchChange}
+              placeholder=" "
+            />
+          </div>
+        </TableCell>
 
-<Resultats
-  key={`search50592_${refreshKey}`}
-  name="search50592"
-  onChange={handleSearch50592Change}
-  options={optionSAM}
-  compStyle={{ height: '2em', backgroundColor: 'white', border: 'none', marginTop: '5px', width: '70%' }}
-  value={inputValues.search50592}
-  style={{  height: '30px', border: 'none', marginTop: '5px', marginRight: '10px', paddingLeft: '5px', backgroundColor: 'white' }}
-/>
+        <TableCell  align="center" style={{ verticalAlign: 'top' }}>
+          <div style={{ display: 'flex' }}>
+            <div>
+              <div style={{ fontWeight: 'bold' }}> SAMS005 </div>
+              {}
+              {/* <Resultats
+                key={`searchSam_${refreshKey}`}
+                name="searchSam"
+                onChange={handleSearchSamChange}
+                options={option50592}
+                compStyle={{ height: '2em', backgroundColor: 'white', border: 'none', marginTop: '5px', width: '70%' }}
+                value={inputValues.searchSam}
+                style={{ height: '30px', marginRight: '10px', paddingLeft: '5px' }}
+              /> */}
 
-      </div>
-    </TableCell>
 
-    <TableCell style={{ verticalAlign: 'top'}}>
-      <div style={{  fontWeight: 'bold' }}> SYRENE</div>
-    </TableCell>
+<div style={{ width: '160px' ,height: '30px' , marginRight: '5px',textAlign: 'center'}} >
+                       <Select  
+                         
+                        defaultValue={[]}
+                        isMulti
+                        closeMenuOnSelect={false}
+                        
+                        hideSelectedOptions={false}
+                        onChange={(options) => {
+                          handleSearchSamChange(options.map((opt) => opt.value));
+                        }}
+                       //  onChange={handleMRChange}
+                        placeholder =""
+                       components={{
+                         Option: InputOption
+                       }}
+                       
+                       
+                       
+ options={optionSAM} />
+                       </div>
 
-    <TableCell style={{ verticalAlign: 'top' }}>
-  <div style={{ fontWeight: 'bold' }}>
-    <img src={temp} alt="Température / Humidité / courant dans le rail" style={{ height: '65px', width: '100px',marginTop:'-2px' }} />
-  </div>
-</TableCell>
-  </TableRow>
-</TableHead>
+            </div>
+            <div>
+              <div style={{ fontWeight: 'bold' }}> 50592</div>
+              {/* <Resultats
+                key={`search50592_${refreshKey}`}
+                name="search50592"
+                onChange={handleSearch50592Change}
+                options={optionSAM}
+                compStyle={{ height: '2em', backgroundColor: 'white', border: 'none', marginTop: '5px', width: '70%' }}
+                value={inputValues.search50592}
+                style={{ height: '30px', border: 'none', marginTop: '5px', marginRight: '10px', paddingLeft: '5px', backgroundColor: 'white' }}
+              /> */}
+
+
+<div style={{ width: '160px',height: '30px' ,textAlign: 'center'}} >
+<Select  
+                         
+                         defaultValue={[]}
+                         isMulti
+                         closeMenuOnSelect={false}
+                         hideSelectedOptions={false}
+                         placeholder =""
+                         onChange={(options) => {
+                           handleSearch50592Change(options.map((opt) => opt.value));
+                         }}
+                        //  onChange={handleMRChange}
+ 
+                        components={{
+                          Option: InputOption
+                        }}
+                        
+                        
+                        
+  options={option50592} />
+                       </div>
+
+
+
+            </div>
+          </div>
+        </TableCell>
+
+        <TableCell style={{ verticalAlign: 'top' }}>
+          <div style={{ fontWeight: 'bold' }}> SYRENE</div>
+        </TableCell>
+
+        <TableCell style={{ verticalAlign: 'top' }}>
+          <div style={{ fontWeight: 'bold' }}>
+            <img src={temp} alt="Température / Humidité / courant dans le rail" style={{ height: '65px', width: '100px', marginTop: '-2px' }} />
+          </div>
+        </TableCell>
+      </TableRow>
+    </TableHead>
 
 
         <TableBody>
@@ -323,7 +483,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                     )}
                   </IconButton>
                 </TableCell>
-                <TableCell align="center" style={{ width: '100px', whiteSpace: 'nowrap' }}>
+                <TableCell align="center" style={{ width: '100%', whiteSpace: 'nowrap' }}>
   { (train.dateFichier !== null && train.dateFichier !== undefined)
     ? train.dateFichier + '-' + train.heureFichier
     : (train.datesam !== null && train.datesam !== undefined) 
@@ -333,21 +493,22 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
 </TableCell>
 
 
-                <TableCell align="center">{train.numTrain}</TableCell>
-                <TableCell align="center">{train.mr}</TableCell>
-                <TableCell align="center">
+                <TableCell align="center" style={{width: '100%'}}>{train.numTrain}</TableCell>
+                <TableCell align="center" style={{width: '100%'}} >{train.mr}</TableCell>
+                <TableCell align="center" style={{width: '100%'}}>
                   {train.vitesse_moy !== null ? (
                     <>{train.vitesse_moy} km/h</>
                   ) : (
                     '-'
                   )}
                 </TableCell>
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell style={{ textAlign: 'center',width: '100%' }}>
                   {train.statutSAM === 'OK' && (
                     <span
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-success-bg)',
+                        textAlign: 'center'
                       }}
                     >
                       {train.statutSAM}
@@ -358,6 +519,8 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-error-bg)',
+                        width: '100%',
+                        
                       }}
                     >
                       {train.statutSAM}
@@ -368,6 +531,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-warning-bg)',
+                        width: '100%'
                       }}
                     >
                       HS
@@ -379,6 +543,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-success-bg)',
+                        width: '100%'
                       }}
                     >
                       {train.statut50592}
@@ -389,6 +554,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-error-bg)',
+                        width: '100%'
                       }}
                     >
                       {train.statut50592}
@@ -399,6 +565,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-warning-bg)',
+                        width: '100%'
                       }}
                     >
                       HS
@@ -411,7 +578,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                     target="_blank"
                   >
                     {train.imagemini !== null && (
-                    <div className="img-container">
+                    <div className="img-container" style={{width: '100%'}}>
                     <img
                       className="thumbnail"
                       style={{width:'75px',height:'5vh', marginRight:'3px'}} src={train.imagemini} alt='img-mini'
@@ -426,7 +593,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                     )}
                   </Link>
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="center" style={{width: '100%'}}>
                   {train.meteo !== null ? (
                     <>
                       {train.meteo?.Temperature_degC}°C&nbsp;|&nbsp;
@@ -437,7 +604,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                     '-'
                   )}
                 </TableCell>
-              </TableRow>
+              </TableRow >
               {open[index] && (
                 <>
                   {train.vitesse_moy !== null && (
@@ -446,20 +613,20 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       <h3 style={{ backgroundColor: '#0088ce', color: 'white', padding: '10px' }}>SAM S005</h3>
 
                         <div colSpan={12} style={{ width:'95%' ,marginTop:'20px',marginLeft:'20px'}}>
-                          <span style={{fontWeight: 'bold',marginTop:'30px'}}>Nombre d'essieux: {train.NbEssieux}</span>
+                          <span style={{fontWeight: 'bold',marginTop:'30px'}}>Nombre d'essieux : {train.NbEssieux}</span>
                           <div  style={{ marginTop:'10px',paddingBottom:'5px',display: "flex", width: "100%", justifyContent: "space-between", border: "1px solid rgba(0, 0, 0, 0.1)", borderRadius: "8px", boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.1)", backgroundColor: "#f5f5f5" }}>
                             {train.NbOccultations?.map((occ, index) =>
                               occ === train.NbEssieux ? (
 
                                 <div className="ev"  key={index}  style={{ marginTop: '10px', flex: "1", textAlign: "center" }}>
-                                  EV{index + 1}=
+                                  EV{index + 1} = &nbsp;
                                   <span  style={{ fontWeight: 'bold', marginRight: '20px', color: occ === train.NbEssieux ? 'black' : 'var(--sncf-error-bg)' }}>
                                     {occ}
                                   </span>
                                 </div>
                               ) : (
                                 <div className="ev"  key={index}  style={{ marginTop: '10px', flex: "1", textAlign: "center" }}>
-                                  EV{index + 1}=
+                                  EV{index + 1} = &nbsp;
                                   <span
                                    style={{ fontWeight: 'bold', marginRight: '20px', color: occ === train.NbEssieux ? 'black' : 'var(--sncf-error-bg)' }}
                                   >
@@ -486,7 +653,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
 
   {train.statutSAM === 'NOK' && (
     <div className="r" style={{ flex: '1' }}>
-      <ul><li style={{ fontWeight: 'bold',marginTop:'15px'  }}> Enveloppe signaux EV1 à EV8:
+      <ul><li style={{ fontWeight: 'bold',marginTop:'15px'  }}> Enveloppe signaux EV1 à EV8 : &nbsp;
 
 <Link
   to={`/SAMS005/${train.datesam}/${train.heuresam}/${train.site}`}
@@ -543,6 +710,32 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
         </TableBody>
       </Table>
       </div>
+      <div align="center" style={{padding:'10px'}}>
+      <table style={{ borderCollapse: 'collapse', width: '100%', border: 'none' }}>
+      <thead>
+        <tr>
+          <th style={{ backgroundColor: 'transparent', color: '#000', borderBottom: '1px solid #ddd',textAlign: 'left' ,width:'15%' }}><span style={{position: 'relative', left: '5px'}}>Statut</span></th>
+          <th style={{ backgroundColor: 'transparent', color: '#000', borderBottom: '1px solid #ddd', textAlign: 'left' }}>
+  <span style={{ position: 'relative', left: '5px' }}>Description</span>
+</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ backgroundColor: '#82be00', color: '#fff', textAlign: 'center', padding: '8px' }}>OK</td>
+          <td style={{ backgroundColor: '#fff', color: '#000', textAlign: 'left', padding: '8px' }}>Aucun dépassement des limites au sens de la NF EN 50592 ; ou aucune occultation selon la SAM S005</td>
+        </tr>
+        <tr>
+          <td style={{ backgroundColor: '#cd0037', color: '#fff', textAlign: 'center', padding: '8px' }}>NOK</td>
+          <td style={{ backgroundColor: '#fff', color: '#000', textAlign: 'left', padding: '8px' }}>Dépassement d'au moins une limite au sens de la norme NF EN 50592 ; ou occultation selon la SAM S005</td>
+        </tr>
+        <tr>
+          <td style={{ backgroundColor: '#ffb612', color: '#fff', textAlign: 'center', padding: '8px' }}>HS</td>
+          <td style={{ backgroundColor: '#fff', color: '#000', textAlign: 'left', padding: '8px' }}>Le système d'acquisition NF EN 50592 et/ou SAM S005 est Hors Service (passage non enregistré)</td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
      
       {trainsFiltres.length > itemsPerPage && (
           <ReactPaginate
@@ -566,7 +759,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
           breakLinkClassName={'break-link'}
         />
         )}
-        <div className='parent-page'>
+        <div className='parent-page' style={{marginBottom:'50px'}}>
           
           <button className='btn-page'
             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}

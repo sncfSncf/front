@@ -5,13 +5,18 @@ import { Button } from '@mui/material'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import dayjs from 'dayjs'
 import autoTable from 'jspdf-autotable'
-import image from '../../exemples/images/sites.jpg'
+import sites from '../../exemples/images/sites.jpg'
 import sncflogo from '../../exemples/images/sncfreseau.jpeg'
-import imagePdf from '../../exemples/images/imagePDF.png'
+import imagePDF1 from '../../exemples/images/imagePDF.png'
 import entete from '../../exemples/images/i00.jpg'
+import entete2 from '../../exemples/images/i0.jpg'
+import imageFixe from '../../exemples/images/imageFixe.png'
+import imageHeader from '../../exemples/images/imageHeader.png'
 import description from '../../exemples/images/i0.jpg'
 import axios from 'axios'
 import config from '../../config'
+import Loading from '../../components/Loading'
+
 export default function PDFRapport({ customData, periodeL, siteSelectionne}) {
   const [pdfDocument, setPdfDocument] = useState(null)
   const [pdfDocumentQuarter, setPdfDocumentQuarter] = useState(null)
@@ -19,6 +24,7 @@ export default function PDFRapport({ customData, periodeL, siteSelectionne}) {
   const [dated, dateF] = periodeL
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [chargement,setChargement] = useState(false)
   let customPDF = 0
 
   //const [capteurs,setCapteurs]=useState([])
@@ -42,14 +48,22 @@ if(infos)
     infos=[]
 if(type!==3)
 {
-  Info50592NOK=capteurs.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
-  Info50592OK=capteurs.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
+try{
+  Info50592NOK=capteurs?.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
+  Info50592OK=capteurs?.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
 
+}catch(e)
+{}
 
 }
 else{
-  Info50592NOK=infos.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
-  Info50592OK=infos.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
+  
+  try{
+    Info50592NOK=infos.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
+    Info50592OK=infos.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
+    
+  }catch(e)
+  {}
 
 }
 
@@ -60,32 +74,32 @@ else{
         titre: 'Objet',
         contenu: [
           {
-            p: `Le département DGII GE SF Produits dispose d’un site de test des Compteurs d’Essieux (Ou DER : Détecteurs Electronique de Roues) à ${site}`,
+             p: `Le département DGII GE SF Produits dispose d’un site de test des Compteurs d’Essieux (Ou DER : Détecteurs Electronique de Roues) à ${site}.\n\nDans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.\n\nDans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.\n\n Les objectifs sont multiples sur ce site d'essais: `,
           },
           {
-            p: 'Dans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.',
+            //  p: 'Dans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.',
           },
-          { p: 'Les objectifs sont multiples sur ce site d’essais :' },
+          //  { p: 'Les objectifs sont multiples sur ce site d’essais :' },
           {
             Listes: [
               {
-                l: 'Comparer les deux méthodes de mesures (interopérable et SAM S005),',
+                 l: 'Comparer les deux méthodes de mesures (interopérable et SAM S005),',
               },
               {
-                l: 'Réaliser les essais d’admission vis-à-vis des DER type D39/D50 (SAM S005)',
+                 l: 'Réaliser les essais d’admission vis-à-vis des DER type D39/D50 (SAM S005)',
               },
 
               {
-                l: 'Obtenir un REX EV d’autres types,',
+                 l: 'Obtenir un REX EV d’autres types,',
               },
               {
-                l: 'Investiguer sur divers phénomène (CEM…),',
+                 l: 'Investiguer sur divers phénomène (CEM…),',
               },
               {
-                l: 'Engranger des données utiles à de futures études',
+                 l: 'Engranger des données utiles à de futures études',
               },
               {
-                l: 'Expérimenter et/ou mettre en endurance de nouveaux systèmes de détection…',
+                 l: 'Expérimenter et/ou mettre en endurance de nouveaux systèmes de détection…',
               },
             ],
           },
@@ -95,7 +109,7 @@ else{
         titre: 'Abréviations et textes de référence',
         contenu: [
           {
-            acro: 'DGII GE SF',
+            acro: 'DGII GE SF ',
             explication:
               'Direction Générale et Industrielle, département Génie Electrique, division Signalisation Ferroviaire.',
           },
@@ -196,9 +210,9 @@ else{
             p: 'Réserve : autres types de Compteurs d’Essieux en fonction de demandes spécifiques.',
           },
           {
-            p: `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`,
+            xx: `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`,
           },
-          { image: image },
+          
           
         ],
         
@@ -384,26 +398,19 @@ if(Info50592OK.length>0){
 
 
     const pageGarde = [
-      {
-        image: entete,
-       
-      },
+      
       {
         // Titre: 'DIRECTION GÉNÉRALE INDUSTRIELLE & INGÉNIERIE',
         // sousTitre1: 'Département Intégration Projet Multi-Métiers et Mesure ',
         // sousTitre2: 'Agence Mesure et Essais IP3M (DGII IP3M AME)',
         // sousTitre3: '9 quai de Seine ',
       },
-      { sousTitre3: '93584 SAINT-OUEN CEDEX' },
+      
       {
-        sousTitre3: 'Tél : +33 (0)1 49 45 76 50 – Fax : +33 (0)1 49 45 76 59',
-        image: imagePdf,
+        // p: 'Les résultats présentés dans ce rapport d’essai ne se rapportent qu’aux objets soumis à l’essai, suivant les indications indiquées dans son contenu.',
       },
       {
-        p: 'Les résultats présentés dans ce rapport d’essai ne se rapportent qu’aux objets soumis à l’essai, suivant les indications indiquées dans son contenu.',
-      },
-      {
-        p: 'Sa reproduction n’est autorisée que sous sa forme intégrale. Seule la version signée électroniquement fait foi',
+        // p: 'Sa reproduction n’est autorisée que sous sa forme intégrale. Seule la version signée électroniquement fait foi',
       },
     ]
 
@@ -413,7 +420,7 @@ if(Info50592OK.length>0){
       doc.setFont('arial', 'bold')
       doc.setFontSize(10)
       doc.setTextColor('gray')
-      doc.text(`Rapport de la Période : ${periode}`, 120, 10)
+      doc.text(`Rapport de la Période : ${periode}`, 110, 10)
     }
     const resetFont = () => {
       doc.setFont('Arial', 'normal')
@@ -421,103 +428,115 @@ if(Info50592OK.length>0){
       doc.setTextColor('black')
     }
     const Heading = (titre, index) => {
-      doc.setFont('helvetica', 'bold')
-      doc.setFontSize(16)
-      doc.setTextColor('Orange')
-      doc.text(`${index}.${titre}`, 20, 20)
-    }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor('Orange');
+      doc.text(`${index}.${titre}`, 20, 20);
+    
+      const imageHeaderWidth = 25;
+      const imageHeaderHeight = 30;
+      const imageHeaderX = pageWidth - imageHeaderWidth;
+      const imageHeaderY = 0;
+    
+      doc.addImage(imageHeader, 'png', imageHeaderX, imageHeaderY, imageHeaderWidth, imageHeaderHeight);
+    };
+    
     const PiedDePage = async (contenu) => {
-      const y = pageHeight - 20
-      doc.setLineWidth(0.2)
-      doc.setDrawColor(0, 0, 0) // Couleur du trait (noir)
-      doc.line(20, y, pageWidth - 20, y)
-      const yOffset = 3
-      let currentY = y + yOffset
-
-      doc.setFont('Arial', 'normal')
-      doc.setFontSize(8)
-      doc.setTextColor('Gray')
-
+      const y = pageHeight - 20;
+    
+      const imageWidth = pageWidth * 0.99;
+      const imageHeight = 20;
+      const imageX = 0;
+      const imageY = pageHeight - imageHeight;
+    
+      doc.addImage(imageFixe, 'png', imageX, imageY, imageWidth, imageHeight);
+    
+      const paginationWidth = 14;
+      const paginationHeight = 20;
+      const paginationX = 2;
+      const paginationY = pageHeight - paginationHeight;
+    
+      let currentY = imageY - 5;
+      let yOffset = 3;
+    
       for (const item of contenu) {
+        if (currentY < startY) {
+          doc.addPage();
+          currentY = pageHeight - 20;
+          addHeader();
+          doc.addImage(imageFixe, 'png', imageX, imageY, imageWidth, imageHeight);
+          currentY -= 5;
+        }
+    
         if (item.Titre) {
-          doc.text(item.Titre, 20, currentY)
-          currentY += yOffset
+          doc.text(item.Titre, 20, currentY);
+          currentY += yOffset;
         }
         if (item.sousTitre1) {
-          doc.text(item.sousTitre1, 20, currentY)
-          currentY += yOffset
+          doc.text(item.sousTitre1, 20, currentY);
+          currentY += yOffset;
         }
         if (item.sousTitre2) {
-          doc.text(item.sousTitre2, 20, currentY)
-          currentY += yOffset
+          doc.text(item.sousTitre2, 20, currentY);
+          currentY += yOffset;
         }
+    
+        // Ajoutez ici votre logique de contenu supplémentaire
+    
+        currentY += yOffset;
       }
-      
 
-      doc.setFont('Arial', 'normal')
-      doc.setFontSize(8)
-      doc.setTextColor('gray')
-      const pageCount = doc.getNumberOfPages()
-      doc.text(`Page ${pageCount - 2}`, pageWidth / 2, pageHeight - 10)
-
-      doc.addImage(sncflogo, pageWidth - 25, pageHeight - 25, 20, 20)
-    }
-
+      doc.setFillColor('#FF6600'); // Couleur du remplissage (noir)
+      doc.rect(paginationX, paginationY, paginationWidth, paginationHeight, 'F'); // Dessine le rectangle noir
+      doc.setFontSize(8);
+      doc.setTextColor('#000000'); // Couleur du texte (noir)
+      const pageCount = doc.getNumberOfPages();
+      doc.text(`Page ${pageCount }`, paginationX + 2, paginationY + 8); // Affiche le numéro de page dans le rectangle
+    };
+    
+    
+    
+    
     const PageDeGarde = async (contenu) => {
-      doc.setPage(1)
-      doc.setTextColor('#ff6600')//255,102,0
-      for (const item of contenu) {
-        if (item.p) {
-          doc.setFontSize(11)
-          doc.setTextColor('black')
-          const lines = doc.splitTextToSize(item.p, pageWidth - 40)
-          lines.forEach((line, i) => {
-            doc.text(line, 20, y + i * 5)
-          })
-          y += lines.length * 2 + 10
-        }
-        if (item.Titre) {
-          doc.setFont('arial', 'normal')
-          doc.setFontSize(20)
-          doc.text(item.Titre, 20, y)
-          y += 10
-        }
-        if (item.sousTitre1) {
-          doc.setFontSize(14)
-          doc.text(item.sousTitre1, 20, y)
-          y += 5
-        }
-        if (item.sousTitre2) {
-          doc.setFont('arial', 'normal')
-          doc.setFontSize(11)
-          doc.text(item.sousTitre2, 20, y)
-          y += 5
-        }
-        if (item.sousTitre3) {
-          doc.setFontSize(9)
-          doc.text(item.sousTitre3, 20, y)
-          y += 5
-        }
-        if (item.image) {
-          y += 15
-          const img = new Image()
-          img.src = item.image
-         
-          const loadedImg = await new Promise((resolve) => {
-            img.onload = function () {
-              resolve(img)
-            }
-          })
-
-         
-          doc.addImage(loadedImg, 'JPEG', 20, y, 150, 60)
-          y += 80
-        }
-      }
-    }
+      doc.setPage(1);
+      doc.setTextColor('#ff6600'); // 255,102,0
+      const imageWidth = doc.internal.pageSize.getWidth();
+      const imageHeight = 150;
+      const imageX = 0;
+      const imageY = 0;
+    
+      doc.addImage(entete, 'JPG', imageX, imageY, imageWidth, imageHeight);
+    
+      let y = imageHeight + 10; // Initialisation de la position verticale pour le texte
+    
+      doc.setFontSize(12);
+      doc.setTextColor('black');
+      const text = "Les résultats présentés dans ce rapport d’essai ne se rapportent qu’aux objets soumis à l’essai, suivant les indications indiquées dans son contenu.\n\nSa reproduction n’est autorisée que sous sa forme intégrale. Seule la version signée électroniquement fait foi";
+      const textLines = doc.splitTextToSize(text, pageWidth - 40);
+      textLines.forEach((line, i) => {
+        doc.text(line, 20, y + i * 5);
+      });
+      y += textLines.length * 5 + 15; // Mise à jour de la position verticale après le texte et le saut de ligne
+    
+      const nouvelleImageWidth = doc.internal.pageSize.getWidth();
+      const nouvelleImageHeight = 55;
+      const nouvelleImageX = 0;
+      const nouvelleImageY = y - 5; // Espace de 5 pixels entre le texte et la nouvelle image
+    
+      doc.addImage(entete2, 'JPG', nouvelleImageX, nouvelleImageY, nouvelleImageWidth, nouvelleImageHeight);
+    
+      const imagePDFWidth = doc.internal.pageSize.getWidth();
+      const imagePDFHeight = 20;
+      const imagePDFX = 0;
+      const imagePDFY = doc.internal.pageSize.getHeight() - imagePDFHeight;
+    
+      doc.addImage(imagePDF1, 'png', imagePDFX, imagePDFY, imagePDFWidth, imagePDFHeight);
+    };
+    
 
     doc.addPage()
     const addSection = async (index, titre, contenu) => {
+    
       doc.addPage()
       addHeader()
       Heading(titre, index)
@@ -526,45 +545,107 @@ if(Info50592OK.length>0){
       y = startY
 
       for (const item of contenu) {
+        const paragraphWidth = pageWidth * 0.85; 
+        // if (item.p) {
+        //   const lines = doc.splitTextToSize(item.p, paragraphWidth); // Largeur maximale de 80 pour chaque ligne
+
+        //   const lineHeight = 8; // Nouvelle valeur pour l'interligne
+        //   lines.forEach((line, i) => {
+        //     doc.setFont('helvetica', 'normal');
+        //     doc.setFontSize(12);
+        //     doc.text(line, 20, y + i * lineHeight); // Utilisation de la nouvelle valeur de l'interligne
+        //   });
+        //   y += lines.length * lineHeight; // Utilisation de la nouvelle valeur de l'interligne
+        // }
         if (item.p) {
-          const lines = doc.splitTextToSize(item.p, pageWidth - 40)
-          lines.forEach((line, i) => {
-            doc.text(line, 20, y + i * 10)
-          })
-          y += lines.length * 10 + 10
+          const textLines = doc.splitTextToSize(item.p, paragraphWidth);
+          const lineHeight = 8; // Nouvelle valeur pour l'interligne
+        
+          textLines.forEach((line, i) => {
+            const characters = line.split('');
+            let xPos = 20;
+        
+            characters.forEach((character, j) => {
+              doc.text(character, xPos, y + i * lineHeight);
+              xPos += doc.getTextWidth(character);
+            });
+          });
+        
+          y += textLines.length * lineHeight; // Utilisation de la nouvelle valeur de l'interligne
         }
 
+
+        if (item.xx) {
+          const text = `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`;
+          const image = sites; // Remplacez "yourImage" par votre image
+      
+          doc.addPage(); // Ajouter une nouvelle page
+            // Changer l'orientation de la page en mode paysage
+          
+      
+          // Afficher le texte
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(text, 20, startY);
+      
+          // Afficher l'image
+          const blockHeight = 100; // Hauteur de l'image
+          doc.addImage(image, 'JPEG', 20, startY + 15, pageWidth - 40, blockHeight);
+          doc.setPage(doc.getNumberOfPages());
+      
+          y = startY + blockHeight;
+        }
+        
+        
         if (item.Listes) {
           item.Listes.forEach((liste) => {
-            const lines = doc.splitTextToSize(liste.l, pageWidth - 40)
+            const lines = doc.splitTextToSize(liste.l, pageWidth - 40);
+            const lineHeight = 8; // Nouvelle valeur pour l'interligne
+        
             lines.forEach((line, i) => {
-              doc.setFontSize(12)
-              doc.setFont('helvetica', 'normal')
+              doc.setFontSize(12);
               if (i === 0) {
-                doc.text('• ' + line, 30, y)
+                doc.text('• ' + line, 30, y);
               } else {
-                doc.text(line, 30, y)
+                doc.text(line, 30, y);
               }
-              y += 10
-            })
-          })
+              y += lineHeight; // Utilisation de la nouvelle valeur de l'interligne
+            });
+          });
         }
+        
         if (item.acro) {
-          let def
-          doc.setFontSize(12)
-          doc.setFont('helvetica', 'normal')
-          def = `${item.acro}:${item.explication}`
-          const lines = doc.splitTextToSize(def, pageWidth - 40)
+          let def;
+          doc.setFont('helvetica', 'normal');
+          def = `${item.acro}:${item.explication}`;
+          const lines = doc.splitTextToSize(def, pageWidth - 40);
+          const lineHeight = 8; // Nouvelle valeur pour l'interligne
+        
           lines.forEach((line, i) => {
-            if (i === 0) {
-              doc.text(`• ${line}`, 30, y)
-            } else {
-              doc.text(`${line}`, 30, y)
-            }
-            y += 10
-          })
+            const parts = line.split(':');
+            const acro = parts[0];
+            const explication = parts.slice(1).join(':'); // Reconstruire la partie d'explication après les ":"
+        
+            const acroWidth = doc.getTextWidth(acro + ' : '); // Ajouter un espace avant le ":"
+            const explicationWidth = doc.getTextWidth(' ' + explication); // Ajouter un espace après le ":"
+        
+            doc.setFont('helvetica', 'bold');
+            doc.text(acro + ' : ', 30, y);
+        
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12); // Rétablir la taille de police si nécessaire
+            doc.text(explication, 30 + acroWidth, y);
+        
+            y += lineHeight; // Utilisation de la nouvelle valeur de l'interligne
+          });
         }
-
+        
+        
+        
+        
+        
+        
+        
         if (item.image) {
           const img = new Image()
           img.src = item.image
@@ -605,20 +686,33 @@ if(Info50592OK.length>0){
       await PiedDePage(pageGarde)
     }
     const generateTableOfContents = (headings) => {
-      doc.setPage(2)
-      doc.setFillColor(255, 0, 0)
-      doc.setFont('helvetica', 'bold')
-      doc.setFontSize(18)
-      doc.text('Sommaire', 20, 20)
-
+      const startPage = 2; // Définir la page de départ à la page 3
+      let currentPage = startPage;
+    
+      doc.setPage(startPage);
+      doc.setFillColor(255, 0, 0);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('Sommaire', 20, 20);
+    
       // Créer un tableau pour le sommaire
-      const tableData = []
+      const tableData = [];
       headings.forEach((heading, index) => {
-        const text = `${index + 1}. ${heading.titre}`
-        const page = heading.page
-        tableData.push([text, page])
-      })
-
+        const text = `${index }. ${heading.titre}`;
+        let page;
+      
+        if (index === 2) {
+          page = `${currentPage+1} - ${currentPage + 2}`; // Attribuer les pages 5 et 6 au titre numéro 3
+          currentPage += 2; // Incrémenter la numérotation des pages de 2
+        } else {
+          page = (currentPage+1).toString(); // Attribuer la page actuelle au titre
+          currentPage += 1; // Incrémenter la numérotation des pages de 1
+        }
+      
+        tableData.push([text, page]);
+      });
+      
+    
       // Imprimer le tableau de contenu
       autoTable(doc, {
         startY: 30,
@@ -632,8 +726,11 @@ if(Info50592OK.length>0){
           fontSize: 12,
           halign: 'left',
         },
-      })
-    }
+      });
+    };
+    
+    
+    
     const pageWidth = doc.internal.pageSize.width
     const pageHeight = doc.internal.pageSize.height
     const headings = []
@@ -653,11 +750,17 @@ if(type===1){
     const formData = new FormData();
     formData.append('pdfFile', doc.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
     // le stocker dans le dossier output
-    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    if(dateF){
+      setChargement(true)
+    }    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    setChargement(false)
+
     // alert(resultatEnvoi.data)
     console.log("resultatEnvoi",resultatEnvoi.data,filename)
 
   } catch (error) {
+          setChargement(false)
+
     console.log("resultatEnvoi",error)
   }
   
@@ -666,11 +769,18 @@ if(type===1){
     const formData = new FormData();
     formData.append('pdfFile', doc.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
     // le stocker dans le dossier output
+    if(dateF){
+      setChargement(true)
+    }
     const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    setChargement(false)
+
     // alert(resultatEnvoi.data)
     console.log("resultatEnvoi",resultatEnvoi.data,filename)
 
   } catch (error) {
+          setChargement(false)
+
     console.log("resultatEnvoi",error)
   }
 }
@@ -680,36 +790,51 @@ else{
     const formData = new FormData();
     formData.append('pdfFile', doc.output('blob'), filename); // Ajoutez le fichier PDF à l'objet FormData  
     // le stocker dans le dossier output
+    if(dateF){
+      setChargement(true)
+    }
     const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    setChargement(false)
+
     // alert(resultatEnvoi.data)
-    console.log("resultatEnvoi",resultatEnvoi.data,filename)
 
     try {
+      if(dateF){
+        setChargement(true)
+      }
       const response = await axios.get(`${config.API_URL}/download`)
+      setChargement(false)
+
       if (response.status === 200) {
-        const myFile = response.data.find(pdf=>pdf.name=filename)
+        const myFile = response.data.find(pdf=>pdf.name===filename)
         if(myFile)
-        chargerPdf(myFile.content)
-        
+{
+  chargerPdf(myFile.content)
+
+}        
       }
     } catch (error) {
+            setChargement(false)
+
       console.log('Error:', error)
     }
 
   } catch (error) {
+          setChargement(false)
+
     console.log("resultatEnvoi",error)
   }
 }
 
-  }
+
+}
+
   const chargerPdf = (content) => {
     const decodedContent = atob(content)
-  
     const byteArray = new Uint8Array(decodedContent.length)
     for (let i = 0; i < decodedContent.length; i++) {
       byteArray[i] = decodedContent.charCodeAt(i)
     }
-  
     const blob = new Blob([byteArray], { type: 'application/pdf' })
     const url = URL.createObjectURL(blob)
     window.open(url, '_blank')
@@ -785,6 +910,8 @@ const formatDateLocale = (date) => {
       await generationReportTrimestrielPrecedent();
       console.log('Rapport trimestriel généré avec succès');
     } catch (error) {
+            setChargement(false)
+
       console.error('Erreur lors de la génération du rapport trimestriel :', error);
     }
   };
@@ -856,7 +983,12 @@ const formatDateLocale = (date) => {
   const loadPdf = async () => {
 
     try {
+      if(dateF){
+        setChargement(true)
+      }
       const response = await axios.get(`${config.API_URL}/download`)
+      setChargement(false)
+
       if (response.status === 200) {
 
         if (
@@ -884,6 +1016,8 @@ const formatDateLocale = (date) => {
       }
       
     } catch (error) {
+            setChargement(false)
+
       console.log('Error:', error)
 
      await generationReportTrimestrielPrecedent()        
@@ -901,7 +1035,9 @@ useEffect(()=>{
  
   
   return (
-    <Button
+
+    <>
+   {chargement?( <div style={{marginRight:"500px"}}><Loading/></div>):(  <Button
       variant="primary"
       onClick={() =>
         handleDownloadPdf(
@@ -914,7 +1050,11 @@ useEffect(()=>{
     >
       <FileDownloadIcon style={{ marginTop: '5px' }} />
       Exporter
-    </Button>
+    </Button>   )}
+
+ 
+    </>
+  
   )
 
   async function getData(dateDebut, dateFin) {
@@ -928,10 +1068,15 @@ useEffect(()=>{
     try {
       console.log("logger", "dateDebut", dateDebut, `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
+      if(dateF){
+        setChargement(true)
+      }
 
       const resultatCat = await axios.get(
         `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
+      setChargement(false)
+
       const typesMRArray = resultatCat.data.map(obj => obj.typeMR)
       typemr = typesMRArray.join(",")
       console.log("logger", "typemr", typemr, `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
@@ -940,13 +1085,20 @@ useEffect(()=>{
       categorie = (resultatCat.data) // Assurez-vous de définir correctement setCategorie avec la fonction pour mettre à jour l'état
       console.log("logger", "categorie", categorie)
     } catch (error) {
+            setChargement(false)
+
       console.error(error)
     }
     try {
+      if(dateF){
+        setChargement(true)
+      }
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
 
       )
+      setChargement(false)
+
 
   
   
@@ -957,29 +1109,45 @@ useEffect(()=>{
       )
 
     } catch (error) {
+            setChargement(false)
+
       console.error(error)
     }
     try {
       //Récupération des infos d'une date séléctionnée par l'utilisateur
+      if(dateF){
+        setChargement(true)
+      }
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenRapport?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
+      setChargement(false)
+
 
       CEPerturbe = (resultat.data[resultat.data.length - 1])
       console.log("logger", "CEPerturbe", CEPerturbe)
 
     } catch (error) {
+            setChargement(false)
+
       console.error(error)
     }
 
 
         try {
+          if(dateF){
+            setChargement(true)
+          }
         const resultat = await axios.get(
           `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
           
         )
+        setChargement(false)
+
         capteurs=(resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
       } catch (error) {
+              setChargement(false)
+
         console.error(error)
       }
       

@@ -18,27 +18,13 @@
   box-sizing: border-box;
 }
 
-.bodyy {
-  margin-top: 3vh;
-  background: linear-gradient(to right, #83c3de, #0088ce);
-  height: 65vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
+
 
 .custom-link:hover {
   color: blue; 
   text-decoration: underline; 
 }
-.slider {
-  position: relative;
-  width: 300px;
-  height: 230px;
-  transform-style: preserve-3d;
-  animation: rotate 40s linear infinite;
-}
+
 
 
 
@@ -51,11 +37,13 @@
   }
 }
 
-.slider span {
+
+
+/* .slider span {
  
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 30%;
+  height: 30%;
   top: 0;
   left: 0;
   transform-origin: center;
@@ -65,18 +53,73 @@
 
 .slider span img {
   position: absolute;
-  width: 100%;
+  width: 30%;
   height: auto; ;
   top: 0;
   left: 0;
   border-radius: 10px;
   object-fit: cover;
   transition: 2s;
-}
-.slider span:hover img{
-  transform: translateY(-30px) scale(1.2);
+} */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 18px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+}
+
+.table input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  height: 30px;
+  border: none;
+  margin-top: 5px;
+}
+.bodyy {
+ 
+  background: linear-gradient(to right, #83c3de, #0088ce);
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.slider {
+  display: flex; /* Utiliser un conteneur de type flex */
+  gap: 10px; /* Ajouter un espace de 60 pixels entre les images */
+  width: 100%; /* Ajuster la largeur du slider en fonction du nombre d'images */
+
+  overflow: hidden;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+.slider span {
+  flex: 0 0 25%; /* Augmenter la largeur de chaque image */
+}
+
+.slider img {
+  width: 90%; /* Utiliser la largeur maximale pour chaque image */
+  height: auto; /* Ajuster la hauteur de l'image de manière proportionnelle */
+  transition: transform 0.3s ease; /* Ajouter une transition fluide pour l'effet de zoom */
+}
+
+.slider span:hover img {
+  transform: scale(1.2); /* Agrandir l'image lors du survol */
+}
 
 
 .App-header {

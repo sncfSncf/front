@@ -16,7 +16,7 @@ import React, { useState, useEffect } from 'react';
         <div className="parent home" style={{ display: 'block' }}>
           
           <div>
-            <p>
+            <p style={{padding:'20px'}}>
             Bienvenu sur l’interface de visualisation des résultats de mesures selon les deux méthodes 50592 & SAM S005  obtenus au niveau de la base de télésurveillance  de Chevilly
               
             </p>

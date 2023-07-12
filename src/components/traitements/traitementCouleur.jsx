@@ -15,7 +15,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
   return (
     <div className="" style={{ width: '100%', overflowX: 'auto' }}>
       <ul><li style={{ fontWeight: 'bold', marginLeft: '42px',marginBottom:'10px' }}>&nbsp;Résultats Bande Large (BL) en «dBµA/m»</li></ul>
-      <Table style={{ width: "100%" }} >
+      <Table style={{ width: "100%" ,border: '1px solid black' }} >
       <TableHead style={{ borderBottom: '1px solid black' }}>
   <TableRow>
     <TableCell
@@ -24,7 +24,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
         paddingBottom: '0',
         borderBottom: '1px solid black',
         transform: 'translateZ(0)',
-        background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+       
         fontWeight: 'bold',
       }}
       align="center"
@@ -41,7 +41,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
         paddingBottom: '0',
         borderBottom: '1px solid black',
         transform: 'translateZ(0)',
-        background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+       
         fontWeight: 'bold',
       }}
       align="center"
@@ -56,7 +56,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
         paddingBottom: '0',
         borderBottom: '1px solid black',
         transform: 'translateZ(0)',
-        background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+       
         fontWeight: 'bold',
       }}
       align="center"
@@ -66,46 +66,47 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
     </TableCell>
     <TableCell className="resultat" align="center" colSpan={12} style={{ padding: '0px' }}>
       <TableCell align="center" colSpan={7} style={{ padding: '0px', transform: 'translateZ(0)',fontWeight: 'bold' }}>
-        Evaluation en bande
-        <TableCell colSpan={3} style={{ padding: '0px', border: 'none', transform: 'translateZ(0)' }} align="center">
+       
+        <TableCell colSpan={3} style={{ padding: '0px', border: 'none', transform: 'translateZ(0)'}} align="center">
           Bande 1 
           {bande1?.map((param, index) => (
             <TableCell 
               align="center"
               className='ble2 cell-width'
               style={{
-                maxWidth: '95px',
+                maxWidth: '90px',
                 whiteSpace: 'nowrap',
                 fontSize: 'smaller',
                 transform: 'translateZ(0)',
-                borderBottom: '1px solid black',
-                background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+               // borderBottom: '1px solid black',
+               
               }}
             >
-              <span >{param}</span>
+              <span style={{paddingLeft:'12%', fontWeight: 'bold'}} >{param}</span>
             </TableCell>
           ))}
         </TableCell>
-        <TableCell className='ble2 cell-width'align="center" colSpan={2} style={{ padding: '0px', transform: 'translateZ(0)' }}>
+        <TableCell className='ble2 cell-width'align="center" colSpan={2} style={{ padding: '0px', transform: 'translateZ(0)'}}>
           Bande 2
           {bande2?.map((param, index) => (
             <TableCell
               align="center"
               className='ble2 cell-width'
               style={{
-                maxWidth: '95px',
+                maxWidth: '90px',
                 whiteSpace: 'nowrap',
                 fontSize: 'smaller',
                 transform: 'translateZ(0)',
-                borderBottom: '1px solid black',
-                background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+               // borderBottom: '1px solid black',
+               
+                marginRight:'50px'
               }}
             >
-              {param}
+              <span  style={{ fontWeight: 'bold',marginRight:'50px',paddingLeft:'32%'}}>{param} </span>
             </TableCell>
           ))}
         </TableCell>
-        <TableCell align="center" colSpan={2} style={{ padding: '8px', transform: 'translateZ(0)' }}>
+        <TableCell align="center" colSpan={2} style={{ padding: '20px', transform: 'translateZ(0)' }}>
           Bande 3
           {bande3?.map((param, index) => (
             <TableCell
@@ -117,32 +118,33 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
                 whiteSpace: 'nowrap',
                 fontSize: 'smaller',
                 transform: 'translateZ(0)',
-                borderBottom: '1px solid black',
-                background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+                //borderBottom: '1px solid black',
+               
+                marginRight:'50%'
               }}
             >
-              {param}
+             <span style={{  fontWeight: 'bold',marginLeft:'-17px'}}> {param}</span>
             </TableCell>
           ))}
         </TableCell>
       </TableCell>
-      <TableCell align="center" colSpan={6} style={{  padding: '0px', transform: 'translateZ(0)',fontWeight: 'bold' }}>
-        Evaluation hors bande
+      <TableCell align="center" colSpan={6} style={{  transform: 'translateZ(0)',fontWeight: 'bold' }}>
+       
         <TableCell colSpan={2} align="center" style={{ padding: '0px', transform: 'translateZ(0)' }}>
           Bande 1
           <TableCell
             align="center"     
             className='ble2 cell-width'
             style={{
+              marginLeft:'-3px',
               maxWidth: '95px',
               whiteSpace: 'nowrap',
               fontSize: 'smaller',
               transform: 'translateZ(0)',
-              borderBottom: '1px solid black',
-              background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+              //borderBottom: '1px solid black',
             }}
           >
-            Freq [kHz]
+             <span style={{  fontWeight: 'bold',marginLeft:'-75%'}}>Freq [kHz]</span> 
           </TableCell>
           <TableCell
             align="center" 
@@ -151,11 +153,10 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
               maxWidth: '85px',
               fontSize: 'smaller',
               transform: 'translateZ(0)',
-              borderBottom: '1px solid black',
-              background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+             // borderBottom: '1px solid black',
             }}
           >
-            Valeur
+              <span style={{ fontWeight: 'bold', marginLeft:'-85%'}}>Valeur</span> 
           </TableCell>
         </TableCell>
         <TableCell align="center" colSpan={2} style={{ padding: '0px', transform: 'translateZ(0)' }}>
@@ -167,11 +168,12 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
               whiteSpace: 'nowrap',
               fontSize: 'smaller',
               transform: 'translateZ(0)',
-              borderBottom: '1px solid black',
-              background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+             // borderBottom: '1px solid black',
             }}
           >
-            Freq [kHz]
+                          <span style={{  fontWeight: 'bold',marginLeft:'-75%'}}> Freq [kHz]</span> 
+
+           
           </TableCell>
           <TableCell
             align="center" 
@@ -180,11 +182,12 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
               maxWidth: '90px',
               fontSize: 'smaller',
               transform: 'translateZ(0)',
-              borderBottom: '1px solid black',
-              background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+             // borderBottom: '1px solid black',
             }}
           >
-            Valeur
+            <span style={{  fontWeight: 'bold',marginLeft:'-55%'}}>Valeur</span> 
+
+            
           </TableCell>
         </TableCell>
         <TableCell
@@ -208,11 +211,11 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
               whiteSpace: 'nowrap',
               fontSize: 'smaller',
               transform: 'translateZ(0)',
-              borderBottom: '1px solid black',
-              background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+              //borderBottom: '1px solid black',
             }}
           >
-            Freq [kHz]
+           <span style={{  fontWeight: 'bold',marginLeft:'-40%'}}> Freq [kHz]</span> 
+
           </TableCell>
           <TableCell
             align="center"
@@ -222,11 +225,10 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
               maxWidth: '95px',
               fontSize: 'smaller',
               transform: 'translateZ(0)',
-              borderBottom: '1px solid black',
-              background: 'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2))',
+             // borderBottom: '1px solid black',
             }}
           >
-            Valeur
+           <span style={{  fontWeight: 'bold',marginLeft:'5%'}}>Valeur</span> 
           </TableCell>
         </TableCell>
       </TableCell>
@@ -322,8 +324,8 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
         </TableFooter>
       </Table>
       <ul><li style={{ fontWeight: 'bold', marginLeft: '42px' ,marginTop:'10px',marginBottom:'10px'}}>&nbsp;Résultats Bande étroite (BE) en « dBµA/m»</li></ul>
-      <Table aria-label="simple table" style={{ width: "100%" }} className='tableBE'>
-      <TableHead style={{ borderBottom: '1px solid black',width: "100%"}}>
+      <Table aria-label="simple table" style={{ width: "100%",border: '1px solid black'  }} className='tableBE'>
+      <TableHead style={{ borderBottom: '1px solid black',width: "100%",border: '1px solid black' }}>
   <TableRow>
     <TableCell
       style={{
@@ -375,11 +377,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
       <span>Axe</span>
     </TableCell>
       
-      <TableCell align="center" colSpan={12} style={{  padding: '0px', transform: 'translateZ(0)',fontWeight: 'bold',}}>
-        BF
-          
-     
-    </TableCell>
+      
     
   </TableRow>
   <TableCell colSpan={12} style={{ padding: '0px' }} align="center" > 
@@ -389,7 +387,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
   align="center"
   className='ble2 cell-width'
   style={{
-    maxWidth: '95px',
+    maxWidth: '100px',
     fontSize: 'smaller',
     transform: 'translateZ(0)',
     borderBottom: '1px solid black',
@@ -414,7 +412,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
  
 </TableHead>
  
-        <TableBody>
+        <TableBody style={{border: '1px solid black' }}>
           <TableCell rowSpan={3} className='axe rail'>1</TableCell>
           <TableCell style={{ padding: '0px 16px' }} className='axe rail'>X</TableCell>
           <TableCell colSpan={12} className='ble ligne'>

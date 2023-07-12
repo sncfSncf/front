@@ -20,7 +20,6 @@ import Footer from './components/Footer'
 import { AuthProvider } from './pages/Authentification/AuthContext'
 import Aide from './pages/Aide'
 import Rapports from './pages/Rapports'
-import Testrapport from './pages/Testrapport'
 
 function App() {
   return (
@@ -66,9 +65,7 @@ function App() {
       <Route path="/aide">
         <Aide />
       </Route>
-      <Route path="/test">
-        <Testrapport />
-      </Route>
+   
      
       <Route path="/NewUser/:id?">
         <Users />

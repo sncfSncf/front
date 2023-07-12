@@ -16,8 +16,12 @@ export default function Chart() {
       const resultat = await axios.get(
         `${config.API_URL}/echantillonage?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`
       );
+
+      console.log("graph",        `${config.API_URL}/echantillonage?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`
+      )
       const capteurs = resultat.data;
-      console.log("resultat.data",resultat.data);
+      // console.log("resultat.data",resultat.data);
+      // alert(JSON.stringify(capteurs))
       const seriesData = capteurs.map((capteur,index) => ({
         data: capteur.contenuFichier.Capteurs[0].X.map((x, index) => [
           parseFloat(capteur.contenuFichier.Capteurs[0].X[index]),

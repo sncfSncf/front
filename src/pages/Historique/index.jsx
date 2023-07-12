@@ -103,7 +103,7 @@ function Historique() {
               </div>
             </p>
           
-          <Tableau trains={trains} />
+          <Tableau trains={trains}   />
         </div>
         )
         )}

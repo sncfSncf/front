@@ -28,7 +28,7 @@ export default function Temps() {
       <Table >
         <TableHead>
           <TableRow >
-            <TableCell className="cell" style={{ width: "500px", margin: 'auto' }} key={`cell-0`}>Numéro de l'occultation</TableCell>
+            <TableCell className="cell" style={{ width: "500px", margin: 'auto',textAlign: 'center'  }} key={`cell-0`}>Numéro de l'occultation</TableCell>
             <TableCell className="cell" style={{ textAlign: 'center' }} key={`cell-1`} colSpan={3}>Temps T1, T2, T3
 
             </TableCell>
