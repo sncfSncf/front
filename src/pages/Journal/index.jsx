@@ -183,6 +183,8 @@ function Journal() {
         `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
+      console.log("demande",              `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      )
 
       setCategorie(resultat.data)
       const typesMRArray = resultat.data.map((obj) => obj.typeMR)
@@ -203,6 +205,8 @@ function Journal() {
       //Récupération des infos d'une date séléctionnée par l'utilisateur
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${typesMR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      )
+      console.log("demande",        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${typesMR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setInfos(resultat.data)
       setChargement(false)

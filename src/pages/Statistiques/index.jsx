@@ -65,6 +65,8 @@ function Statistique() {
   const [optionBE_CE, setOptionBE_CE] = useState([])
   const optionSAM = [{label:'NOK',value:"NOK"},{label:'OK',value:"OK"}]
   const option50592 = [{label:'NOK',value:"NOK"},{label:'OK',value:"OK"}]
+  const optionSAMSingle= ["OK","NOK"]
+  const option50592Single = ["OK","NOK"]
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
@@ -75,6 +77,31 @@ function Statistique() {
   let nbrPassageSAM = []
   let evs = null
   let pourcentageSAM = []
+
+  const handleResult50592ChangeSingle = (newRes) => {
+    if (newRes === 'uniquement 50592') {
+      setResultSAM('')
+      //handleResult50592Change(resultSAM)
+      setDisabledSam(true)
+    } else {
+      setDisabledSam(false)
+    }
+    setResult50592(newRes)
+  }
+
+
+  const handleResultSAMChangeSingle = (newRes) => {
+    if (newRes === 'uniquement sam') {
+      setResult50592('')
+     // handleResult50592Change(result50592)
+      setDisabled50(true)
+    } else {
+      setDisabled50(false)
+    }
+    setResultSAM(newRes)
+    console.log(resultSAM)
+  }
+
 
   const handleDateChange = (ranges) => {
     setStartDate(dayjs(ranges.selection.startDate).format('YYYY-MM-DD'))
@@ -675,6 +702,7 @@ const loadTotalChart=async()=>{
       >
         Type Matériel Roulant
       </InputLabel>
+      
                        {/* <select
                          style={{ padding: '5px' }}
                          multiple
@@ -725,7 +753,14 @@ const loadTotalChart=async()=>{
         Résultat 50592
       </InputLabel>
 
-                       <div style={{width:'80%'}}>
+      {MR.length===0&& <Resultats
+                  onChange={handleResult50592ChangeSingle}
+                  options={option50592Single}
+                  disabled={disabled50}
+                />
+      }
+
+      {MR.length!==0&&   <div style={{width:'80%'}}>
                        <Select    
                         defaultValue={[]}
                         isMulti
@@ -745,6 +780,10 @@ const loadTotalChart=async()=>{
                        
  options={option50592} />
                        </div>
+
+      }
+
+                    
                        {/* <Resultats
                          onChange={handleResult50592Change}
                          options={option50592}
@@ -768,7 +807,14 @@ const loadTotalChart=async()=>{
         Résultat SAM S005
       </InputLabel>
                        
-                       <div style={{ width: '80%' }}>
+
+      {MR.length===0&& <Resultats
+                  onChange={handleResultSAMChangeSingle}
+                  options={optionSAMSingle}
+                  disabled={disabled50}
+                />
+      }
+      {MR.length!==0&& <div style={{ width: '80%' }}>
                        <Select    
                         defaultValue={[]}
                         isMulti
@@ -785,9 +831,12 @@ const loadTotalChart=async()=>{
                        
                        
                        
-                       closeMenuOnSelect={false}
-isMulti options={option50592} />
+ options={option50592} />
                        </div>
+      }
+      
+
+                       
                        </div>
     <div
       style={{
@@ -844,7 +893,7 @@ isMulti options={option50592} />
 
 
 
-           {myChartTotal&&
+           {myChartTotal&&result50592===''&&resultSAM===''&&
                
                <Table
                  style={{
@@ -918,11 +967,13 @@ isMulti options={option50592} />
           {myChartData50592NOK?.length > 0 &&
                myChartData50592NOK.map((nokData, idx) => {
                  return (
+                 
                    <div
                      style={{
-                       flexBasis: '40%',
+                       flexBasis: '550px',
                        padding: '10px',
                        width: '40%',
+                       border:'10px bold red'
                      }}
                    >
                      {/* <h1>{MR[idx]}</h1> */}
@@ -930,8 +981,9 @@ isMulti options={option50592} />
                        style={{
                          width: '100%',
                          height: 'auto',
-                         transform: 'scale(0.85)',
+                        transform: 'scale(0.868)',
                          marginTop: '-15%',
+                        
                        }}
                      >
                        <StatsChart
@@ -951,16 +1003,17 @@ isMulti options={option50592} />
                    <div
                      style={{
                        flexBasis: '40%',
-                       padding: '10px',
+                       padding: '30px',
                        width: '40%',
                      }}
                    >
                      {/* <h1>{MR[idx]}</h1> */}
                      <div
                        style={{
-                         width: '80%',
+                         width: '350px',
                          height: 'auto',
-                         transform: 'scale(0.85)',
+                         //transform: 'scale(0.85)',
+                        
                        }}
                      >
                        
@@ -981,8 +1034,9 @@ isMulti options={option50592} />
                  {/* <h1>{MR[idx]}</h1> */}
                  <div
                    style={{
-                     width: '80%',
+                     width: '450px',
                      height: '100%',
+                     paddingTop:'110px'
                    }}
                  >
                    <StatsChart
@@ -1002,7 +1056,7 @@ isMulti options={option50592} />
                >
                  {/* <h1>{MR[idx]}</h1> */}
                  <div
-                   style={{ width: '100%', height: '100%', marginTop: '5%' }}
+                   style={{ width: '450px', height: '100%',paddingTop:'110px'}}
                  >
                    <StatsChart
                      data={myChartDataSamOK}

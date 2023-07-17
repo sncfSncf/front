@@ -318,9 +318,9 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
 
         <TableCell align="center" style={{ verticalAlign: 'top' }}>
           <div style={{ fontWeight: 'bold' }}>Horodatage</div>
-          <div>
+          {/* <div>
             <input
-            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px'}}
               type="text"
               value={inputValues.searchDate}
               name="searchDate"
@@ -328,14 +328,14 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
               placeholder=" "
              
             />
-          </div>
+          </div> */}
         </TableCell>
 
         <TableCell align="center" style={{ verticalAlign: 'top' }}>
           <div style={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>N° train</div>
           <div>
             <input
-            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px'}}
               type="text"
               value={inputValues.searchNumero}
               name="searchNumero"
@@ -349,7 +349,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
           <div style={{ fontWeight: 'bold' }}>identification MR</div>
           <div>
             <input
-            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+            style={{fontWeight: 'bold' ,padding:'8px',border:'none',padding:'7px',marginTop:'3px'}}
               type="text"
               value={inputValues.searchIdentification}
               name="searchIdentification"
@@ -363,7 +363,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
           <div style={{ fontWeight: 'bold' }}>Vitesse moyenne</div>
           <div>
             <input
-            style={{fontWeight: 'bold' ,border:'none',padding:'7px',marginTop:'3px',height: '34px'}}
+            style={{fontWeight: 'bold' ,border:'none',padding:'7px',marginTop:'3px'}}
               type="text"
               name="searchVitesse"
               value={inputValues.searchVitesse}
@@ -373,10 +373,10 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
           </div>
         </TableCell>
 
-        <TableCell  align="center" style={{ verticalAlign: 'top' }}>
+        <TableCell  align="center" style={{ verticalAlign: 'top',width:'100%'}}>
           <div style={{ display: 'flex' }}>
-            <div>
-              <div style={{ fontWeight: 'bold' }}> SAMS005 </div>
+          <div style={{width:'200px'}}>
+              <div style={{ fontWeight: 'bold' }}align="center"> SAMS005 </div>
               {}
               {/* <Resultats
                 key={`searchSam_${refreshKey}`}
@@ -389,7 +389,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
               /> */}
 
 
-<div style={{ width: '160px' ,height: '30px' , marginRight: '5px',textAlign: 'center'}} >
+<div style={{ width: '200px'}} >
                        <Select  
                          
                         defaultValue={[]}
@@ -412,8 +412,8 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                        </div>
 
             </div>
-            <div>
-              <div style={{ fontWeight: 'bold' }}> 50592</div>
+            <div style={{width:'200px'}}>
+              <div style={{ fontWeight: 'bold' }}align="center"> 50592</div>
               {/* <Resultats
                 key={`search50592_${refreshKey}`}
                 name="search50592"
@@ -425,7 +425,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
               /> */}
 
 
-<div style={{ width: '160px',height: '30px' ,textAlign: 'center'}} >
+<div style={{width: '200px'}} align="center">
 <Select  
                          
                          defaultValue={[]}
@@ -453,11 +453,11 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
           </div>
         </TableCell>
 
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} align="center" >
           <div style={{ fontWeight: 'bold' }}> SYRENE</div>
         </TableCell>
 
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} align="center" >
           <div style={{ fontWeight: 'bold' }}>
             <img src={temp} alt="Température / Humidité / courant dans le rail" style={{ height: '65px', width: '100px', marginTop: '-2px' }} />
           </div>
@@ -483,7 +483,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                     )}
                   </IconButton>
                 </TableCell>
-                <TableCell align="center" style={{ width: '100%', whiteSpace: 'nowrap' }}>
+                <TableCell align="center" style={{ width: '80px', whiteSpace: 'nowrap' }}>
   { (train.dateFichier !== null && train.dateFichier !== undefined)
     ? train.dateFichier + '-' + train.heureFichier
     : (train.datesam !== null && train.datesam !== undefined) 
@@ -493,22 +493,21 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
 </TableCell>
 
 
-                <TableCell align="center" style={{width: '100%'}}>{train.numTrain}</TableCell>
-                <TableCell align="center" style={{width: '100%'}} >{train.mr}</TableCell>
-                <TableCell align="center" style={{width: '100%'}}>
+                <TableCell align="center" style={{width: '80px'}}>{train.numTrain}</TableCell>
+                <TableCell align="center" style={{width: '80px'}} >{train.mr}</TableCell>
+                <TableCell align="center" style={{width: '80px'}}>
                   {train.vitesse_moy !== null ? (
                     <>{train.vitesse_moy} km/h</>
                   ) : (
                     '-'
                   )}
                 </TableCell>
-                <TableCell style={{ textAlign: 'center',width: '100%' }}>
+                <TableCell style={{ textAlign: 'center',width: '400px' }}>
                   {train.statutSAM === 'OK' && (
                     <span
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-success-bg)',
-                        textAlign: 'center'
                       }}
                     >
                       {train.statutSAM}
@@ -519,8 +518,7 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                       className="statut"
                       style={{
                         backgroundColor: 'var(--sncf-error-bg)',
-                        width: '100%',
-                        
+                        width: '100%'
                       }}
                     >
                       {train.statutSAM}
@@ -572,20 +570,20 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
                     </span>
                   )}
                 </TableCell>
-                <TableCell align="left" style={{padding:'6px'}}>
+                <TableCell align="center" style={{padding:'10px',minwidth:'100px'}}>
                   <Link
                     to={`/syrenne/${train.dateFichier}/${train.heureFichier}/${train.site}`}
                     target="_blank"
                   >
                     {train.imagemini !== null && (
-                    <div className="img-container" style={{width: '100%'}}>
+                    <div className="img-container" style={{width: '100px'}} align="center" >
                     <img
                       className="thumbnail"
                       style={{width:'75px',height:'5vh', marginRight:'3px'}} src={train.imagemini} alt='img-mini'
                       
                       />
                     <span className="second-image">
-                      <img  style={{width:'270px',height:'17vh', marginRight:'-30px'}} src={train.imagemini}  alt='img-max'/>
+                      <img  style={{width:'270px',height:'17vh'}} src={train.imagemini}  alt='img-max'/>
                     </span>
                   </div>
                     
@@ -708,8 +706,8 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
             </React.Fragment>
           ))}
         </TableBody>
+      
       </Table>
-      </div>
       <div align="center" style={{padding:'10px'}}>
       <table style={{ borderCollapse: 'collapse', width: '100%', border: 'none' }}>
       <thead>
@@ -722,15 +720,15 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
       </thead>
       <tbody>
         <tr>
-          <td style={{ backgroundColor: '#82be00', color: '#fff', textAlign: 'center', padding: '8px' }}>OK</td>
+          <td style={{ backgroundColor: '#82be00', color: '#fff', textAlign: 'left', padding: '8px' }}>OK</td>
           <td style={{ backgroundColor: '#fff', color: '#000', textAlign: 'left', padding: '8px' }}>Aucun dépassement des limites au sens de la NF EN 50592 ; ou aucune occultation selon la SAM S005</td>
         </tr>
         <tr>
-          <td style={{ backgroundColor: '#cd0037', color: '#fff', textAlign: 'center', padding: '8px' }}>NOK</td>
+          <td style={{ backgroundColor: '#cd0037', color: '#fff', textAlign: 'left', padding: '8px' }}>NOK</td>
           <td style={{ backgroundColor: '#fff', color: '#000', textAlign: 'left', padding: '8px' }}>Dépassement d'au moins une limite au sens de la norme NF EN 50592 ; ou occultation selon la SAM S005</td>
         </tr>
         <tr>
-          <td style={{ backgroundColor: '#ffb612', color: '#fff', textAlign: 'center', padding: '8px' }}>HS</td>
+          <td style={{ backgroundColor: '#ffb612', color: '#fff', textAlign: 'left', padding: '8px' }}>HS</td>
           <td style={{ backgroundColor: '#fff', color: '#000', textAlign: 'left', padding: '8px' }}>Le système d'acquisition NF EN 50592 et/ou SAM S005 est Hors Service (passage non enregistré)</td>
         </tr>
       </tbody>
@@ -775,6 +773,10 @@ console.log("debug","currentTrains",currentTrains,trains,inputValues, currentPag
             Suivant
           </button>
         </div>
+      </div>
+
+      
+    
       </>
     )
   }
