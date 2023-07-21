@@ -280,8 +280,8 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
 
         <TableBody>
 
-          <TableCell rowSpan={3} style={{ border: '1px solid black' }} className='axe rail'>1</TableCell>
-          <TableCell style={{ padding: '0px 16px' ,border: '1px solid black' }} className='axe rail'>X</TableCell>
+          <TableCell rowSpan={3} style={{ border: '1px solid black',textAlign:'center'}} className='axe rail'>1</TableCell>
+          <TableCell style={{ padding: '0px 16px' ,border: '1px solid black',textAlign:'center' }} className='axe rail'>X</TableCell>
           <TableCell colspan={13} className='ble ligne' style={{ padding: '5px 16px' }}>
   {blr1?.X.map((cell, index) => (
     <TableCell
@@ -304,7 +304,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
 </TableCell>
 
           <TableRow>
-            <TableCell style={{ padding: '0px 16px' ,border: '1px solid black' }} className='axe rail'>Y</TableCell>
+            <TableCell style={{ padding: '0px 16px' ,border: '1px solid black',textAlign:'center'}} className='axe rail'>Y</TableCell>
             <TableCell colspan={13} className='ble ligne' >
               {blr1?.Y.map((cell, index) => (
                 <TableCell align="center" className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap',  backgroundColor: '#' + blr1?.Y_Fond[index], border: '1px solid black'  }}> {cell.toString().replace('.', ',')} </TableCell>))}
@@ -313,7 +313,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
             </TableCell>
           </TableRow>
           <TableRow >
-            <TableCell style={{ padding: '0px 16px' ,border: '1px solid black' }} className='axe rail'>Z</TableCell>
+            <TableCell style={{ padding: '0px 16px' ,border: '1px solid black',textAlign:'center' }} className='axe rail'>Z</TableCell>
             <TableCell colspan={13} className='ble ligne'>
               {blr1?.Z.map((cell, index) => (
                 <TableCell align="center" className='ble cell-width' style={{  minWidth: '100px', whiteSpace: 'nowrap', backgroundColor: '#' + blr1?.Z_Fond[index], border: '1px solid black' }} > {cell} </TableCell>))}
@@ -322,8 +322,8 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
             </TableCell>
           </TableRow>
 
-          <TableCell rowSpan={3} style={{ border: '1px solid black' }} className='axe rail'>2</TableCell>
-          <TableCell style={{ padding: '0px 16px' ,border: '1px solid black' }} className='axe rail'>X</TableCell>
+          <TableCell rowSpan={3} style={{ border: '1px solid black',textAlign:'center' }} className='axe rail'>2</TableCell>
+          <TableCell style={{ padding: '0px 16px' ,border: '1px solid black',textAlign:'center'}} className='axe rail'>X</TableCell>
           <TableCell colspan={13} className='ble ligne'>
             {blr2?.X.map((cell, index) => (
               <TableCell align="center" className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap',  backgroundColor: '#' + blr2?.X_Fond[index], border: '1px solid black'  }} > {cell.toString().replace('.', ',')} </TableCell>))}
@@ -331,7 +331,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
               <TableCell align="center" className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap',  backgroundColor: '#' + fob[3][index] , border: '1px solid black' }} > {cell.toString().replace('.', ',')} </TableCell>))}
           </TableCell>
           <TableRow>
-            <TableCell style={{ padding: '0px 16px' ,border: '1px solid black' }} className='axe rail'>Y</TableCell>
+            <TableCell style={{ padding: '0px 16px' ,border: '1px solid black',textAlign:'center' }} className='axe rail'>Y</TableCell>
             <TableCell colspan={13} className='ble ligne cell-width'>
               {blr2?.Y.map((cell, index) => (
                 <TableCell align="center" className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap',backgroundColor: '#' + blr2?.Y_Fond[index], border: '1px solid black'  }} > {cell.toString().replace('.', ',')} </TableCell>))}
@@ -341,7 +341,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
           <TableRow >
 
 
-            <TableCell style={{ padding: '0px 16px', border: '1px solid black' }} className='axe rail'>Z</TableCell>
+            <TableCell style={{ padding: '0px 16px', border: '1px solid black',textAlign:'center'}} className='axe rail'>Z</TableCell>
             <TableCell colspan={13} className='ble ligne'>
               {blr2?.Z.map((cell, index) => (
                 <TableCell align="center" className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap', backgroundColor: '#' + blr2?.Z_Fond[index], border: '1px solid black' }} > {cell.toString().replace('.', ',')} </TableCell>))}
@@ -353,15 +353,15 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
         <TableFooter>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(0, 239, 47)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={8} style={{ padding: '0px 16px' }}> Valeur inférieure ou égale à la limite associée au détecteur</TableCell>
+            <TableCell colspan={13} style={{ padding: '0px 16px' }}> Valeur inférieure ou égale à la limite associée au détecteur</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(255, 56, 42)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={8} style={{ padding: '0px 16px' }}> Valeur supérieure à la limite associée au détecteur</TableCell>
+            <TableCell colspan={13} style={{ padding: '0px 16px' }}> Valeur supérieure à la limite associée au détecteur</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(188, 188, 188)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={8} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M MAE ne peut pas tenir compte de cette valeur</TableCell>
+            <TableCell colspan={13} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M MAE ne peut pas tenir compte de cette valeur</TableCell>
           </TableRow>
         </TableFooter>
       </Table>
@@ -408,7 +408,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
             colSpan={1}
             rowSpan={2}
           >
-            <span>Rail</span>
+            Rail
           </TableCell>
           <TableCell
             style={{
@@ -452,7 +452,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
       </TableHead>
       <TableBody >
         <TableRow>
-          <TableCell style={{ border: '1px solid black' }} rowSpan={3} className='axe rail'>1</TableCell>
+          <TableCell style={{ border: '1px solid black'}} rowSpan={3} className='axe rail'>1</TableCell>
           <TableCell style={{ padding: '0px 16px', border: '1px solid black' }} className='axe rail'>X</TableCell>
           <TableCell style={{ maxWidth: '100px', whiteSpace: 'nowrap', }} colSpan={12} className='ble ligne'>
             {ber1?.X.map((cell, index) => (
@@ -476,19 +476,44 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
             ))}
           </TableCell>
         </TableRow>
+        <TableRow>
+          <TableCell style={{ border: '1px solid black' }} rowSpan={3} className='axe rail'>2</TableCell>
+          <TableCell style={{ padding: '0px 16px', border: '1px solid black' }} className='axe rail'>X</TableCell>
+          <TableCell style={{ maxWidth: '100px', whiteSpace: 'nowrap', }} colSpan={12} className='ble ligne'>
+            {ber2?.X.map((cell, index) => (
+              <TableCell className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap', backgroundColor: '#' + ber2?.X_Fond[index], border: '1px solid black' }}  > {cell.toString().replace('.', ',')} </TableCell>
+            ))}
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ padding: '0px 16px',border: '1px solid black' }} className='axe rail'>Y</TableCell>
+          <TableCell colspan={12}  style={{ minWidth: '100px', whiteSpace: 'nowrap'}} className='ble ligne'>
+            {ber2?.Y.map((cell, index) => (
+              <TableCell className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap', backgroundColor: '#' + ber2?.Y_Fond[index], border: '1px solid black' }} > {cell.toString().replace('.', ',')} </TableCell>
+            ))}
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{  padding: '0px 16px', border: '1px solid black' }} className='axe rail'>Z</TableCell>
+          <TableCell colspan={12} className='ble ligne'>
+            {ber2?.Z.map((cell, index) => (
+              <TableCell className='ble cell-width' style={{ minWidth: '100px', whiteSpace: 'nowrap', backgroundColor: '#' + ber2?.Z_Fond[index], border: '1px solid black' }} > {cell.toString().replace('.', ',')} </TableCell>
+            ))}
+          </TableCell>
+        </TableRow>
       </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(0, 239, 47)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={8} style={{ padding: '0px 16px' }}> Valeur inférieure ou égale à la limite associée au détecteur</TableCell>
+            <TableCell colspan={12} style={{ padding: '0px 16px' }}> Valeur inférieure ou égale à la limite associée au détecteur</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(255, 56, 42)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={8} style={{ padding: '0px 16px' }}> Valeur supérieure à la limite associée au détecteur</TableCell>
+            <TableCell colspan={12} style={{ padding: '0px 16px' }}> Valeur supérieure à la limite associée au détecteur</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(188, 188, 188)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={8} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M MAE ne peut pas tenir compte de cette valeur</TableCell>
+            <TableCell colspan={12} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M MAE ne peut pas tenir compte de cette valeur</TableCell>
           </TableRow>
         </TableFooter>
       </Table>

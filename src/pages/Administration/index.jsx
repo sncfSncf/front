@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import config from '../../config'
 import axios from 'axios'
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import CryptoJS from 'crypto-js'
@@ -59,7 +59,7 @@ export default function Administration() {
   //
   const handleSuppressionClick = async(id) => {
     try {
-      const shouldDelete = window.confirm('Are you sure you want to delete this user?');
+      const shouldDelete = window.confirm('Etes-vous sûr de vouloir supprimer cet utilisateur?');
   
       if (shouldDelete) {
        await axios.delete(`${config.API_URL}/deleteuser/${id}`);
@@ -70,7 +70,9 @@ export default function Administration() {
       console.log(error);
     }
   };
-  
+  const handleAjouterClick = () => {
+    history.push('/NewUser');
+  };
   useEffect(() => {
     loadUsers()
   }, [])
@@ -80,9 +82,7 @@ export default function Administration() {
 
   return (
     <div className="parent administration">
-      <Link className=" submit" to="/NewUser">
-        Ajouter{' '}
-      </Link>
+      <button  className="btn-actions" style={{backgroundColor:'var(--sncf-bleu-primaire-bg)',float:'right'}} onClick={handleAjouterClick}>Ajouter</button>
       <Table>
         <TableHead>
           <TableRow>

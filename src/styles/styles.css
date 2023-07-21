@@ -571,6 +571,27 @@ span.statut {
 
     transition: opacity 0.3s ease-in-out;
   }
+ /* .second-image {
+    position: absolute;
+    top: calc( -12vh - 10px);
+    right: calc( -200px / 2 - 40px);
+    margin-left: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 12px;
+  }*/
+  span.second-image:after {
+    content: '';
+    width: 0;
+    height: 0;
+    right: -10px;
+    top : 25%;
+    position: absolute;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid var(--sncf-cool-gray11-bg); 
+    border-top: 10px solid transparent;
+   
+  }
 .tableau .m50 p,.journal .m50 p{
   background-color: white;
   color: var(--sncf-noir-bg);
