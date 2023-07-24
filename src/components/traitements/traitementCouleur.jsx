@@ -361,7 +361,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
           </TableRow>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(188, 188, 188)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={13} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M MAE ne peut pas tenir compte de cette valeur</TableCell>
+            <TableCell colspan={13} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M AME ne peut pas tenir compte de cette valeur</TableCell>
           </TableRow>
         </TableFooter>
       </Table>
@@ -513,7 +513,7 @@ function TableResultat({ blr1, blr2, ber1, ber2, parBE, parBL, parOB, ob, fob, f
           </TableRow>
           <TableRow>
             <TableCell colspan={2} style={{ backgroundColor: 'rgb(188, 188, 188)', padding: '0px 16px' }}> </TableCell>
-            <TableCell colspan={12} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M MAE ne peut pas tenir compte de cette valeur</TableCell>
+            <TableCell colspan={12} style={{ padding: '0px 16px' }}> Bruit ambiant mesuré supérieur aux limites de la norme -6 dB ==> DGII IP3M AME ne peut pas tenir compte de cette valeur</TableCell>
           </TableRow>
         </TableFooter>
       </Table>

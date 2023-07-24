@@ -82,7 +82,7 @@ export default function Administration() {
 
   return (
     <div className="parent administration">
-      <button  className="btn-actions" style={{backgroundColor:'var(--sncf-bleu-primaire-bg)',float:'right'}} onClick={handleAjouterClick}>Ajouter</button>
+      <button  className="btn-actions" style={{backgroundColor:'var(--sncf-bleu-primaire-bg)',float:'right',margin:'20px 0px'}} onClick={handleAjouterClick}>Ajouter</button>
       <Table>
         <TableHead>
           <TableRow>

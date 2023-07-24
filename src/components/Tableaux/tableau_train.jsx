@@ -252,8 +252,6 @@ const CollapsibleTable = React.forwardRef(
           }
           return true //pas de filtre appliquée
         })
-
-        console.log('Filtrage', filteredTrains)
         
         const indexOfLastTrain = (currentPage + 1) * itemsPerPage;
       const indexOfFirstTrain = indexOfLastTrain - itemsPerPage;
@@ -536,6 +534,8 @@ const CollapsibleTable = React.forwardRef(
                             className="statut"
                             style={{
                               backgroundColor: 'var(--sncf-success-bg)',
+                              margin: '70px',
+                              padding : '5px 20.75px'
                             }}
                           >
                             {train.statutSAM}
@@ -547,6 +547,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-error-bg)',
                               width: '100%',
+                              margin: '70px'
                             }}
                           >
                             {train.statutSAM}
@@ -558,6 +559,8 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-warning-bg)',
                               width: '100%',
+                              margin: '70px',
+                              padding : '5px 22px'
                             }}
                           >
                             HS
@@ -570,6 +573,8 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-success-bg)',
                               width: '100%',
+                              margin: '70px',
+                              padding : '5px 20.75px'
                             }}
                           >
                             {train.statut50592}
@@ -581,6 +586,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-error-bg)',
                               width: '100%',
+                              margin: '70px'
                             }}
                           >
                             {train.statut50592}
@@ -592,6 +598,8 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-warning-bg)',
                               width: '100%',
+                              margin: '70px',
+                              padding : '5px 22px'
                             }}
                           >
                             HS
@@ -926,7 +934,7 @@ const CollapsibleTable = React.forwardRef(
                       style={{
                         backgroundColor: '#82be00',
                         color: '#fff',
-                        textAlign: 'left',
+                        textAlign: 'center',
                         padding: '8px',
                       }}
                     >
@@ -949,7 +957,7 @@ const CollapsibleTable = React.forwardRef(
                       style={{
                         backgroundColor: '#cd0037',
                         color: '#fff',
-                        textAlign: 'left',
+                        textAlign: 'center',
                         padding: '8px',
                       }}
                     >
@@ -972,7 +980,7 @@ const CollapsibleTable = React.forwardRef(
                       style={{
                         backgroundColor: '#ffb612',
                         color: '#fff',
-                        textAlign: 'left',
+                        textAlign: 'center',
                         padding: '8px',
                       }}
                     >
