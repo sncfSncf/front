@@ -27,8 +27,8 @@ function Header() {
   const history = useHistory()
 
   const handleLogout = () => {
-    localStorage.clear()
     auth.setAuth({token: null, role: null, prenom: null})
+    localStorage.clear()
     history.push('/')
   }
 
