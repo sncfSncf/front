@@ -559,15 +559,14 @@ span.statut {
  }
 
   .thumbnail:hover + .second-image {
-    opacity: 1;
+    display: block;
   }
   .second-image {
     position: absolute;
-   
     bottom: -300%;
     right: 120%;
     margin-left: 10px;
-    opacity: 0;
+   display: none;
     z-index: 9;
     transition: opacity 0.3s ease-in-out;
   }

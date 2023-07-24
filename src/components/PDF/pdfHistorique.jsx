@@ -14,7 +14,7 @@ export default function PDF({ data, periode, site }) {
 //'TYPE MR',
     doc.autoTable({
      
-      head: [['Index', 'Heure de passage ', 'Numero de train',  'Vitesse moyenne', 'Resultat Sam S005 | 50592', 'Environnement']],
+      head: [['Index', 'Heure de passage ', 'Numero de train', 'MR','Vitesse moyenne', 'Resultat Sam S005 | 50592', 'Environnement']],
       body: data.map((section, index) => [
         { content: index + 1, styles: { halign: 'center' } },
         { content: (section.dateFichier !== null && section.dateFichier !== undefined)
@@ -23,7 +23,7 @@ export default function PDF({ data, periode, site }) {
               ? section.datesam + '-' + section.heuresam
               : section.date50592 + '-' + section.heure50592, styles: { halign: 'center' } },
         { content: section.numTrain || '/', styles: { halign: 'center' } },
-       // { content: section.mr || '/', styles: { halign: 'center' } },
+        { content: section.mr || '/', styles: { halign: 'center' } },
         { content: section.vitesse_moy ? section.vitesse_moy + ' km/h' : '-', styles: { halign: 'center' } },
 
 
