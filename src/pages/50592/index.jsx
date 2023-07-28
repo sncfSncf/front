@@ -34,7 +34,7 @@ export default function NF50592() {
     // handleScroll()
     html2pdf()
       .set({
-        filename: 'pdf-statistique.pdf',
+        filename: `pdf-FFT-${dateFichier}:${heureFichier}.pdf`,
         // pagebreak: { mode: 'avoid-all', before: '#page2el' },
         jsPDF: {
           orientation: 'landscape',

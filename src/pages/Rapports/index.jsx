@@ -4,10 +4,11 @@ import config from "../../config";
 import ToolbarRapport from '../../components/Toolbar'
 import Loading from '../../components/Loading'
 import image from '../../exemples/images/pdf.png'
-
+import {  useHistory } from 'react-router-dom'
 export default function Rapports(){
     const [mesPdf, setMesPdf] = useState([])
     const [chargement, setChargement] = useState(false);
+    const history = useHistory()
 
     const handleFileClick = (content) => {
         const decodedContent = atob(content)
@@ -42,6 +43,12 @@ export default function Rapports(){
       useEffect(() => {
         loadPdf()
       }, [])
+      /*useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      history.push('/')
+    }
+  }, [history])*/
     return(
         <>
         <div className="parent historique" >

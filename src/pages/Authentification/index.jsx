@@ -65,11 +65,11 @@ const LoginForm = () => {
       }
     }
   }
-  useEffect(() => {
+  /*useEffect(() => {
     if(token){
       history.push('/jourJ')
     }
-  }, [])
+  }, [])*/
 
   return (
     <div className="parent home" style={{ display: 'block' }}>

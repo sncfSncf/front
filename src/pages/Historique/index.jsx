@@ -25,11 +25,11 @@ function Historique() {
   
   const history = useHistory()
   //Recuperation de tous les users existants
-  useEffect(() => {
+  /*useEffect(() => {
     if (!token  ) {
       history.push('/')
     }
-  }, [token, history])
+  }, [token, history])*/
 
 
   const handleDateChange = (ranges) => {

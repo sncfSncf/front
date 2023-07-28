@@ -44,12 +44,12 @@ function Journal() {
 
 
   // Recuperation de tous les users existants
-  useEffect(() => {
+  /*useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) {
       history.push('/')
     }
-  }, [history])
+  }, [history])*/
 
   const handleDateChange = (ranges) => {
     setStartDate(dayjs(ranges.selection.startDate).format('YYYY-MM-DD'))
@@ -189,6 +189,7 @@ function Journal() {
       setCategorie(resultat.data)
       const typesMRArray = resultat.data.map((obj) => obj.typeMR)
       const typesMRString = typesMRArray.join(',')
+      console.debug('categories rapport à la demande',resultat.data)
       setTypesMR(typesMRString)
     } catch (error) {
       
@@ -201,13 +202,13 @@ function Journal() {
     try {
       if(trains.length===0) 
       setChargement(true)
-
       //Récupération des infos d'une date séléctionnée par l'utilisateur
       const resultat = await axios.get(
-        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${typesMR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/api/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-      console.log("demande",        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${typesMR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      console.debug("demande",        `${config.API_URLV2}/api/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
+      console.debug("resultdemande",resultat.data)
       setInfos(resultat.data)
       setChargement(false)
 
@@ -224,7 +225,7 @@ function Journal() {
   }, [site, startDate, endDate])
   useEffect(() => {
     loadInfos()
-  }, [resultSAM, result50592])
+  }, [site,startDate,endDate,resultSAM, result50592])
 
   useEffect(() => {
     loadCategories()
@@ -263,6 +264,7 @@ function Journal() {
                   customData={[infos, categorie,CEPerturbe]}
                   periodeL={[startDate, endDate]}
                   siteSelectionne={site}
+                  filtres={{sam:resultSAM,50592:result50592}}
                 />
                 }
               </div>
@@ -272,7 +274,8 @@ function Journal() {
               
              
             </div>
-           {chargement?(  <Loading/>): (            <Tableau trains={trains} onSearchSamChange={handleResultSAMChange} onSearch50592Change={handleResult50592Change} ref={myRef}  />)} 
+           {chargement?(  <Loading/>): (           
+             <Tableau trains={trains} onSearchSamChange={handleResultSAMChange} onSearch50592Change={handleResult50592Change} ref={myRef}  />)} 
 
 
           </div>

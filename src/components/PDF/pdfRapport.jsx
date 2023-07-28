@@ -17,7 +17,7 @@ import axios from 'axios'
 import config from '../../config'
 import Loading from '../../components/Loading'
 
-export default function PDFRapport({ customData, periodeL, siteSelectionne}) {
+export default function PDFRapport({ customData, periodeL, siteSelectionne,filtres}) {
   const [pdfDocument, setPdfDocument] = useState(null)
   const [pdfDocumentQuarter, setPdfDocumentQuarter] = useState(null)
   const [pdfDocumentAnnual, setPdfDocumentAnnual] = useState(null)
@@ -36,36 +36,26 @@ export default function PDFRapport({ customData, periodeL, siteSelectionne}) {
     let infoSamNOK=[]
     let Info50592NOK=[]
     const doc = new jsPDF()
-    console.log("aaaaaa",data)
     let  [infos, categorie,CEPerturbe,capteurs,isCustom] = data
+    console.debug("infos",infos)
 
 if(infos)
 {
-  infoSamNOK=infos.filter(c=>c.hasOwnProperty('mr(sam nok)'))
-  infoSamOK=infos.filter(c=>c.hasOwnProperty('mr(sam ok)'))
+  infoSamNOK=infos.VueParTypeMR.filter(c=>c.PassagesSam005.NombreNOK>0)
+  infoSamOK=infos.VueParTypeMR.filter(c=>c.PassagesSam005.NombreOK>0)
+    Info50592NOK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreNOK>0)
+    Info50592OK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreNOK>0)
+    console.debug("infoSamNOK",infoSamNOK)
+    console.debug("Info50592NOK",Info50592NOK)
+    console.debug("infoSamOK",infoSamOK)
+    console.debug("Info50592OK",Info50592OK)
 
-}    else
-    infos=[]
-if(type!==3)
-{
-try{
-  Info50592NOK=capteurs?.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
-  Info50592OK=capteurs?.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
+}  
+else
+infos=[]
 
-}catch(e)
-{}
 
-}
-else{
-  
-  try{
-    Info50592NOK=infos.filter(c=>c.hasOwnProperty('mr(50592 nok)'))
-    Info50592OK=infos.filter(c=>c.hasOwnProperty('mr (50592 ok)'))
-    
-  }catch(e)
-  {}
 
-}
 
 
     let y = startY
@@ -285,13 +275,20 @@ else{
                     'Nombre de train passé perturbé',
                     'pourcentage de perturbation de chaque capteur ',
                   ],
+                  // Body: infoSamNOK?.map((section, index) => [
+                  //   index + 1,
+                  //   section['mr(sam nok)'],
+                  //   section['nombre de train passé (sam nok)'],
+                  //   section['nombre de train passé sam nok'],
+                  //   Object.entries(section['pourcentage de perturbation par index d\'un type mr']).map(([key, value]) => `EV${Number(key)+1}: ${value}`).join('\n'),
                   Body: infoSamNOK?.map((section, index) => [
                     index + 1,
-                    section['mr(sam nok)'],
-                    section['nombre de train passé (sam nok)'],
-                    section['nombre de train passé sam nok'],
-                    Object.entries(section['pourcentage de perturbation par index d\'un type mr']).map(([key, value]) => `EV${Number(key)+1}: ${value}`).join('\n'),
-                  ]),
+                    section.TypeDeTrain,
+                    section.PassagesSam005.Nombre,
+                    section.PassagesSam005.NombreNOK,
+                    Object.entries(section.PerturbationsSam005.PerturbationsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
+
+                ]),
                 },
               ],
             }
@@ -316,11 +313,12 @@ else{
                     'pourcentage de perturbation de chaque occultation ',
                   ],
                   Body: Info50592NOK?.map((section, index) => [
+                    
                     index + 1,
-                    section['mr(50592 nok)'],
-                    section['nombre de train passé(50592 nok)'],
-                    section['nombre de train passé 50592 nok'],
-                    Object.entries(section['le pourcentage de chaque capteur']).map(([key, value]) => `${key}: ${value}`).join('\n'),
+                    section.TypeDeTrain,
+                    section.Passages50592.Nombre,
+                    section.Passages50592.NombreNOK,
+                    Object.entries(section.Depassements50592.DepassementsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
                   ]),
                 },
               ],
@@ -345,15 +343,23 @@ if(infoSamOK.length>0){
                 'type mr',
                 'Nombre de train passé',
                 'Nombre de train passé perturbé',
-                'pourcentage de perturbation de chaque capteur',
+                // 'pourcentage de perturbation de chaque capteur',
               ],
+              // Body: infoSamOK?.map((section, index) => [
+              //   index + 1,
+              //   section['mr(sam ok)'],
+              //   section['nombre de train passé (sam ok)'],
+              //   section['nombre de train passé avec sam ok'],
+              //   section['pourcentage de chaque type mr sam ok'],
+              // ]),
               Body: infoSamOK?.map((section, index) => [
                 index + 1,
-                section['mr(sam ok)'],
-                section['nombre de train passé (sam ok)'],
-                section['nombre de train passé avec sam ok'],
-                section['pourcentage de chaque type mr sam ok'],
-              ]),
+                section.TypeDeTrain,
+                section.PassagesSam005.Nombre,
+                section.PassagesSam005.NombreOK,
+                // Object.entries(section.PerturbationsSam005.PerturbationsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
+
+            ]),
             },
           ],
         }
@@ -376,15 +382,23 @@ if(Info50592OK.length>0){
                 'type mr',
                 'Nombre de train passé',
                 'Nombre de train passé perturbé',
-                'poucentage de chaque type mr ',
+                // 'poucentage de chaque type mr ',
               ],
+              // Body: Info50592OK?.map((section, index) => [
+              //   index + 1,
+              //   section['mr (50592 ok)'],
+              //   section['nombre de train passé(50592 ok )'],
+              //   section['nombre de train passé 50592 ok'],
+              //   Object.entries(section['le poucentage de chaque type mr (50592 ok)']).map(([key, value]) => `${key}: ${value}`).join('\n'),
+              // ]),
               Body: Info50592OK?.map((section, index) => [
                 index + 1,
-                section['mr (50592 ok)'],
-                section['nombre de train passé(50592 ok )'],
-                section['nombre de train passé 50592 ok'],
-                Object.entries(section['le poucentage de chaque type mr (50592 ok)']).map(([key, value]) => `${key}: ${value}`).join('\n'),
+                section.TypeDeTrain,
+                section.Passages50592.Nombre,
+                section.Passages50592.NombreOK,
+                // Object.entries(section.Depassements50592.DepassementsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
               ]),
+
             },
           ],
         }
@@ -1037,7 +1051,7 @@ useEffect(()=>{
   return (
 
     <>
-   {chargement?( <div style={{marginRight:"500px"}}><Loading/></div>):(  <Button
+   {chargement?( <div style={{marginRight:"400px"}}><Loading/></div>):(  <Button
       variant="primary"
       onClick={() =>
         handleDownloadPdf(
@@ -1094,7 +1108,7 @@ useEffect(()=>{
         setChargement(true)
       }
       const resultat = await axios.get(
-        `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+        `${config.API_URLV2}/api/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
 
       )
       setChargement(false)
@@ -1105,7 +1119,7 @@ useEffect(()=>{
       
 
       infos = (resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
-      console.log("logger", "infos", infos, `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      console.log("logger", "infos", infos, `${config.API_URLV2}/api/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
 
     } catch (error) {
@@ -1139,7 +1153,7 @@ useEffect(()=>{
             setChargement(true)
           }
         const resultat = await axios.get(
-          `${config.API_URL}/dataBetweenstatistique?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+          `${config.API_URLV2}/api/Stats?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
           
         )
         setChargement(false)

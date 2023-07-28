@@ -83,11 +83,11 @@ function Header() {
     fetchAndDecryptUserData()
   }, [role, prenom])
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!token) {
       history.push('/')
     }
-  }, [token, history])
+  }, [token, history])*/
 
   if (isLoading) {
     return null
@@ -123,7 +123,6 @@ function Header() {
               fontSize: '18px',
             }}
           />
-          {token && (
             <Tab
               icon={<PersonIcon />}
               label={decryptedPrenom}
@@ -134,8 +133,8 @@ function Header() {
                 top: 0,
               }}
             />
-          )}
-          {token ? (
+          
+        
             <Tab
               icon={<LogoutIcon />}
               label="Déconnexion"
@@ -147,27 +146,10 @@ function Header() {
               }}
               onClick={handleLogout}
             />
-          ) : (
-            <NavLink
-              activeClassName="nonactive"
-              to="/"
-              style={{
-                textDecoration: 'none',
-                position: 'absolute',
-                right: 0,
-                top: 0,
-              }}
-            >
-              <Tab
-                icon={<LoginIcon />}
-                label="Connexion"
-                sx={{ color: 'white' }}
-              />
-            </NavLink>
-          )}
+           
         </Box>
       </Toolbar>
-      {token && (
+     
      <Toolbar style={{ padding: '0' }} className="bleu-active" sx={{ backgroundColor: 'white' }}>
      <Tabs style={{ position: 'relative' }}>
        <NavLink activeClassName="active" to="/jourJ" exact style={{ textDecoration: 'none' }}>
@@ -182,17 +164,17 @@ function Header() {
        <NavLink activeClassName="active" to="/synoptique" style={{ textDecoration: 'none' }}>
          <Tab label={<><Dashboard /> Synoptique</>} sx={{ color: 'black' }} />
        </NavLink>
-       {decryptedRole === 'admin' && (
+       
          <NavLink activeClassName="active" to="/administration" style={{ textDecoration: 'none' }}>
            <Tab label={<><Settings /> Administration</>} sx={{ color: 'black' }} />
          </NavLink>
-       )}
+       
        <NavLink activeClassName="active" to="/aide" exact style={{ textDecoration: 'none' }}>
          <Tab label={<><Help /> Aide</>} sx={{ color: 'black' }} />
        </NavLink>
      </Tabs>
    </Toolbar>
-      )}
+      
     </AppBar>
   )
 }

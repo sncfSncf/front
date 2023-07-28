@@ -527,7 +527,7 @@ const CollapsibleTable = React.forwardRef(
                         )}
                       </TableCell>
                       <TableCell
-                        style={{ textAlign: 'center', width: '400px' }}
+                        style={{  width: '400px' }}
                       >
                         {train.statutSAM === 'OK' && (
                           <span

@@ -41,7 +41,8 @@ function Statistique() {
   const [myChartDataSamNOK, setmyChartDataSamNOK] = useState([])
   const [myChartDataSamNOKIndex, setMyChartDataSamNOKIndex] = useState([])
   const [myChartDataSamOK, setmyChartDataSamOK] = useState(null)
-  const [myChartTotal, setmyChartTotal] = useState(null)
+  const [myChartTotal, setmyChartTotal] = useState('')
+  const [newTotal, setnewTotal] = useState(false)
   const [showOkChart, setshowOkChart] = useState(false)
   const [infos, setInfos] = useState([])
   const [chargement, setChargement] = useState([])
@@ -222,6 +223,7 @@ function Statistique() {
       
 
   const handleResult50592Change = (newRes) => {
+    
 if(newRes.length>1){
   setmyChartTotal(null)
   setResult50592('uniquement 50592')
@@ -240,52 +242,23 @@ else {
 }
 
   }
-const loadTotalChart=async()=>{
-
-  try{
-    setChargement(true)
-    const resultat = await axios.get(
-      `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=&statutsam=OK&statut50592=OK&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-    )
-    setChargement(false)
-    console.log(  "abcdmyconfig",    `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=&statutsam=OK&statut50592=OK&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-    )
-
-    let myTotalSam=resultat?.data.find(el=>{
-      if (el["nombre de train passé (sam ok)"]>0){
-        return true
-      }
-    })
-    if(myTotalSam){
-      myTotalSam=myTotalSam["nombre de train passé (sam ok)"]
-    }
-    let myTotal50592=resultat?.data.find(el=>{
-      if (el["nombre de train passé (50592 ok )"]>0){
-        return true
-      }
-    })
-    if(myTotal50592){
-      myTotal50592 = myTotal50592["nombre de train passé (50592 ok )"]
-    }
-    setmyChartTotal({totalSam:myTotalSam,total50592:myTotal50592})
-  } catch (error) {
-    setChargement(false)
-    console.error(error)
-  }
-}
 
     
 
   
 
 
-  useEffect(() => {
-    console.log("abcd",resultSAM===''&&result50592===''&&MR.length===0)
-    if(resultSAM===''&&result50592===''&&MR.length===0){
-      loadTotalChart()
-    }
-   
-    }, [startDate,endDate,site,result50592,resultSAM,MR])
+
+
+
+    /*useEffect(() => {
+      if(infos?.CompteursSam005?.Nombre&&resultSAM===''&&result50592===''&&MR.length===0){
+        console.debug("1",{totalSam:infos.CompteursSam005.Nombre,total50592:infos.Compteurs50592.Nombre})
+  // alert(infos.CompteursSam005.Nombre) 
+      setmyChartTotal({totalSam:infos.CompteursSam005.Nombre,total50592:infos.Compteurs50592.Nombre})
+      }
+     
+      }, [startDate,endDate,site,result50592,resultSAM,MR])*/
 
   const loadInfos = async () => {
     setIsLoading(true)
@@ -299,19 +272,31 @@ const loadTotalChart=async()=>{
 
       //Récupération des infos d'une date séléctionnée par l'utilisateur
       setChargement(true)
-
+      //
       const resultat = await axios.get(
-        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/api/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
       console.log(
-        `${config.API_URL}/dataBetweenstatistique?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/api/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
+
       setInfos(resultat?.data)
       setIsLoading(false)
+
+      console.debug("0",        `${config.API_URLV2}/api/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      )
+      if(resultSAM===''&&result50592===''&&MR.length===0){
+      setmyChartTotal({totalSam:resultat?.data.CompteursSam005.Nombre,total50592:resultat?.data.Compteurs50592.Nombre})
+      }
+    
+     
+      console.debug("2",myChartTotal)
+
+      
     } catch (error) {
       setChargement(false)
-      console.error(error)
+      console.error("axiosError",error)
       setIsLoading(false)
     }
   }
@@ -331,7 +316,7 @@ const loadTotalChart=async()=>{
     }
   }
 
-
+  
   
   //Récupération des CE
   const loadCE = async () => {
@@ -381,7 +366,11 @@ const loadTotalChart=async()=>{
     //     backgroundColor: dataset.backgroundColor,
     //   })),
     // };
+
+    // alert(JSON.stringify(infos.VueParTypeMR))
+
     if (infos) {
+
       // `${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}
       //OKChart50592
 
@@ -394,15 +383,17 @@ const loadTotalChart=async()=>{
           labels: [],
           nbrPassages: [],
         }
-        infos?.forEach((item) => {
-          let mrKey = item['mr (50592 ok)']
-          let pourcentageMr = item['le poucentage de chaque type mr (50592 ok)']
-          let nbrPassages = item['nombre de train passé 50592 ok']
+
+        infos.VueParTypeMR?.forEach((item) => {
+
+          let mrKey = item.TypeDeTrain
+          let pourcentageMr = item.PassagesSam005.PourcentageOK
+          let nbrPassages = item.PassagesSam005.NombreOK
 
           if (!mrKey) {
             mrKey = 'le poucentage des 50592 ok'
-            pourcentageMr = item['le poucentage des 50592 (50592 ok)']
-            nbrPassages = item['nombre de train passé 50592 ok']
+            pourcentageMr = infos.Compteurs50592.PourcentageOK
+            nbrPassages = infos.Compteurs50592.NombreOK
           }
           if (pourcentageMr) {
             chartData.labels.push(mrKey)
@@ -411,6 +402,7 @@ const loadTotalChart=async()=>{
             // chartData.set(mrKey, chartData);
           }
         })
+      
         console.log('nombrepassage', chartData)
 
         setmyChartData50592OK(chartData)
@@ -423,28 +415,32 @@ const loadTotalChart=async()=>{
       ) {
         const myChartData = []
         const chartTitles = []
+        if(infos.VueParTypeMR.length !==0){
+          infos.VueParTypeMR?.forEach((item) => {
 
-        infos?.forEach((item) => {
-          let mrKey = item['mr(50592 nok)']
+          let mrKey = item.TypeDeTrain
           let nbrPassages
-          let pourcentageCapteur = item['le pourcentage de chaque capteur']
+          // le traitement est deja dans le html
+          let pourcentageCapteur = item.Depassements50592.DepassementsPourcentage
+          // alert(JSON.stringify(pourcentageCapteur))
 //            if(MR.length!==0){
 //             nbrPassages = item['nombre de train passé 50592 nok']
-//            }
+//            }    
 // else{
-  nbrPassages = item['nombre de train passé 50592 nok']
-  
-          if(result50592===''){
-            nbrPassages = item['nombre de train passé (50592 nok)']
+  // nbrPassages = Object.entries(item.Depassements50592.DepassementsNombre).map(([label, value])=>value)
+  nbrPassages = item.Passages50592.NombreNOK
+  // alert(JSON.stringify(nbrPassages))
+          // if(result50592===''){
+          //   nbrPassages = item['nombre de train passé (50592 nok)']
 
-          }
+          // }
 // }
-          if (!mrKey) {
-            mrKey = 'Total'
-            // alert(nbrPassages)
+          // if (!mrKey) {
+          //   mrKey = 'Total'
+          //   // alert(nbrPassages)
 
-            // pourcentageMr = item["le poucentage des 50592 (50592 ok)"];
-          }
+          //   // pourcentageMr = item["le poucentage des 50592 (50592 ok)"];
+          // }
 
           if (pourcentageCapteur) {
             const chartData = {
@@ -482,11 +478,15 @@ const loadTotalChart=async()=>{
             // chartData.set(mrKey, chartData);
             myChartData.push(chartData)
             chartTitles.push(mrKey)
+            console.debug("debug50NOK",myChartData,chartTitles)
           }
         })
-
         setmyChartData50592NOK(myChartData)
         setMyChartData50592NOKIndex(chartTitles)
+
+        }
+        
+
       }
 
       //SAM
@@ -499,76 +499,86 @@ const loadTotalChart=async()=>{
           labels: [],
           nbrPassages: [],
         }
-        infos?.forEach((item) => {
-          let mrKey = item['mr(sam ok)']
-          const nbrPassages = item['nombre de train passé avec sam ok']
-          let pourcentageMr = item['pourcentage de chaque type mr sam ok']
+        infos.VueParTypeMR?.forEach((item) => {
 
-          if (!mrKey) {
-            pourcentageMr = item['pourcentage des sam ok']
-            mrKey = 'pourcentage des SAM S005 ok'
-            // pourcentageMr = item["le poucentage des 50592 (50592 ok)"];
-          }
-
-          if (pourcentageMr) {
-            chartData.labels.push(mrKey)
-            chartData.datasets.push(pourcentageMr)
-            chartData.nbrPassages.push(nbrPassages)
+          // if (!mrKey) {
+          //   pourcentageMr = item['pourcentage des sam ok']
+          //   mrKey = 'pourcentage des SAM S005 ok'
+          //   // pourcentageMr = item["le poucentage des 50592 (50592 ok)"];
+          // }
+            chartData.labels.push(item.TypeDeTrain)
+            chartData.datasets.push(item.PassagesSam005.PourcentageOK)
+            chartData.nbrPassages.push(item.PassagesSam005.NombreOK)
 
             // chartData.set(mrKey, chartData);
-          }
+          
         })
 
         setmyChartDataSamOK(chartData)
       }
       //NOKChartSam
+      console.debug("NOKChartSam",resultSAM)
+
       if (
         resultSAM === 'uniquement sam' ||
        resultSAM === 'NOK'
       ) {
+        console.debug("NOKChartSam")
+
         const myChartData = []
         const chartTitles = []
-        const nbrPassagesList = []
+// alert(JSON.stringify(infos.VueParTypeMR))
+      console.debug("SAMNNOK",infos)
 
-        infos?.forEach((item) => {
-          let mrKey = item['mr(sam nok)']
-          let nbrPassages
-          let pourcentageCapteur =
-            item["pourcentage de perturbation par index d'un type mr"]
-           
-            // if(MR.length!==0)
-            nbrPassages = item['nombre de train passé sam nok']
-            // else
-            // nbrPassages = item['nombre de train passé (sam nok)']
-
-
-
-          if (!mrKey) {
-            pourcentageCapteur = item['pourcentage de perturbation par EV']
-            mrKey = 'Total'
+       if(infos.VueParTypeMR.length !== 0){
+        infos.VueParTypeMR?.forEach((item) => {
+          chartTitles.push(item.TypeDeTrain)
+          const chartData = {
+            datasets: [],
+            labels: [],
+            nbrPassages: 0,
           }
+          chartData.nbrPassages = item.PerturbationsSam005
+          // let pourcentageCapteur        
 
-          if (pourcentageCapteur) {
-            const chartData = {
-              datasets: [],
-              labels: [],
-              nbrPassages: 0,
-            }
-
-            nbrPassagesList.push(nbrPassages)
-            Object.entries(pourcentageCapteur).forEach(
+            Object.entries(item.PerturbationsSam005.PerturbationsNombre).forEach(
               ([label, value], index) => {
-                chartData?.labels.push('EV' + label)
+                chartData?.labels.push(label)
                 chartData.datasets.push(value)
               }
             )
-
-            // chartData.set(mrKey, chartData);
-            chartData.nbrPassages = nbrPassages
             myChartData.push(chartData)
-            chartTitles.push(mrKey)
-          }
+            // nbrPassagesList.push(nbrPassages)
+            
+            // chartData.set(mrKey, chartData);
+            
         })
+       }else{
+        
+        chartTitles.push('NOK')
+          const chartData = {
+            datasets: [],
+            labels: [],
+            nbrPassages: 0,
+          }
+          chartData.nbrPassages = infos.PerturbationsSam005.Nombre
+          // let pourcentageCapteur        
+
+            Object.entries(infos.PerturbationsSam005.PerturbationsPourcentage).forEach(
+              ([label, value], index) => {
+                chartData?.labels.push(label)
+                chartData.datasets.push(value)
+              }
+            )
+            myChartData.push(chartData)
+            // nbrPassagesList.push(nbrPassages)
+            
+            // chartData.set(mrKey, chartData);
+            
+        
+
+
+       }
 
         setmyChartDataSamNOK(myChartData)
         setMyChartDataSamNOKIndex(chartTitles)
@@ -580,11 +590,11 @@ const loadTotalChart=async()=>{
     loadTypeMr()
     loadCE()
   }, [])
-  useEffect(() => {
+ /* useEffect(() => {
     if (!token) {
       history.push('/')
     }
-  }, [token, history])
+  }, [token, history])*/
   useEffect(() => {
     loadInfos()
   }, [site, startDate, endDate, MR, result50592, resultSAM, BE, BL])
@@ -753,14 +763,14 @@ const loadTotalChart=async()=>{
         Résultat 50592
       </InputLabel>
 
-      {MR.length===0&& <Resultats
+      {/* {MR.length===0&& <Resultats
                   onChange={handleResult50592ChangeSingle}
                   options={option50592Single}
                   disabled={disabled50}
                 />
-      }
+      } */}
 
-      {MR.length!==0&&   <div style={{width:'80%'}}>
+      {  <div style={{width:'80%'}}>
                        <Select    
                         defaultValue={[]}
                         isMulti
@@ -808,13 +818,13 @@ const loadTotalChart=async()=>{
       </InputLabel>
                        
 
-      {MR.length===0&& <Resultats
+      {/* {MR.length===0&& <Resultats
                   onChange={handleResultSAMChangeSingle}
                   options={optionSAMSingle}
                   disabled={disabled50}
                 />
-      }
-      {MR.length!==0&& <div style={{ width: '80%' }}>
+      } */}
+      {<div style={{ width: '80%' }}>
                        <Select    
                         defaultValue={[]}
                         isMulti
@@ -893,7 +903,7 @@ const loadTotalChart=async()=>{
 
 
 
-           {myChartTotal&&result50592===''&&resultSAM===''&&
+           {myChartTotal&&
                
                <Table
                  style={{
@@ -954,7 +964,7 @@ const loadTotalChart=async()=>{
 
 
 
-{chargement?(<loading/>):(
+{chargement?(<Loading/>):(
 
   <>
    <div
