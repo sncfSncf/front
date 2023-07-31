@@ -242,8 +242,8 @@ function Journal() {
           <Site className="site" onChange={handleSiteChange} />
           {showAlert && <p>Les filtres doivent être sélectionnés.</p>}
         </div>
-                <div className="resultat">
-          <div className="journal" style={{ position: 'relative',marginRight:'30px' }}>
+                
+          <div className="tableau" >
             <p>
             Journal - Statistique - Rapport
               <div
@@ -281,7 +281,7 @@ function Journal() {
           </div>
           
           </div>
-        </div>
+        
       
     </>)
   

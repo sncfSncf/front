@@ -44,7 +44,7 @@ if(infos)
   infoSamNOK=infos.VueParTypeMR.filter(c=>c.PassagesSam005.NombreNOK>0)
   infoSamOK=infos.VueParTypeMR.filter(c=>c.PassagesSam005.NombreOK>0)
     Info50592NOK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreNOK>0)
-    Info50592OK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreNOK>0)
+    Info50592OK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreOK>0)
     console.debug("infoSamNOK",infoSamNOK)
     console.debug("Info50592NOK",Info50592NOK)
     console.debug("infoSamOK",infoSamOK)
@@ -857,6 +857,7 @@ else{
   const handleDownloadPdf = async (filename, data, periode, site) => {
     customPDF+=1
     await generatePdf(data, periodeL, siteSelectionne,3,`(${customPDF})Rapport à la demande de la période ${periodeL[0]}-${periodeL[1]}.pdf`)
+    
   }
 
   const generationReportTrimestrielPrecedent = async () => {

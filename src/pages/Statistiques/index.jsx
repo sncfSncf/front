@@ -66,19 +66,19 @@ function Statistique() {
   const [optionBE_CE, setOptionBE_CE] = useState([])
   const optionSAM = [{label:'NOK',value:"NOK"},{label:'OK',value:"OK"}]
   const option50592 = [{label:'NOK',value:"NOK"},{label:'OK',value:"OK"}]
-  const optionSAMSingle= ["OK","NOK"]
-  const option50592Single = ["OK","NOK"]
+ /* const optionSAMSingle= ["OK","NOK"]
+  const option50592Single = ["OK","NOK"]*/
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
   const optionBE = ['', 'D39', 'D39-bis', 'D50_bis', 'D50']
-  let capteurs = null
+  /*let capteurs = null
   let pourcentage50592 = []
   let nbrPassage50592 = []
   let nbrPassageSAM = []
   let evs = null
   let pourcentageSAM = []
-
+*/
   const handleResult50592ChangeSingle = (newRes) => {
     if (newRes === 'uniquement 50592') {
       setResultSAM('')
@@ -358,32 +358,17 @@ else {
   }
 
   const createChart = async () => {
-    //  convertedData = {
-    //   labels: data?.labels,
-    //   datasets: data.datasets.map((dataset) => ({
-    //     label: dataset.label,
-    //     data: dataset.data,
-    //     backgroundColor: dataset.backgroundColor,
-    //   })),
-    // };
-
-    // alert(JSON.stringify(infos.VueParTypeMR))
-
+  
     if (infos) {
-
-      // `${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}
       //OKChart50592
 
-      if (
-        result50592 === 'uniquement 50592' ||
-        (result50592 === 'OK')
-      ) {
+      if (result50592 === 'uniquement 50592' ||(result50592 === 'OK')) {
         const chartData = {
           datasets: [],
           labels: [],
           nbrPassages: [],
         }
-
+       if(infos.VueParTypeMR.length !==0){
         infos.VueParTypeMR?.forEach((item) => {
 
           let mrKey = item.TypeDeTrain
@@ -402,6 +387,21 @@ else {
             // chartData.set(mrKey, chartData);
           }
         })
+       }
+       else{
+       
+         let mrKey = 'le poucentage des 50592 ok'
+         let pourcentageMr = infos.Compteurs50592.PourcentageOK
+         let nbrPassages = infos.Compteurs50592.NombreOK
+        
+        if (pourcentageMr) {
+          chartData.labels.push(mrKey)
+          chartData.datasets.push(pourcentageMr)
+          chartData.nbrPassages.push(nbrPassages)
+          // chartData.set(mrKey, chartData);
+        }
+       }
+        
       
         console.log('nombrepassage', chartData)
 
@@ -481,48 +481,86 @@ else {
             console.debug("debug50NOK",myChartData,chartTitles)
           }
         })
-        setmyChartData50592NOK(myChartData)
-        setMyChartData50592NOKIndex(chartTitles)
+        }
+        else{
+            let mrKey = 'NOK'
+            let nbrPassages = infos.Compteurs50592.NombreNOK
+            // le traitement est deja dans le html
+            let pourcentageCapteur = infos.Depassements50592.DepassementsPourcentage
+           
+            if (pourcentageCapteur) {
+              const chartData = {
+                datasets: [],
+                labels: [],
+                nbrPassages: nbrPassages,
+              }
+  
+              let pourcentageCapteurFiltered = JSON.parse(
+                JSON.stringify(pourcentageCapteur)
+  
+              )
+              const filter=[]
+              if(BL){
+                filter.push(BL)
+              }
+              if(BE){
+                filter.push(BE)
+              }
+              if (filter.length>0) {
+                // alert(JSON.stringify(BE))
+                Object.keys(pourcentageCapteurFiltered).forEach((key) => {
+                  if (!filter.find(cpt=>cpt===key)) {
+                    delete pourcentageCapteurFiltered[key]
+                  }
+                })
+              }
+  
+              Object.entries(pourcentageCapteurFiltered).forEach(
+                ([label, value]) => {
+                  chartData?.labels.push(label)
+                  chartData.datasets.push(value)
+                }
+              )
+              // chartData.set(mrKey, chartData);
+              myChartData.push(chartData)
+              chartTitles.push(mrKey)
+              console.debug("debug50NOK",myChartData,chartTitles)
+            }
+          
 
         }
-        
+        setmyChartData50592NOK(myChartData)
+        setMyChartData50592NOKIndex(chartTitles)
 
       }
 
       //SAM
-      if (
-        resultSAM === 'uniquement sam' ||
-        resultSAM === 'OK'
-      ) {
+      if (resultSAM === 'uniquement sam' ||resultSAM === 'OK') {
         const chartData = {
           datasets: [],
           labels: [],
           nbrPassages: [],
         }
-        infos.VueParTypeMR?.forEach((item) => {
-
-          // if (!mrKey) {
-          //   pourcentageMr = item['pourcentage des sam ok']
-          //   mrKey = 'pourcentage des SAM S005 ok'
-          //   // pourcentageMr = item["le poucentage des 50592 (50592 ok)"];
-          // }
-            chartData.labels.push(item.TypeDeTrain)
-            chartData.datasets.push(item.PassagesSam005.PourcentageOK)
-            chartData.nbrPassages.push(item.PassagesSam005.NombreOK)
-
-            // chartData.set(mrKey, chartData);
-          
-        })
-
+        if(infos.VueParTypeMR.length !==0){
+          infos.VueParTypeMR?.forEach((item) => {
+              chartData.labels.push(item.TypeDeTrain)
+              chartData.datasets.push(item.PassagesSam005.PourcentageOK)
+              chartData.nbrPassages.push(item.PassagesSam005.NombreOK)
+  
+              // chartData.set(mrKey, chartData);
+            
+          })
+        }else{
+          chartData.labels.push('SAM OK')
+          chartData.datasets.push(infos.CompteursSam005.PourcentageOK)
+          chartData.nbrPassages.push(infos.CompteursSam005.NombreOK)
+        }
         setmyChartDataSamOK(chartData)
       }
       //NOKChartSam
       console.debug("NOKChartSam",resultSAM)
 
-      if (
-        resultSAM === 'uniquement sam' ||
-       resultSAM === 'NOK'
-      ) {
+      if (resultSAM === 'uniquement sam' ||resultSAM === 'NOK') {
         console.debug("NOKChartSam")
 
         const myChartData = []
@@ -530,7 +568,7 @@ else {
 // alert(JSON.stringify(infos.VueParTypeMR))
       console.debug("SAMNNOK",infos)
 
-       if(infos.VueParTypeMR.length !== 0){
+       if(infos.VueParTypeMR.length !==0){
         infos.VueParTypeMR?.forEach((item) => {
           chartTitles.push(item.TypeDeTrain)
           const chartData = {
@@ -538,7 +576,7 @@ else {
             labels: [],
             nbrPassages: 0,
           }
-          chartData.nbrPassages = item.PerturbationsSam005
+          chartData.nbrPassages = item.PerturbationsSam005.Nombre
           // let pourcentageCapteur        
 
             Object.entries(item.PerturbationsSam005.PerturbationsNombre).forEach(
@@ -842,7 +880,7 @@ else {
                        
                        
                        
- options={option50592} />
+ options={optionSAM} />
                        </div>
       }
       
