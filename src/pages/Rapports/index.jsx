@@ -43,12 +43,12 @@ export default function Rapports(){
       useEffect(() => {
         loadPdf()
       }, [])
-      /*useEffect(() => {
+      useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) {
       history.push('/')
     }
-  }, [history])*/
+  }, [history])
   return (
     <>
       <div className="parent historique" >

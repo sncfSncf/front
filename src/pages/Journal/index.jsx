@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Site from '../../components/SelectList/sites'
 import styles from '../../styles/styles.css'
 import Resultats from '../../components/SelectList/resultats'
@@ -6,7 +6,7 @@ import Footer from '../../components/Footer'
 import { Button, InputLabel } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import dayjs from 'dayjs' 
+import dayjs from 'dayjs'
 import PDFRapport from '../../components/PDF/pdfRapport'
 import RangeDatePicker from '../../components/Calender'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -36,20 +36,17 @@ function Journal() {
   const [CEPerturbe, setCEPerturbe] = useState([])
 
   const [pdfData, setPdfData] = useState(null)
-  const [capteurs,setCapteurs]=useState([])
-
+  const [capteurs, setCapteurs] = useState([])
 
   const myRef = useRef()
 
-
-
   // Recuperation de tous les users existants
-  /*useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) {
       history.push('/')
     }
-  }, [history])*/
+  }, [history])
 
   const handleDateChange = (ranges) => {
     setStartDate(dayjs(ranges.selection.startDate).format('YYYY-MM-DD'))
@@ -72,18 +69,15 @@ function Journal() {
     else setResult50592('uniquement 50592')
   }
 
-
   const loadTrains = async () => {
-
-    console.log("debug","result50592 resultSAM",result50592 ,resultSAM)
+    console.log('debug', 'result50592 resultSAM', result50592, resultSAM)
     try {
       if (!site || !startDate || !endDate) {
         setShowAlert(true)
         return
       }
       setShowAlert(false)
-      if(trains.length===0) 
-      setChargement(true)
+      if (trains.length === 0) setChargement(true)
 
       const resultat = await axios.get(
         `${config.API_URLV2}/data?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
@@ -91,7 +85,6 @@ function Journal() {
       setChargement(false)
 
       setTrains(resultat.data)
-      
 
       if (result50592 !== '' || resultSAM !== '') {
         let trainsWithFilters
@@ -129,15 +122,12 @@ function Journal() {
     }
   }
   const refresh = () => {
-    myRef.current.childMethod() 
-
-  };
-
+    myRef.current.childMethod()
+  }
 
   const loadCapteurs = async () => {
     try {
-      if(trains.length===0) 
-      setChargement(true)
+      if (trains.length === 0) setChargement(true)
 
       const response = await axios.get(`${config.API_URL}/allcapteurs`)
       setChargement(false)
@@ -152,47 +142,46 @@ function Journal() {
       console.log('Error:', error)
     }
   }
-  const loadCEPerturbe = async ()=>{
+  const loadCEPerturbe = async () => {
     try {
       //Récupération des infos d'une date séléctionnée par l'utilisateur
-      if(trains.length===0) 
-      setChargement(true)
+      if (trains.length === 0) setChargement(true)
 
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenRapport?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
 
-      setCEPerturbe(resultat.data[resultat.data.length-1])
+      setCEPerturbe(resultat.data[resultat.data.length - 1])
     } catch (error) {
       setChargement(false)
 
       console.error(error)
     }
   }
-  
+
   useEffect(() => {
-    loadCapteurs() 
+    loadCapteurs()
   }, [])
   const loadCategories = async () => {
     try {
-      if(trains.length===0) 
-      setChargement(true)
+      if (trains.length === 0) setChargement(true)
 
       const resultat = await axios.get(
         `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
-      console.log("demande",              `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      console.log(
+        'demande',
+        `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
 
       setCategorie(resultat.data)
       const typesMRArray = resultat.data.map((obj) => obj.typeMR)
       const typesMRString = typesMRArray.join(',')
-      console.debug('categories rapport à la demande',resultat.data)
+      console.debug('categories rapport à la demande', resultat.data)
       setTypesMR(typesMRString)
     } catch (error) {
-      
       setChargement(false)
 
       console.error(error)
@@ -200,18 +189,18 @@ function Journal() {
   }
   const loadInfos = async () => {
     try {
-      if(trains.length===0) 
-      setChargement(true)
+      if (trains.length === 0) setChargement(true)
       //Récupération des infos d'une date séléctionnée par l'utilisateur
       const resultat = await axios.get(
         `${config.API_URLV2}/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-      console.debug("demande",        `${config.API_URLV2}/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      console.debug(
+        'demande',
+        `${config.API_URLV2}/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-      console.debug("resultdemande",resultat.data)
+      console.debug('resultdemande', resultat.data)
       setInfos(resultat.data)
       setChargement(false)
-
     } catch (error) {
       setChargement(false)
 
@@ -219,72 +208,72 @@ function Journal() {
     }
   }
   useEffect(() => {
-
     loadTrains()
-
   }, [site, startDate, endDate])
   useEffect(() => {
     loadInfos()
-  }, [site,startDate,endDate,resultSAM, result50592])
+  }, [site, startDate, endDate, resultSAM, result50592])
 
   useEffect(() => {
     loadCategories()
-   
+
     loadCEPerturbe()
   }, [site, startDate, endDate])
 
   return (
     <>
-  
       <div className="parent historique">
         <div className="filtre historique">
           <RangeDatePicker onChange={handleDateChange} />
           <Site className="site" onChange={handleSiteChange} />
           {showAlert && <p>Les filtres doivent être sélectionnés.</p>}
         </div>
-                <div className="resultat">
-          <div className="journal" style={{ position: 'relative',marginRight:'30px' }}>
-            <p>
-            Journal - Statistique - Rapport
-              <div
-                style={{
-                  display: 'inline-block',
-                  position: 'absolute',
-                  right: '15px',
-                  margin: 'auto',
-                  top: '10px',
-                }}
-              >
-                <Button variant="primary" onClick={refresh}>
-                  <RefreshIcon /> Rafaîchir
-                </Button>
 
-                {
-                  <PDFRapport 
-                  customData={[infos, categorie,CEPerturbe]}
+        <div
+          className="tableau"
+          style={{ position: 'relative', marginRight: '30px' }}
+        >
+          <p>
+            Journal - Statistique - Rapport
+            <div
+              style={{
+                display: 'inline-block',
+                position: 'absolute',
+                right: '15px',
+                margin: 'auto',
+                top: '10px',
+              }}
+            >
+              <Button variant="primary" onClick={refresh}>
+                <RefreshIcon /> Rafaîchir
+              </Button>
+
+              {
+                <PDFRapport
+                  customData={[infos, categorie, CEPerturbe]}
                   periodeL={[startDate, endDate]}
                   siteSelectionne={site}
-                  filtres={{sam:resultSAM,50592:result50592}}
+                  filtres={{ sam: resultSAM, 50592: result50592 }}
                 />
-                }
-              </div>
-            </p>
-            <div>
-              <Toolbar />
-              
-             
+              }
             </div>
-           {chargement?(  <Loading/>): (           
-             <Tableau trains={trains} onSearchSamChange={handleResultSAMChange} onSearch50592Change={handleResult50592Change} ref={myRef}  />)} 
-
-
+          </p>
+          <div>
+            <Toolbar />
           </div>
-          
-          </div>
+          {chargement ? (
+            <Loading />
+          ) : (
+            <Tableau
+              trains={trains}
+              onSearchSamChange={handleResultSAMChange}
+              onSearch50592Change={handleResult50592Change}
+              ref={myRef}
+            />
+          )}
         </div>
-      
-    </>)
-  
-  
+      </div>
+    </>
+  )
 }
 export default Journal

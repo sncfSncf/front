@@ -48,7 +48,7 @@ const LoginForm = () => {
       formData.append("login", values.login)
       formData.append("password", values.password)
       const timestamp = Date.now(); // Ajout du timestamp
-      const response = await axios.post(`${config.API_URL}/connexion?timestamp=${timestamp}`, formData) // Utilisation du timestamp dans l'URL
+      const response = await axios.post(`${config.API_URLV2}/connexion?timestamp=${timestamp}`, formData) // Utilisation du timestamp dans l'URL
       const token = response.data.a
       const role = response.data.c
       const prenom = response.data.b
@@ -68,11 +68,11 @@ const LoginForm = () => {
       }
     }
   }
-  /*useEffect(() => {
+  useEffect(() => {
     if(token){
       history.push('/jourJ')
     }
-  }, [])*/
+  }, [])
 
   return (
     <div className="parent home" style={{ display: 'block' }}>

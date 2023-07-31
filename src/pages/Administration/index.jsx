@@ -78,14 +78,14 @@ export default function Administration() {
   useEffect(() => {
     loadUsers()
   }, [])
-  /*useEffect(() => {
+  useEffect(() => {
     decrypt()
-  }, [role, token])*/
+  }, [role, token])
 
   return (
     <div className="parent administration">
       <button  className="btn-actions" style={{backgroundColor:'var(--sncf-bleu-primaire-bg)',float:'right',margin:'20px 0px'}} onClick={handleAjouterClick}>Ajouter</button>
-      <Table>
+      <Table style={{marginBottom:'100px'}}>
         <TableHead>
           <TableRow>
             <TableCell>Nom</TableCell>
