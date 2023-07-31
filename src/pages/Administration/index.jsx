@@ -43,8 +43,8 @@ export default function Administration() {
   }
   const loadUsers = async () => {
     try {
-      const resultat = await axios.get(`${config.API_URL}/user`)
-      setUsers(resultat.data._embedded.utilisateurList)
+      const resultat = await axios.get(`${config.API_URLV2}/user`)
+      setUsers(resultat.data)
     } catch (error) {
       console.error(error)
 
@@ -62,7 +62,9 @@ export default function Administration() {
       const shouldDelete = window.confirm('Etes-vous sûr de vouloir supprimer cet utilisateur?');
   
       if (shouldDelete) {
-       await axios.delete(`${config.API_URL}/deleteuser/${id}`);
+        const formData = new FormData();
+        formData.append("id", id)
+        await axios.post(`${config.API_URLV2}/user/delete`, formData);
         history.push('/administration')
         loadUsers();
       }

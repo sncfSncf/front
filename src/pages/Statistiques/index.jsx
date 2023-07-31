@@ -274,17 +274,17 @@ else {
       setChargement(true)
       //
       const resultat = await axios.get(
-        `${config.API_URLV2}/api/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
       console.log(
-        `${config.API_URLV2}/api/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
 
       setInfos(resultat?.data)
       setIsLoading(false)
 
-      console.debug("0",        `${config.API_URLV2}/api/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      console.debug("0",        `${config.API_URLV2}/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       if(resultSAM===''&&result50592===''&&MR.length===0){
       setmyChartTotal({totalSam:resultat?.data.CompteursSam005.Nombre,total50592:resultat?.data.Compteurs50592.Nombre})
@@ -690,6 +690,7 @@ else {
       transition: 'box-shadow 0.3s',
       padding: '10px',
       marginTop: '-15px',
+      backgroundColor : '#0088ce'
     }}
   >
     <div

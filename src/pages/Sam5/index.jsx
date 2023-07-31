@@ -13,23 +13,9 @@ export default function Chart() {
   async function loadCapteurs() {
     setIsLoading(true);
     try {
-      const resultat = await axios.get(
-        `${config.API_URL}/echantillonage?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`
-      );
-
-      console.log("graph",        `${config.API_URL}/echantillonage?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`
-      )
-      const capteurs = resultat.data;
-      // console.log("resultat.data",resultat.data);
-      // alert(JSON.stringify(capteurs))
-      const seriesData = capteurs.map((capteur,index) => ({
-        data: capteur.contenuFichier.Capteurs[0].X.map((x, index) => [
-          parseFloat(capteur.contenuFichier.Capteurs[0].X[index]),
-          parseFloat(capteur.contenuFichier.Capteurs[0].Y[index]).toFixed(2),
-        ]),
-        name: 'EV'+(index+1),
-      }));
-      setChartData({ series: seriesData, options: getChartOptions() });
+      const resultat = await axios.get(`${config.API_URLV2}/enveloppes?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`);
+      console.log("graph", `${config.API_URLV2}/enveloppes?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`)
+      setChartData({ series: resultat.data, options: getChartOptions() });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -47,7 +33,6 @@ export default function Chart() {
         id: 'time-series-chart',
         animations: {
           enabled: true,
-          easing: 'linear',
           dynamicAnimation: {
             speed: 1000,
           },
@@ -61,7 +46,7 @@ export default function Chart() {
         type: 'numeric',
       },
       stroke: {
-        width: 2, // Adjust the width as needed
+        width: 1, // Adjust the width as needed
       },
 
     };
@@ -73,14 +58,14 @@ export default function Chart() {
         <Loading />
       ) : (
         chartData && (
-          <div style={{ width: '110%'}}>
-          <ReactApexChart
-            options={chartData.options}
-            series={chartData.series}
-            type='line'
-            height='100%'
-          />
-        </div>
+          <div style={{ width: '110%' }}>
+            <ReactApexChart
+              options={chartData.options}
+              series={chartData.series}
+              type='line'
+              height='100%'
+            />
+          </div>
         )
       )}
     </div>

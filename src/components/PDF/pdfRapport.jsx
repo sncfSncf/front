@@ -766,7 +766,7 @@ if(type===1){
     // le stocker dans le dossier output
     if(dateF){
       setChargement(true)
-    }    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    } const resultatEnvoi = await axios.post(`${config.API_URLV2}/file/upload`, formData)
     setChargement(false)
 
     // alert(resultatEnvoi.data)
@@ -786,7 +786,7 @@ if(type===1){
     if(dateF){
       setChargement(true)
     }
-    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    const resultatEnvoi = await axios.post(`${config.API_URLV2}/file/upload`, formData)
     setChargement(false)
 
     // alert(resultatEnvoi.data)
@@ -807,7 +807,7 @@ else{
     if(dateF){
       setChargement(true)
     }
-    const resultatEnvoi = await  axios.post(`${config.API_URL}/upload`, formData)
+    const resultatEnvoi = await  axios.post(`${config.API_URLV2}/file/upload`, formData)
     setChargement(false)
 
     // alert(resultatEnvoi.data)
@@ -1108,7 +1108,7 @@ useEffect(()=>{
         setChargement(true)
       }
       const resultat = await axios.get(
-        `${config.API_URLV2}/api/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+        `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
 
       )
       setChargement(false)
@@ -1119,7 +1119,7 @@ useEffect(()=>{
       
 
       infos = (resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
-      console.log("logger", "infos", infos, `${config.API_URLV2}/api/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      console.log("logger", "infos", infos, `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
 
     } catch (error) {
@@ -1153,7 +1153,7 @@ useEffect(()=>{
             setChargement(true)
           }
         const resultat = await axios.get(
-          `${config.API_URLV2}/api/Stats?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+          `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
           
         )
         setChargement(false)

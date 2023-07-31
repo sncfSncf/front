@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import config from "../../config";
 import ToolbarRapport from '../../components/Toolbar'
 import Loading from '../../components/Loading'
-import image from '../../exemples/images/pdf.png'
+import image from '../../exemples/images/pdf2.png'
 import {  useHistory } from 'react-router-dom'
 export default function Rapports(){
     const [mesPdf, setMesPdf] = useState([])
@@ -26,7 +26,7 @@ export default function Rapports(){
         try {
           setChargement(true)
 
-          const response = await axios.get(`${config.API_URL}/download`)
+          const response = await axios.get(`${config.API_URLV2}/download`)
           setChargement(false)
 
           if (response.status === 200) {
@@ -49,58 +49,46 @@ export default function Rapports(){
       history.push('/')
     }
   }, [history])*/
-    return(
-        <>
-        <div className="parent historique" >
-            <div className="rapports">
-            <p> Journal - Statistique - Rapport</p>
-           
-            <ToolbarRapport />
+  return (
+    <>
+      <div className="parent historique" >
+        <div className="rapports">
+          <p> Journal - Statistique - Rapport</p>
 
-{chargement?(<Loading/>):( <div className='rapportsAnTrim'>
-          
-            <span style={{ display: 'inline-block', width: '30%', marginBottom: '10px', marginTop: '10px', padding: '10px', borderBottom: '1px solid black' }}>
-    <h5 style={{ fontWeight: 'bold' }}>Rapports annuels</h5>
-  </span>
+          <ToolbarRapport />
+
+          {chargement ? (<Loading />) : (<div className='rapportsAnTrim'>
+
+            <table class="tbrapport" cellSpacing="0" cellPadding="0">
+              <tr><th colspan="2">Rapports annuels</th></tr>
               {mesPdf?.map((pdf, index) => {
                 if (pdf?.name.includes('annuel')) {
                   return (
-                    <li
-                      key={index}
-                      onClick={() => handleFileClick(pdf.content)}
-                    >
-                     
-                    </li>
-                  )
+                    <tr><td><a target="_blank" href={pdf.content}>{pdf.name}</a></td><td><img width="20px" src={image}></img></td></tr>
+                  );
                 }
                 return null
               })}
-  <span style={{ display: 'inline-block', width: '30%', marginBottom: '10px', marginTop: '10px', padding: '10px', borderBottom: '1px solid black' }}>
-    <h5 style={{ fontWeight: 'bold' }}>Rapports trimestriels</h5>
-  </span>
-  <span style={{ color: 'blue', cursor: 'pointer' }}>
-  {mesPdf?.map((pdf, index) => {
-    if (pdf?.name.includes('trimestriel')) {
-      return (
-        <li
-          key={index}
-          onClick={() => handleFileClick(pdf.content)}
-        >
-          
-          {pdf.name} &nbsp;&nbsp;<img style={{width:'1.5%',height:'1.5%'}} src={image}></img>
-        </li>
-      );
-    }
-    return null;
-  })}
-</span>
+            </table>
+            <br></br>
+            <table class="tbrapport">
+              <tr><th colspan="2">Rapports trimestriels</th></tr>
+              {mesPdf?.map((pdf, index) => {
+                if (pdf?.name.includes('trimestriel')) {
+                  return (
+                    <tr><td><a target="_blank" href={pdf.content}>{pdf.name}</a></td><td><img width="20px" src={image}></img></td></tr>
+                  );
+                }
+                return null;
+              })}
+            </table>
 
-            
-            </div>)}
 
-           
-            </div>
+          </div>)}
+
+
         </div>
-        </>
-    )
+      </div>
+    </>
+  )
 }

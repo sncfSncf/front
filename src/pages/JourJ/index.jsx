@@ -32,7 +32,7 @@ function JourJ() {
     setSelectedSite(newSite)
   }
 
-  const loadTrains = async () => {
+  const loadTrains = async () => { 
     try {
       if (!site  ) {
         setShowAlert(true);
@@ -41,9 +41,8 @@ function JourJ() {
       setIsLoading(true);
       
        // http://localhost:8080/data?site=Chevilly&dateFichier=2023-06-24
-       const resultat = await axios.get(`${config.API_URL}/data?site=${site}&dateFichier=${date}`)
+      const resultat = await axios.get(`${config.API_URLV2}/data?site=${site}&dateFichier=${date}`)
 
-      //const resultat = await axios.get(`${config.API_URL}/data?site=${site}&dateFichier=2023-05-05`)
       
       setTrains(resultat.data)
       setIsLoading(false)

@@ -20,7 +20,7 @@ import Select, { components } from 'react-select'
 
 const CollapsibleTable = React.forwardRef(
   (
-    { trains, onSearchSamChange = () => {}, onSearch50592Change = () => {} },
+    { trains, onSearchSamChange = () => { }, onSearch50592Change = () => { } },
     ref
   ) => {
     useImperativeHandle(ref, () => ({
@@ -252,17 +252,17 @@ const CollapsibleTable = React.forwardRef(
           }
           return true //pas de filtre appliquée
         })
-        
-        const indexOfLastTrain = (currentPage + 1) * itemsPerPage;
-      const indexOfFirstTrain = indexOfLastTrain - itemsPerPage;
-      const currentTrains = filteredTrains.slice(
-        indexOfFirstTrain,
-        indexOfLastTrain
-      );
 
-      console.log('Filtrage', filteredTrains);
-      setTrainsFiltres(currentTrains); // Update the filtered trains to display on the current page
-      setPageCount(Math.ceil(filteredTrains.length / itemsPerPage));
+        const indexOfLastTrain = (currentPage + 1) * itemsPerPage;
+        const indexOfFirstTrain = indexOfLastTrain - itemsPerPage;
+        const currentTrains = filteredTrains.slice(
+          indexOfFirstTrain,
+          indexOfLastTrain
+        );
+
+        console.log('Filtrage', filteredTrains);
+        setTrainsFiltres(currentTrains); // Update the filtered trains to display on the current page
+        setPageCount(Math.ceil(filteredTrains.length / itemsPerPage));
       }
     }, [trains, inputValues, currentPage])
     const [pageCount, setPageCount] = useState(1); // Initialize pageCount with 1
@@ -289,6 +289,23 @@ const CollapsibleTable = React.forwardRef(
       return timestampB - timestampA
     })
     const [isHovered, setIsHovered] = useState(false)
+
+    const divModale = useRef(null);
+    const imageModale = useRef(null);
+    const spanClose = useRef(null);
+
+    const handleClick = (e) => {
+      e.preventDefault();
+      divModale.current.style.display = "block";
+      imageModale.current.src = e.target.src;
+      console.log(e.target.src);
+    }
+
+    const handleClose = (e) => {
+      e.preventDefault();
+      divModale.current.style.display = "none";
+    }
+
     if (trains.length > 0) {
       const linkStyle = {
         color: 'black',
@@ -302,6 +319,10 @@ const CollapsibleTable = React.forwardRef(
 
       return (
         <>
+          <div ref={divModale} onClick={handleClose} class="modal">
+            <img class="modal-content" src="https://dev-syrene-rerb.rd-vision-dev.com/import/system_2/2023/07/2023-07-02T23-33-04/2023-07-02T23-33-04_Mission_vignette.jpg" ref={imageModale} />
+          </div>
+
           <div style={{ width: '100%', overflowX: 'auto' }}>
             <Table aria-label="collapsible table">
               <TableHead>
@@ -393,7 +414,7 @@ const CollapsibleTable = React.forwardRef(
                           {' '}
                           SAMS005{' '}
                         </div>
-                        {}
+                        { }
                         {/* <Resultats
                 key={`searchSam_${refreshKey}`}
                 name="searchSam"
@@ -505,12 +526,12 @@ const CollapsibleTable = React.forwardRef(
                         style={{ width: '80px', whiteSpace: 'nowrap' }}
                       >
                         {train.dateFichier !== null &&
-                        train.dateFichier !== undefined
+                          train.dateFichier !== undefined
                           ? train.dateFichier + '-' + train.heureFichier
                           : train.datesam !== null &&
                             train.datesam !== undefined
-                          ? train.datesam + '-' + train.heuresam
-                          : train.date50592 + '-' + train.heure50592}
+                            ? train.datesam + '-' + train.heuresam
+                            : train.date50592 + '-' + train.heure50592}
                       </TableCell>
 
                       <TableCell align="center" style={{ width: '80px' }}>
@@ -527,7 +548,7 @@ const CollapsibleTable = React.forwardRef(
                         )}
                       </TableCell>
                       <TableCell
-                        style={{  width: '400px' }}
+                        style={{ width: '400px' }}
                       >
                         {train.statutSAM === 'OK' && (
                           <span
@@ -535,7 +556,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-success-bg)',
                               margin: '70px',
-                              padding : '5px 20.75px'
+                              padding: '5px 20.75px'
                             }}
                           >
                             {train.statutSAM}
@@ -560,7 +581,7 @@ const CollapsibleTable = React.forwardRef(
                               backgroundColor: 'var(--sncf-warning-bg)',
                               width: '100%',
                               margin: '70px',
-                              padding : '5px 22px'
+                              padding: '5px 22px'
                             }}
                           >
                             HS
@@ -574,7 +595,7 @@ const CollapsibleTable = React.forwardRef(
                               backgroundColor: 'var(--sncf-success-bg)',
                               width: '100%',
                               margin: '70px',
-                              padding : '5px 20.75px'
+                              padding: '5px 20.75px'
                             }}
                           >
                             {train.statut50592}
@@ -599,44 +620,18 @@ const CollapsibleTable = React.forwardRef(
                               backgroundColor: 'var(--sncf-warning-bg)',
                               width: '100%',
                               margin: '70px',
-                              padding : '5px 22px'
+                              padding: '5px 22px'
                             }}
                           >
                             HS
                           </span>
                         )}
                       </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ padding: '10px', minwidth: '100px' }}
-                      >
-                        <Link
-                          to={`/syrenne/${train.dateFichier}/${train.heureFichier}/${train.site}`}
-                          target="_blank"
-                        >
+                      <TableCell align="center" style={{ padding: '10px', minwidth: '100px' }}                      >
+                        <Link to={`/syrenne/${train.dateFichier}/${train.heureFichier}/${train.site}`} target="_blank"                        >
                           {train.imagemini !== null && (
-                            <div
-                              className="img-container"
-                              style={{ width: '100px' }}
-                              align="center"
-                            >
-                              <img
-                                className="thumbnail"
-                                style={{
-                                  width: '75px',
-                                  height: '5vh',
-                                  marginRight: '3px',
-                                }}
-                                src={train.imagemini}
-                                alt="img-mini"
-                              />
-                              <span className="second-image">
-                                <img
-                                  style={{ width: '400px', height: '25vh',borderRadius:'10px'}}
-                                  src={train.imagemini}
-                                  alt="img-max"
-                                />
-                              </span>
+                            <div className="img-container" style={{ width: '100px' }} align="center" >
+                              <img onClick={handleClick} className="thumbnail" style={{ width: '75px', height: '5vh', marginRight: '3px', }} src={train.imagemini} />
                             </div>
                           )}
                         </Link>

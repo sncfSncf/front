@@ -145,3 +145,25 @@
     transform: rotate(360deg);
   }
 }
+
+.tbrapport td {
+    padding: 5px 20px;
+    color: blue;
+    border-bottom: 1px solid #d7d7d7;
+}
+.tbrapport {
+    width:600px;
+}
+
+    .tbrapport th {
+        background-color: #0088ce;
+        text-align: center;
+        padding: 5px;
+        color: white;
+        font-weight: normal;
+    }
+
+.rapports {
+    font-family: var(--cd-font-family) !important;
+    color: rgba(0, 0, 0, 0.6);
+}

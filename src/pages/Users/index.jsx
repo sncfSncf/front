@@ -83,15 +83,26 @@ export default function Users() {
       return;
     }
 
+    const formData = new FormData();
+    formData.append("id", user.id)
+    formData.append("nom", user.nom)
+    formData.append("prenom", user.prenom)
+    formData.append("site", user.site)
+    formData.append("role", user.role)
+    formData.append("login", user.login)
+    formData.append("password", user.password)
+    formData.append("etat", user.etat)
+
     if (id) {
       try {
-        await axios.put(`${config.API_URL}/updateuser/${id}`, user);
+        
+        await axios.post(`${config.API_URLV2}/user/update`, formData);
         alert('La modification a été prise en compte!');
         history.push('/administration');
       } catch (error) {}
     } else {
       try {
-        await axios.post(`${config.API_URL}/NewUser`, user);
+        await axios.post(`${config.API_URLV2}/user/create`, formData);
         alert('Utilisateur ajouté');
         history.push('/administration');
       } catch (error) {
@@ -123,8 +134,8 @@ export default function Users() {
   const loadUser = async () => {
     try {
       if (id) {
-        const response = await axios.get(`${config.API_URL}/user/${id}`);
-        setUser(response.data); // <- mise à jour des données de l'utilisateur
+        const response = await axios.get(`${config.API_URLV2}/user/${id}`);
+        setUser(response.data[0]); // <- mise à jour des données de l'utilisateur
       }
     } catch (error) {
       console.error(error);

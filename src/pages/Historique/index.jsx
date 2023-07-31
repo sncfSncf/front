@@ -53,7 +53,7 @@ function Historique() {
       setIsLoading(true);
       setShowAlert(false)
       //Récupération des trains d'une date séléctionnée par l'utilisateur
-      const resultat = await axios.get(`${config.API_URL}/dataBetween?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`)
+      const resultat = await axios.get(`${config.API_URLV2}/data?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`)
 
       setTrains(resultat.data)
       setIsLoading(false);

@@ -86,7 +86,7 @@ function Journal() {
       setChargement(true)
 
       const resultat = await axios.get(
-        `${config.API_URL}/dataBetween?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/data?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
 
@@ -204,9 +204,9 @@ function Journal() {
       setChargement(true)
       //Récupération des infos d'une date séléctionnée par l'utilisateur
       const resultat = await axios.get(
-        `${config.API_URLV2}/api/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URLV2}/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-      console.debug("demande",        `${config.API_URLV2}/api/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+      console.debug("demande",        `${config.API_URLV2}/Stats?site=${site}&typemr=&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       console.debug("resultdemande",resultat.data)
       setInfos(resultat.data)
