@@ -297,7 +297,7 @@ const CollapsibleTable = React.forwardRef(
     const handleClick = (e) => {
       e.preventDefault();
       divModale.current.style.display = "block";
-      imageModale.current.src = e.target.src;
+      imageModale.current.src = e.target.src.replace("_vignette","");
       console.log(e.target.src);
     }
 

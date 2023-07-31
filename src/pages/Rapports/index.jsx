@@ -26,7 +26,7 @@ export default function Rapports(){
         try {
           setChargement(true)
 
-          const response = await axios.get(`${config.API_URLV2}/download`)
+          const response = await axios.get(`${config.API_URLV2}/file/download`)
           setChargement(false)
 
           if (response.status === 200) {
