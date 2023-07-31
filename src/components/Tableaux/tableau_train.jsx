@@ -628,13 +628,13 @@ const CollapsibleTable = React.forwardRef(
                         )}
                       </TableCell>
                       <TableCell align="center" style={{ padding: '10px', minwidth: '100px' }}                      >
-                        <Link to={`/syrenne/${train.dateFichier}/${train.heureFichier}/${train.site}`} target="_blank"                        >
+                       
                           {train.imagemini !== null && (
                             <div className="img-container" style={{ width: '100px' }} align="center" >
                               <img onClick={handleClick} className="thumbnail" style={{ width: '75px', height: '5vh', marginRight: '3px', }} src={train.imagemini} />
                             </div>
                           )}
-                        </Link>
+                        
                       </TableCell>
                       <TableCell align="center" style={{ width: '100%' }}>
                         {train.meteo !== null ? (
@@ -650,7 +650,7 @@ const CollapsibleTable = React.forwardRef(
                     </TableRow>
                     {open[index] && (
                       <>
-                        {train.vitesse_moy !== null && (
+                        {train.statutSAM !== null && (
                           <TableRow>
                             <td colSpan={12} style={{ padding: '0px 25px' }}>
                               <h3
