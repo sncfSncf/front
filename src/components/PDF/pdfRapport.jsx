@@ -816,7 +816,7 @@ else{
       if(dateF){
         setChargement(true)
       }
-      const response = await axios.get(`${config.API_URL}/download`)
+      const response = await axios.get(`${config.API_URL}/file/download`)
       setChargement(false)
 
       if (response.status === 200) {
@@ -843,14 +843,7 @@ else{
 
 }
 
-  const chargerPdf = (content) => {
-    const decodedContent = atob(content)
-    const byteArray = new Uint8Array(decodedContent.length)
-    for (let i = 0; i < decodedContent.length; i++) {
-      byteArray[i] = decodedContent.charCodeAt(i)
-    }
-    const blob = new Blob([byteArray], { type: 'application/pdf' })
-    const url = URL.createObjectURL(blob)
+  const chargerPdf = (url) => {
     window.open(url, '_blank')
   }
   
@@ -1001,7 +994,7 @@ const formatDateLocale = (date) => {
       if(dateF){
         setChargement(true)
       }
-      const response = await axios.get(`${config.API_URL}/download`)
+      const response = await axios.get(`${config.API_URL}/file/download`)
       setChargement(false)
 
       if (response.status === 200) {
