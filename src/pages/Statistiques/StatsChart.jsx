@@ -140,8 +140,9 @@ const StatsChart = ({ data, chartType, title }) => {
         ],
       },
       options: {
+        indexAxis: 'y', // Set the indexAxis to 'y' to swap the labels with the data points
         scales: {
-          y: {
+          x: {
             beginAtZero: true,
           },
         },
@@ -151,16 +152,17 @@ const StatsChart = ({ data, chartType, title }) => {
             text: title,
           },
           legend: {
-            display: chartType === 'bar' ? false : true, // Hide the dataset square colors from the legend
+            display: chartType === 'bar' ? false : true,
           },
         },
       },
     });
-
+  
     return () => {
       myChart.destroy();
     };
   }, [data]);
+  
 
   return <canvas ref={chartRef} />;
 };

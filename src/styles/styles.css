@@ -467,12 +467,9 @@ canvas#graphique {
 }
 
 .cell-width {
-    width: 150px;
+    width: 161px;
 }
 
-.tableBE .beV {
-    min-width: 48px;
-}
 
 .css-1ndpvdd-MuiTableCell-root {
     border-bottom: none !important;
@@ -572,14 +569,7 @@ span.statut {
     text-align: left;
 }
 
-.tableBE .MuiTableCell-root.MuiTableCell-body.MuiTableCell-sizeMedium.css-1ex1afd-MuiTableCell-root {
-    min-width: 53px;
-    text-align: center;
-}
 
-.tableBE .axe.rail {
-    min-width: 20px !important;
-}
 
 .m50 .l {
     width: 755px;
@@ -719,6 +709,6 @@ span.second-image:after {
     }
 }
 
-..css-9npbnl-MuiFormLabel-root-MuiInputLabel-root {
+.css-9npbnl-MuiFormLabel-root-MuiInputLabel-root {
     color: white;
 }

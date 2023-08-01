@@ -383,6 +383,7 @@ function Statistique() {
       if (result50592 === 'uniquement 50592' || result50592 === 'NOK') {
         const myChartData = []
         const chartTitles = []
+        setDisabled50(false)
         if (infos.VueParTypeMR.length !== 0) {
           infos.VueParTypeMR?.forEach((item) => {
             let mrKey = item.TypeDeTrain
@@ -542,7 +543,7 @@ function Statistique() {
             // let pourcentageCapteur
 
             Object.entries(
-              item.PerturbationsSam005.PerturbationsNombre
+              item.PerturbationsSam005.PerturbationsPourcentage
             ).forEach(([label, value], index) => {
               chartData?.labels.push(label)
               chartData.datasets.push(value)
@@ -949,7 +950,7 @@ function Statistique() {
                       return (
                         <div
                           style={{
-                            flexBasis: '550px',
+                            flexBasis: '700px',
                             padding: '10px',
                             width: '40%',
                             border: '10px bold red',
@@ -961,12 +962,12 @@ function Statistique() {
                               width: '100%',
                               height: 'auto',
                               transform: 'scale(0.868)',
-                              marginTop: '-15%',
+                             // marginTop: '-15%',
                             }}
                           >
                             <StatsChart
                               data={nokData}
-                              chartType="pie"
+                              chartType="bar"
                               title={myChartData50592NOKIndex[idx] + '(50592)'}
                             />
                           </div>
@@ -987,14 +988,14 @@ function Statistique() {
                           {/* <h1>{MR[idx]}</h1> */}
                           <div
                             style={{
-                              width: '350px',
+                              width: '500px',
                               height: 'auto',
                               //transform: 'scale(0.85)',
                             }}
                           >
                             <StatsChart
                               data={nokData}
-                              chartType="pie"
+                              chartType="bar"
                               title={myChartDataSamNOKIndex[idx] + '(Sam S005)'}
                             />
                           </div>
@@ -1013,7 +1014,7 @@ function Statistique() {
                       {/* <h1>{MR[idx]}</h1> */}
                       <div
                         style={{
-                          width: '450px',
+                          width: '800px',
                           height: '100%',
                           paddingTop: '110px',
                         }}

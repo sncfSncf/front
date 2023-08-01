@@ -816,7 +816,7 @@ else{
       if(dateF){
         setChargement(true)
       }
-      const response = await axios.get(`${config.API_URL}/file/download`)
+      const response = await axios.get(`${config.API_URLV2}/file/download`)
       setChargement(false)
 
       if (response.status === 200) {
@@ -994,7 +994,7 @@ const formatDateLocale = (date) => {
       if(dateF){
         setChargement(true)
       }
-      const response = await axios.get(`${config.API_URL}/file/download`)
+      const response = await axios.get(`${config.API_URLV2}/file/download`)
       setChargement(false)
 
       if (response.status === 200) {

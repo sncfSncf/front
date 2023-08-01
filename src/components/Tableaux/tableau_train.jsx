@@ -863,7 +863,7 @@ const CollapsibleTable = React.forwardRef(
                                   </ul>
                                 </Link>
                               </div>
-                              <div className="l" style={{ width: '100%' }}>
+                              <div className="l" style={{ width: '100%',maxWidth:'2100px'}}>
                                 <TableResultat
                                   blr1={train.blr1}
                                   blr2={train.blr2}
