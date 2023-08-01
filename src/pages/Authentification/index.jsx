@@ -56,7 +56,6 @@ const LoginForm = () => {
       localStorage.setItem('role', role)
       localStorage.setItem('token', token)
       localStorage.setItem('prenom', prenom)
-      alert('Connexion réussie')
       history.push('/jourJ')
     } catch (error) {
       if (error.response && error.response.status === 404) {
