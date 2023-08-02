@@ -36,20 +36,21 @@ export default function PDFRapport({ customData, periodeL, siteSelectionne,filtr
     let infoSamNOK=[]
     let Info50592NOK=[]
     const doc = new jsPDF()
-    let  [infos, categorie,CEPerturbe,capteurs,isCustom] = data
+    let  [infos, categorie] = data
     console.debug("infos",infos)
 
 if(infos)
 {
   infoSamNOK=infos.VueParTypeMR.filter(c=>c.PassagesSam005.NombreNOK>0)
   infoSamOK=infos.VueParTypeMR.filter(c=>c.PassagesSam005.NombreOK>0)
-    Info50592NOK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreNOK>0)
-    Info50592OK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreOK>0)
+  Info50592NOK=infos.VueParAmplitudedB
+  Info50592OK=infos.VueParTypeMR.filter(c=>c.Passages50592.NombreOK>0)
     console.debug("infoSamNOK",infoSamNOK)
     console.debug("Info50592NOK",Info50592NOK)
     console.debug("infoSamOK",infoSamOK)
     console.debug("Info50592OK",Info50592OK)
-
+    //console.debug("infos capateurs",capteurs)
+    
 }  
 else
 infos=[]
@@ -262,7 +263,7 @@ infos=[]
         ],
       },
       {
-        titre: 'Résultats – Alertes SAM S005 (NOK) ',
+        titre: 'Résultats – SAM S005 (NOK) ',
         contenu: [
           (infoSamNOK.length>0 ?(
             {
@@ -270,17 +271,12 @@ infos=[]
                 {
                   Headers: [
                     ' ',
-                    'type mr',
-                    'Nombre de train passé',
-                    'Nombre de train passé perturbé',
+                    'Type Matériel Roulant',
+                    'Nombre de passages observés',
+                    'Nombre de passages avec des occultations induites',
                     'pourcentage de perturbation de chaque capteur ',
                   ],
-                  // Body: infoSamNOK?.map((section, index) => [
-                  //   index + 1,
-                  //   section['mr(sam nok)'],
-                  //   section['nombre de train passé (sam nok)'],
-                  //   section['nombre de train passé sam nok'],
-                  //   Object.entries(section['pourcentage de perturbation par index d\'un type mr']).map(([key, value]) => `EV${Number(key)+1}: ${value}`).join('\n'),
+                  
                   Body: infoSamNOK?.map((section, index) => [
                     index + 1,
                     section.TypeDeTrain,
@@ -299,26 +295,21 @@ infos=[]
       },
   
       {
-        titre: 'Résultats – Alertes 50592 (NOK)',
+        titre: 'Résultats – 50592 (NOK)',
         contenu: [
           (Info50592NOK.length>0 ?(
-            {
+            { 
+              p: 'Ce tableau est le Pourcentage de rame ayant dépassé les limites sur au moins un axe d\'une voie (%)',
               Table: [
                 {
                   Headers: [
-                    ' ',
-                    'type mr',
-                    'Nombre de train passé',
-                    'Nombre de train passé perturbé',
-                    'pourcentage de perturbation de chaque occultation ',
+                    "Amplitude du dépassement par rapport à la limite",
+                    ...Object.keys(Info50592NOK[1].Depassements50592.DepassementsPourcentage)
+                    
                   ],
                   Body: Info50592NOK?.map((section, index) => [
-                    
-                    index + 1,
-                    section.TypeDeTrain,
-                    section.Passages50592.Nombre,
-                    section.Passages50592.NombreNOK,
-                    Object.entries(section.Depassements50592.DepassementsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
+                    section.AmplitudedB,
+                    ...Object.values(section.Depassements50592.DepassementsPourcentage).map(value => `${value}%`),
                   ]),
                 },
               ],
@@ -332,7 +323,7 @@ infos=[]
 
 if(infoSamOK.length>0){
   sections.push(   {
-    titre: 'Résultats – Alertes SAM S005 (OK) ',
+    titre: 'Résultats – SAM S005 (OK) ',
     contenu: [
       (infoSamOK.length>0 ?(
         {
@@ -340,24 +331,17 @@ if(infoSamOK.length>0){
             {
               Headers: [
                 ' ',
-                'type mr',
-                'Nombre de train passé',
-                'Nombre de train passé perturbé',
-                // 'pourcentage de perturbation de chaque capteur',
+                'Type Matériel Roulant',
+                'Nombre de passages observés',
+                'Nombre de passages avec des occultations induites',
+               
               ],
-              // Body: infoSamOK?.map((section, index) => [
-              //   index + 1,
-              //   section['mr(sam ok)'],
-              //   section['nombre de train passé (sam ok)'],
-              //   section['nombre de train passé avec sam ok'],
-              //   section['pourcentage de chaque type mr sam ok'],
-              // ]),
+            
               Body: infoSamOK?.map((section, index) => [
                 index + 1,
-                section.TypeDeTrain,
+                section.TypeDeTrain ,
                 section.PassagesSam005.Nombre,
                 section.PassagesSam005.NombreOK,
-                // Object.entries(section.PerturbationsSam005.PerturbationsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
 
             ]),
             },
@@ -371,7 +355,7 @@ if(infoSamOK.length>0){
 }
 if(Info50592OK.length>0){
   sections.push({
-    titre: 'Résultats – Alertes 50592 (OK)',
+    titre: 'Résultats – 50592 (OK)',
     contenu: [
       (Info50592OK.length>0 ?(
         {
@@ -379,24 +363,16 @@ if(Info50592OK.length>0){
             {
               Headers: [
                 ' ',
-                'type mr',
-                'Nombre de train passé',
-                'Nombre de train passé perturbé',
-                // 'poucentage de chaque type mr ',
+                'Type Matériel Roulant',
+                'Nombre de passages observés',
+                'Nombre de passages avec des occultations induites',
               ],
-              // Body: Info50592OK?.map((section, index) => [
-              //   index + 1,
-              //   section['mr (50592 ok)'],
-              //   section['nombre de train passé(50592 ok )'],
-              //   section['nombre de train passé 50592 ok'],
-              //   Object.entries(section['le poucentage de chaque type mr (50592 ok)']).map(([key, value]) => `${key}: ${value}`).join('\n'),
-              // ]),
+             
               Body: Info50592OK?.map((section, index) => [
                 index + 1,
                 section.TypeDeTrain,
                 section.Passages50592.Nombre,
-                section.Passages50592.NombreOK,
-                // Object.entries(section.Depassements50592.DepassementsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
+                section.Passages50592.NombreOK, 
               ]),
 
             },
@@ -515,7 +491,7 @@ if(Info50592OK.length>0){
       doc.setPage(1);
       doc.setTextColor('#ff6600'); // 255,102,0
       const imageWidth = doc.internal.pageSize.getWidth();
-      const imageHeight = 150;
+      const imageHeight = 130;
       const imageX = 0;
       const imageY = 0;
     
@@ -679,9 +655,11 @@ if(Info50592OK.length>0){
           const tableBody = item.Table[0].Body
 
           doc.autoTable({
-            head: [tableHeaders],
+            head: [tableHeaders],styles:{halign:'left'},
             body: tableBody,
             startY: y + 5,
+            styles: { halign: 'center' },
+            tableWidth: 'auto'
           })
 
           y = doc.lastAutoTable.finalY + 8
@@ -1068,26 +1046,26 @@ useEffect(()=>{
   async function getData(dateDebut, dateFin) {
     const siteDefault = 'Chevilly'
 
-    let [infos, categorie, CEPerturbe, capteurs, typemr] = ["", "", "", "", ""]
+    let [infos, categorie, typemr] = ["", "", "", "", ""]
 
 
   
 
     try {
-      console.log("logger", "dateDebut", dateDebut, `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      console.log("logger", "dateDebut", dateDebut, `${config.API_URL}/data/mr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
       if(dateF){
         setChargement(true)
       }
 
       const resultatCat = await axios.get(
-        `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+        `${config.API_URL}/data/mr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
       setChargement(false)
 
       const typesMRArray = resultatCat.data.map(obj => obj.typeMR)
       typemr = typesMRArray.join(",")
-      console.log("logger", "typemr", typemr, `${config.API_URL}/dataBetweenrMr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      console.debug("logger", "typemr", typemr, `${config.API_URL}/data/mr?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
 
       categorie = (resultatCat.data) // Assurez-vous de définir correctement setCategorie avec la fonction pour mettre à jour l'état
@@ -1102,7 +1080,7 @@ useEffect(()=>{
         setChargement(true)
       }
       const resultat = await axios.get(
-        `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+        `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
 
       )
       setChargement(false)
@@ -1113,7 +1091,7 @@ useEffect(()=>{
       
 
       infos = (resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
-      console.log("logger", "infos", infos, `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=${typemr}&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      console.log("logger", "infos", infos, `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
 
     } catch (error) {
@@ -1126,17 +1104,9 @@ useEffect(()=>{
       if(dateF){
         setChargement(true)
       }
-      const resultat = await axios.get(
-        `${config.API_URL}/dataBetweenRapport?site=${siteDefault}&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
-      )
-      setChargement(false)
-
-
-      CEPerturbe = (resultat.data[resultat.data.length - 1])
-      console.log("logger", "CEPerturbe", CEPerturbe)
 
     } catch (error) {
-            setChargement(false)
+      setChargement(false)
 
       console.error(error)
     }
@@ -1147,12 +1117,12 @@ useEffect(()=>{
             setChargement(true)
           }
         const resultat = await axios.get(
-          `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=${typemr}&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+          `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
           
         )
         setChargement(false)
 
-        capteurs=(resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
+     
       } catch (error) {
               setChargement(false)
 
@@ -1161,7 +1131,7 @@ useEffect(()=>{
       
     
 
-    const Mydata = [infos, categorie, CEPerturbe,capteurs]
+    const Mydata = [infos, categorie]
 
     const MyPeriode = [dateDebut, dateFin]
     return { Mydata, MyPeriode, siteDefault }

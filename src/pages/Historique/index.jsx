@@ -88,7 +88,7 @@ function Historique() {
         <div className="filtre historique">
           <RangeDatePicker onChange={handleDateChange} />
           <Site onChange={handleSiteChange} />
-          {showAlert && <p>Les filtres doivent être sélectionnés.</p>}
+          {showAlert && <p style={{width:'300px'}}>Veuillez sélectionner la période d'étude et les filtres associés </p>}
         </div>
         {isLoading ? (
           <Loading/>

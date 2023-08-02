@@ -142,23 +142,7 @@ function Journal() {
       console.log('Error:', error)
     }
   }
-  const loadCEPerturbe = async () => {
-    try {
-      //Récupération des infos d'une date séléctionnée par l'utilisateur
-      if (trains.length === 0) setChargement(true)
-
-      const resultat = await axios.get(
-        `${config.API_URL}/dataBetweenRapport?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
-      )
-      setChargement(false)
-
-      setCEPerturbe(resultat.data[resultat.data.length - 1])
-    } catch (error) {
-      setChargement(false)
-
-      console.error(error)
-    }
-  }
+ 
 
   useEffect(() => {
     loadCapteurs()
@@ -168,12 +152,12 @@ function Journal() {
       if (trains.length === 0) setChargement(true)
 
       const resultat = await axios.get(
-        `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URL}/data/mr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
       setChargement(false)
       console.log(
         'demande',
-        `${config.API_URL}/dataBetweenrMr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
+        `${config.API_URL}/data/mr?site=${site}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
 
       setCategorie(resultat.data)
@@ -212,13 +196,10 @@ function Journal() {
   }, [site, startDate, endDate])
   useEffect(() => {
     loadInfos()
+    loadCategories()
   }, [site, startDate, endDate, resultSAM, result50592])
 
-  useEffect(() => {
-    loadCategories()
-
-    loadCEPerturbe()
-  }, [site, startDate, endDate])
+  
 
   return (
     <>
@@ -226,7 +207,7 @@ function Journal() {
         <div className="filtre historique">
           <RangeDatePicker onChange={handleDateChange} />
           <Site className="site" onChange={handleSiteChange} />
-          {showAlert && <p>Les filtres doivent être sélectionnés.</p>}
+          {showAlert && <p style={{width:'300px'}}>Veuillez sélectionner la période d'étude et les filtres associés </p>}
         </div>
 
         <div
@@ -250,7 +231,7 @@ function Journal() {
 
               {
                 <PDFRapport
-                  customData={[infos, categorie, CEPerturbe]}
+                  customData={[infos, categorie]}
                   periodeL={[startDate, endDate]}
                   siteSelectionne={site}
                   filtres={{ sam: resultSAM, 50592: result50592 }}

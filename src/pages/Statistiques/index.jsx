@@ -178,7 +178,7 @@ function Statistique() {
   const handleMRChange = (event) => {
     event.sort()
     if (event?.length > 0) {
-      setmyChartTotal(null)
+      //setmyChartTotal(null)
     } else {
     }
     setMR(event)
@@ -186,12 +186,12 @@ function Statistique() {
 
   const handleResultSAMChange = (newRes) => {
     if (newRes.length > 1) {
-      setmyChartTotal(null)
+      //setmyChartTotal(null)
       // setResult50592('uniquement 50592')
       setResultSAM('uniquement sam')
       setDisabledSam(true)
     } else if (newRes.length === 1) {
-      setmyChartTotal(null)
+      //setmyChartTotal(null)
       setResultSAM(newRes[0])
       setDisabledSam(false)
     } else {
@@ -213,27 +213,17 @@ function Statistique() {
 
   const handleResult50592Change = (newRes) => {
     if (newRes.length > 1) {
-      setmyChartTotal(null)
+      //setmyChartTotal(null)
       setResult50592('uniquement 50592')
       setDisabledSam(true)
     } else if (newRes.length === 1) {
-      setmyChartTotal(null)
+     // setmyChartTotal(null)
       setResult50592(newRes[0])
       setDisabledSam(false)
     } else {
       setResult50592('')
     }
   }
-
-  /*useEffect(() => {
-      if(infos?.CompteursSam005?.Nombre&&resultSAM===''&&result50592===''&&MR.length===0){
-        console.debug("1",{totalSam:infos.CompteursSam005.Nombre,total50592:infos.Compteurs50592.Nombre})
-  // alert(infos.CompteursSam005.Nombre) 
-      setmyChartTotal({totalSam:infos.CompteursSam005.Nombre,total50592:infos.Compteurs50592.Nombre})
-      }
-     
-      }, [startDate,endDate,site,result50592,resultSAM,MR])*/
-
   const loadInfos = async () => {
     setIsLoading(true)
     try {
@@ -262,12 +252,11 @@ function Statistique() {
         '0',
         `${config.API_URLV2}/Stats?site=${site}&typemr=${MR}&statutsam=${resultSAM}&statut50592=${result50592}&startDateFichier=${startDate}&FinDateFichier=${endDate}`
       )
-      if (resultSAM === '' && result50592 === '' && MR.length === 0) {
         setmyChartTotal({
           totalSam: resultat?.data.CompteursSam005.Nombre,
           total50592: resultat?.data.Compteurs50592.Nombre,
         })
-      }
+      
 
       console.debug('2', myChartTotal)
     } catch (error) {
@@ -950,19 +939,17 @@ function Statistique() {
                       return (
                         <div
                           style={{
-                            flexBasis: '700px',
-                            padding: '10px',
+                            flexBasis: '40%',
+                            padding: '30px',
                             width: '40%',
-                            border: '10px bold red',
                           }}
                         >
                           {/* <h1>{MR[idx]}</h1> */}
                           <div
                             style={{
-                              width: '100%',
+                              width: '500px',
                               height: 'auto',
-                              transform: 'scale(0.868)',
-                             // marginTop: '-15%',
+                              //transform: 'scale(0.85)',
                             }}
                           >
                             <StatsChart
@@ -1014,9 +1001,9 @@ function Statistique() {
                       {/* <h1>{MR[idx]}</h1> */}
                       <div
                         style={{
-                          width: '800px',
-                          height: '100%',
-                          paddingTop: '110px',
+                          width: '500px',
+                          height: 'auto',
+                    
                         }}
                       >
                         <StatsChart
@@ -1039,9 +1026,9 @@ function Statistique() {
                       {/* <h1>{MR[idx]}</h1> */}
                       <div
                         style={{
-                          width: '450px',
-                          height: '100%',
-                          paddingTop: '110px',
+                          width: '500px',
+                          height: 'auto',
+                          
                         }}
                       >
                         <StatsChart

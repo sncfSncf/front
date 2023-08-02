@@ -9,13 +9,16 @@ export default function Chart() {
   const { dateFichier, heureFichier, site } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState(null);
+  const [seriesVisibility, setSeriesVisibility] = useState(
+    chartData ? chartData.series.map(() => true) : []
+  );
 
   async function loadCapteurs() {
     setIsLoading(true);
     try {
       const resultat = await axios.get(`${config.API_URLV2}/enveloppes?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`);
-      console.log("graph", `${config.API_URLV2}/enveloppes?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`)
       setChartData({ series: resultat.data, options: getChartOptions() });
+      setSeriesVisibility(resultat.data.map(() => true)); // Set all series to visible by default
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -40,6 +43,9 @@ export default function Chart() {
         toolbar: {
           autoSelected: 'pan',
           show: true,
+          reset: () => {
+            setSeriesVisibility(chartData.series.map(() => true)); // Show all series when reset is clicked
+          }
         },
       },
       xaxis: {
@@ -48,9 +54,14 @@ export default function Chart() {
       stroke: {
         width: 1, // Adjust the width as needed
       },
-
     };
   }
+
+  const handleSeriesVisibilityChange = (index) => {
+    const updatedSeriesVisibility = [...seriesVisibility];
+    updatedSeriesVisibility[index] = !updatedSeriesVisibility[index];
+    setSeriesVisibility(updatedSeriesVisibility);
+  };
 
   return (
     <div className='parent historique'>
@@ -61,7 +72,11 @@ export default function Chart() {
           <div style={{ width: '110%' }}>
             <ReactApexChart
               options={chartData.options}
-              series={chartData.series}
+              series={chartData.series.map((serie, index) => ({
+                data: serie.data,
+                name: serie.name,
+                visible: seriesVisibility[index], // Use seriesVisibility to determine visibility
+              }))}
               type='line'
               height='100%'
             />

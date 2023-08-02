@@ -86,7 +86,7 @@ function JourJ() {
           trains.length > 0 &&
           <div className="JourJ">
              <p>{site}</p>
-             <div style={{ display: 'inline-block', position: 'absolute', right: '0px', margin: 'auto', top: '10px' }}>
+             <div style={{ display: 'inline-block', position: 'absolute', right: '0px', margin: 'auto', top: '10px',color:'#fff'}}>
                 <Button variant="primary" onClick={loadTrains}><RefreshIcon /> Rafraîchir</Button>
               </div>
             <Tableau trains={trains} />

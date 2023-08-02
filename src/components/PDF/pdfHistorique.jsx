@@ -10,11 +10,11 @@ export default function PDF({ data, periode, site }) {
 
   const handleDownloadPdf = () => {
     const doc = new jsPDF();
-    doc.text(`Période du ${startDate} au ${endDate} sur le site ${site} \n\nObservés sur la période : ${data.length}`, 20, 20);
+    doc.text(`Période du ${startDate} au ${endDate} sur le site de : ${site} \n\n Nombre de trains observés sur la période : ${data.length}`, 20, 20);
 //'TYPE MR',
     doc.autoTable({
      
-      head: [['Index', 'Heure de passage ', 'Numero de train', 'MR','Vitesse moyenne', 'Resultat Sam S005 | 50592', 'Environnement']],
+      head: [['Index', 'Heure de passage ', 'Numero de train', ' Type MR','Vitesse moyenne', 'Résultat SAM S005 | 50592', 'Environnement']],
       body: data.map((section, index) => [
         { content: index + 1, styles: { halign: 'center' } },
         { content: (section.dateFichier !== null && section.dateFichier !== undefined)
