@@ -1092,7 +1092,7 @@ useEffect(()=>{
         setChargement(true)
       }
       const resultat = await axios.get(
-        `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+        `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statutsam=&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
 
       )
       setChargement(false)
