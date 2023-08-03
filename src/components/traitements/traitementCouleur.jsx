@@ -23,7 +23,7 @@ function TableResultat({
   const bande3 = freqBL?.slice(5, 7)
 
   return (
-    <div className="" style={{ width: '100%', overflowX: 'hidden' }}>
+    <div className="" style={{ width: '100%', overflowX: 'auto' }}>
       <ul>
         <li
           style={{
@@ -375,7 +375,7 @@ function TableResultat({
                 className="ble cell-width"
                 align="center"
                 style={{
-                  minWidth: '100px',
+                  minWidth: '75px',
                   whiteSpace: 'nowrap',
                   backgroundColor: '#' + blr1?.X_Fond[index],
                   border: '1px solid black',
@@ -389,7 +389,7 @@ function TableResultat({
                 className="ble cell-width"
                 align="center"
                 style={{
-                  minWidth: '100px',
+                  minWidth: '75px',
                   whiteSpace: 'nowrap',
                   backgroundColor: '#' + fob[0][index],
                   border: '1px solid black',
@@ -417,7 +417,7 @@ function TableResultat({
                   align="center"
                   className=" cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     padding:'0px 16px',
                     backgroundColor: '#' + blr1?.Y_Fond[index],
@@ -433,7 +433,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + fob[1][index],
                     border: '1px solid black',
@@ -462,7 +462,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + blr1?.Z_Fond[index],
                     border: '1px solid black',
@@ -477,7 +477,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + fob[2][index],
                     border: '1px solid black',
@@ -517,7 +517,7 @@ function TableResultat({
                 align="center"
                 className="ble cell-width"
                 style={{
-                  minWidth: '100px',
+                  minWidth: '75px',
                   whiteSpace: 'nowrap',
                   backgroundColor: '#' + blr2?.X_Fond[index],
                   border: '1px solid black',
@@ -532,7 +532,7 @@ function TableResultat({
                 align="center"
                 className="ble cell-width"
                 style={{
-                  minWidth: '100px',
+                  minWidth: '75px',
                   whiteSpace: 'nowrap',
                   backgroundColor: '#' + fob[3][index],
                   border: '1px solid black',
@@ -560,7 +560,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + blr2?.Y_Fond[index],
                     border: '1px solid black',
@@ -575,7 +575,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + fob[4][index],
                     border: '1px solid black',
@@ -604,7 +604,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + blr2?.Z_Fond[index],
                     border: '1px solid black',
@@ -619,7 +619,7 @@ function TableResultat({
                   align="center"
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + fob[5][index],
                     border: '1px solid black',
@@ -837,7 +837,7 @@ function TableResultat({
                 <TableCell
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + ber1?.X_Fond[index],
                     border: '1px solid black',
@@ -859,14 +859,14 @@ function TableResultat({
             </TableCell>
             <TableCell
               colspan={12}
-              style={{ minWidth: '100px', whiteSpace: 'nowrap' }}
+              style={{ minWidth: '75px', whiteSpace: 'nowrap' }}
               className="ble ligne"
             >
               {ber1?.Y.map((cell, index) => (
                 <TableCell
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + ber1?.Y_Fond[index],
                     border: '1px solid black',
@@ -891,7 +891,7 @@ function TableResultat({
                 <TableCell
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + ber1?.Z_Fond[index],
                     border: '1px solid black',
@@ -927,7 +927,7 @@ function TableResultat({
                 <TableCell
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + ber2?.X_Fond[index],
                     border: '1px solid black',
@@ -949,14 +949,14 @@ function TableResultat({
             </TableCell>
             <TableCell
               colspan={12}
-              style={{ minWidth: '100px', whiteSpace: 'nowrap',textAlign:'center'}}
+              style={{ minWidth: '75px', whiteSpace: 'nowrap',textAlign:'center'}}
               className="ble ligne"
             >
               {ber2?.Y.map((cell, index) => (
                 <TableCell
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + ber2?.Y_Fond[index],
                     border: '1px solid black',
@@ -981,7 +981,7 @@ function TableResultat({
                 <TableCell
                   className="ble cell-width"
                   style={{
-                    minWidth: '100px',
+                    minWidth: '75px',
                     whiteSpace: 'nowrap',
                     backgroundColor: '#' + ber2?.Z_Fond[index],
                     border: '1px solid black',

@@ -30,7 +30,7 @@ function RangeDatePicker({ onChange }) {
         showDateDisplay={false}
         calendar={true}
         locale={fr}
-        maxDate={new Date()}
+        //maxDate={new Date()}
       />
     </div>
   )

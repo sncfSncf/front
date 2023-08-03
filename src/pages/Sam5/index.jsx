@@ -9,14 +9,14 @@ export default function Chart() {
   const { dateFichier, heureFichier, site } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState(null);
-  const [seriesVisibility, setSeriesVisibility] = useState(
-    chartData ? chartData.series.map(() => true) : []
-  );
+  const [seriesVisibility, setSeriesVisibility] = useState([]);
 
   async function loadCapteurs() {
     setIsLoading(true);
     try {
-      const resultat = await axios.get(`${config.API_URLV2}/enveloppes?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`);
+      const resultat = await axios.get(
+        `${config.API_URLV2}/enveloppes?site=${site}&heure=${heureFichier}&dateFichier=${dateFichier}`
+      );
       setChartData({ series: resultat.data, options: getChartOptions() });
       setSeriesVisibility(resultat.data.map(() => true)); // Set all series to visible by default
       setIsLoading(false);
@@ -43,13 +43,19 @@ export default function Chart() {
         toolbar: {
           autoSelected: 'pan',
           show: true,
-          reset: () => {
-            setSeriesVisibility(chartData.series.map(() => true)); // Show all series when reset is clicked
-          }
         },
       },
       xaxis: {
         type: 'numeric',
+        title: {
+          text: 'Temps [S]',
+          align: 'left',
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Tension [V]',
+        },
       },
       stroke: {
         width: 1, // Adjust the width as needed
@@ -75,10 +81,18 @@ export default function Chart() {
               series={chartData.series.map((serie, index) => ({
                 data: serie.data,
                 name: serie.name,
-                visible: seriesVisibility[index], // Use seriesVisibility to determine visibility
+                visible: seriesVisibility[index] || true, // Use seriesVisibility to determine visibility
               }))}
               type='line'
               height='100%'
+              events={{
+                legendClick: (event, chartContext, config) => {
+                  const seriesIndex = chartData.series.findIndex((serie) => serie.name === config.seriesName);
+                  if (seriesIndex !== -1) {
+                    handleSeriesVisibilityChange(seriesIndex);
+                  }
+                },
+              }}
             />
           </div>
         )

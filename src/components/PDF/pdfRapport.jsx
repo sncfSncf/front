@@ -282,7 +282,7 @@ infos=[]
                     section.TypeDeTrain,
                     section.PassagesSam005.Nombre,
                     section.PassagesSam005.NombreNOK,
-                    Object.entries(section.PerturbationsSam005.PerturbationsPourcentage).map(([key, value]) => `${key}: ${value}`).join('\n'),
+                    Object.entries(section.PerturbationsSam005.PerturbationsPourcentage).map(([key, value]) => `${key}: ${value}%`).join('\n'),
 
                 ]),
                 },
@@ -407,13 +407,13 @@ if(Info50592OK.length>0){
 
 
     const addHeader = () => {
-      doc.setFont('arial', 'bold')
+      doc.setFont('helvetica', 'bold')
       doc.setFontSize(10)
       doc.setTextColor('gray')
-      doc.text(`Rapport de la Période : ${periode}`, 110, 10)
+      doc.text(`Rapport sur les résultats observés sur la période  : ${periode}`, 20, 10)
     }
     const resetFont = () => {
-      doc.setFont('Arial', 'normal')
+      doc.setFont('helvetica', 'normal')
       doc.setFontSize(12)
       doc.setTextColor('black')
     }
@@ -424,7 +424,7 @@ if(Info50592OK.length>0){
       doc.text(`${index}.${titre}`, 20, 20);
     
       const imageHeaderWidth = 25;
-      const imageHeaderHeight = 30;
+      const imageHeaderHeight = 25;
       const imageHeaderX = pageWidth - imageHeaderWidth;
       const imageHeaderY = 0;
     
@@ -567,20 +567,24 @@ if(Info50592OK.length>0){
 
         if (item.xx) {
           const text = `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`;
-          const image = sites; // Remplacez "yourImage" par votre image
+          const image = sites; // Replace "sites" with your image
+          //const pageWidth = 297; // A4 width in portrait mode
+          //const pageHeight = 210; // A4 height in portrait mode
       
-          doc.addPage(); // Ajouter une nouvelle page
-            // Changer l'orientation de la page en mode paysage
+          // Add a new page with custom dimensions (landscape mode)
+          doc.addPage({format:'a4',orientation:'landscape'});
+      
+          // Set the page orientation to landscape
           
       
-          // Afficher le texte
+          // Display the text
           doc.setFontSize(12);
           doc.setFont('helvetica', 'normal');
-          doc.text(text, 20, startY);
+          doc.text(text, 20, 20);
       
-          // Afficher l'image
-          const blockHeight = 100; // Hauteur de l'image
-          doc.addImage(image, 'JPEG', 20, startY + 15, pageWidth - 40, blockHeight);
+          // Display the image
+          const blockHeight = 90; // Height of the image
+          doc.addImage(image, 'JPEG', 20, startY + 15, pageWidth- 20, blockHeight);
           doc.setPage(doc.getNumberOfPages());
       
           y = startY + blockHeight;
@@ -646,8 +650,10 @@ if(Info50592OK.length>0){
               
             }
           })
-          doc.addImage(loadedImg, 'JPEG', 20, y, pageWidth - 40, 30)
+          //doc.setPage();
+          doc.addImage(loadedImg, 'JPEG', 0, 0, pageWidth, 200)
           doc.setPage(doc.getNumberOfPages())
+          //doc.setPage('landscape')
           y += 30
         }
         if (item.Table) {
@@ -730,10 +736,15 @@ if(Info50592OK.length>0){
     console.log("logger","sections.length",sections.length);
 
     for (let i = 0; i < sections.length; i++) {
+     /* if(i === 2){
+        doc.addPage([297,210])
+        
+      }*/
       const section = sections[i]
       const titre = section.titre
       const page = i + 1 // La première page est la page 1
       await addSection(i + 1, titre, section.contenu)
+      
       headings.push({ titre, page })
     }
     generateTableOfContents(headings)
@@ -817,6 +828,7 @@ else{
     console.log("resultatEnvoi",error)
   }
 }
+
 
 
 }
@@ -1091,7 +1103,7 @@ useEffect(()=>{
       
 
       infos = (resultat.data) // Assurez-vous de définir correctement setResult avec la fonction pour mettre à jour l'état
-      console.log("logger", "infos", infos, `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statutsam=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+      console.log("logger", "infos", infos, `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statutsam=&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
       )
 
     } catch (error) {
@@ -1117,7 +1129,7 @@ useEffect(()=>{
             setChargement(true)
           }
         const resultat = await axios.get(
-          `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statut50592=NOK&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
+          `${config.API_URLV2}/Stats?site=${siteDefault}&typemr=&statut50592=&startDateFichier=${(dateDebut)}&FinDateFichier=${(dateFin)}`
           
         )
         setChargement(false)

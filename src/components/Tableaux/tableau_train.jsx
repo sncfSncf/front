@@ -323,7 +323,7 @@ const CollapsibleTable = React.forwardRef(
             <img class="modal-content" src="https://dev-syrene-rerb.rd-vision-dev.com/import/system_2/2023/07/2023-07-02T23-33-04/2023-07-02T23-33-04_Mission_vignette.jpg" ref={imageModale} />
           </div>
 
-          <div style={{ width: '100%', overflowX: 'auto' }}>
+          <div style={{ width: '100%', overflowX: 'scroll' }}>
             <Table aria-label="collapsible table">
               <TableHead>
                 <TableRow>
@@ -406,10 +406,10 @@ const CollapsibleTable = React.forwardRef(
 
                   <TableCell
                     align="center"
-                    style={{ verticalAlign: 'top', width: '100%' }}
+                    style={{ verticalAlign: 'top', /*width: '100%' */}}
                   >
                     <div style={{ display: 'flex' }}>
-                      <div style={{ width: '200px' }}>
+                      <div style={{ width: '150px' }}>
                         <div style={{ fontWeight: 'bold' }} align="center">
                           {' '}
                           SAMS005{' '}
@@ -425,7 +425,7 @@ const CollapsibleTable = React.forwardRef(
                 style={{ height: '30px', marginRight: '10px', paddingLeft: '5px' }}
               /> */}
 
-                        <div style={{ width: '200px' }}>
+                        <div style={{ width: '150px' }}>
                           <Select
                             defaultValue={[]}
                             isMulti
@@ -445,7 +445,7 @@ const CollapsibleTable = React.forwardRef(
                           />
                         </div>
                       </div>
-                      <div style={{ width: '200px' }}>
+                      <div style={{ width: '150px' }}>
                         <div style={{ fontWeight: 'bold' }} align="center">
                           {' '}
                           50592
@@ -460,7 +460,7 @@ const CollapsibleTable = React.forwardRef(
                 style={{ height: '30px', border: 'none', marginTop: '5px', marginRight: '10px', paddingLeft: '5px', backgroundColor: 'white' }}
               /> */}
 
-                        <div style={{ width: '200px' }} align="center">
+                        <div style={{ width: '150px'}} align="center">
                           <Select
                             defaultValue={[]}
                             isMulti
@@ -548,14 +548,14 @@ const CollapsibleTable = React.forwardRef(
                         )}
                       </TableCell>
                       <TableCell
-                        style={{ width: '400px' }}
+                        style={{ /*width: '400px' */}}
                       >
                         {train.statutSAM === 'OK' && (
                           <span
                             className="statut"
                             style={{
                               backgroundColor: 'var(--sncf-success-bg)',
-                              margin: '70px',
+                              margin: '40px',
                               padding: '5px 20.75px'
                             }}
                           >
@@ -568,7 +568,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-error-bg)',
                               width: '100%',
-                              margin: '70px'
+                              margin: '40px'
                             }}
                           >
                             {train.statutSAM}
@@ -580,7 +580,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-warning-bg)',
                               width: '100%',
-                              margin: '70px',
+                              margin: '40px',
                               padding: '5px 22px'
                             }}
                           >
@@ -594,7 +594,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-success-bg)',
                               width: '100%',
-                              margin: '70px',
+                              margin: '40px',
                               padding: '5px 20.75px'
                             }}
                           >
@@ -607,7 +607,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-error-bg)',
                               width: '100%',
-                              margin: '70px'
+                              margin: '40px'
                             }}
                           >
                             {train.statut50592}
@@ -619,7 +619,7 @@ const CollapsibleTable = React.forwardRef(
                             style={{
                               backgroundColor: 'var(--sncf-warning-bg)',
                               width: '100%',
-                              margin: '70px',
+                              margin: '40px',
                               padding: '5px 22px'
                             }}
                           >
