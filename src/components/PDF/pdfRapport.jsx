@@ -5,6 +5,7 @@ import { Button } from '@mui/material'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import dayjs from 'dayjs'
 import autoTable from 'jspdf-autotable'
+
 import sites from '../../exemples/images/sites.jpg'
 import sncflogo from '../../exemples/images/sncfreseau.jpeg'
 import imagePDF1 from '../../exemples/images/imagePDF.png'
@@ -572,7 +573,7 @@ if(Info50592OK.length>0){
           //const pageHeight = 210; // A4 height in portrait mode
       
           // Add a new page with custom dimensions (landscape mode)
-          doc.addPage({format:'a4',orientation:'landscape'});
+          doc.addPage('landscape');
       
           // Set the page orientation to landscape
           
@@ -696,7 +697,7 @@ if(Info50592OK.length>0){
       // Créer un tableau pour le sommaire
       const tableData = [];
       headings.forEach((heading, index) => {
-        const text = `${index }. ${heading.titre}`;
+        const text = `${index+1}. ${heading.titre}`;
         let page;
       
         if (index === 2) {
@@ -731,15 +732,13 @@ if(Info50592OK.length>0){
     
     const pageWidth = doc.internal.pageSize.width
     const pageHeight = doc.internal.pageSize.height
+    console.debug(pageWidth,'pw',pageHeight,'ph')
     const headings = []
     await PageDeGarde(pageGarde)
     console.log("logger","sections.length",sections.length);
 
     for (let i = 0; i < sections.length; i++) {
-     /* if(i === 2){
-        doc.addPage([297,210])
-        
-      }*/
+    
       const section = sections[i]
       const titre = section.titre
       const page = i + 1 // La première page est la page 1
@@ -854,17 +853,12 @@ else{
     const previousQuarterStart = new Date(currentYear, Math.floor((currentMonth - 3) / 3) * 3, 1);
     const previousQuarterEnd = new Date(currentYear, Math.floor((currentMonth - 3) / 3) * 3 + 3, 0);
 
-    const formattedStartDate=formatDate(previousQuarterStart)
-    const formattedEndDate=formatDate(previousQuarterEnd)
+    const formattedStartDate=formatDate(previousQuarterStart).format('YYYY-MM-DD')
+    const formattedEndDate=formatDate(previousQuarterEnd).format('YYYY-MM-DD')
+    console.debug(formattedStartDate,'date ')
     const { Mydata, MyPeriode, siteDefault } = await getData(formattedStartDate, formattedEndDate)
-
-
       await generatePdf(Mydata, MyPeriode, siteDefault,1,        `${getLastQuarter()}_Rapport trimestriel_${formatDateLocale(previousQuarterStart)}_${formatDateLocale(previousQuarterEnd)}.pdf`,
       )
-
-    
-     
-    
   }
   
   

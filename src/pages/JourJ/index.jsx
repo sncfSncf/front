@@ -11,6 +11,7 @@ import { Link, useHistory } from 'react-router-dom'
 import Loading from '../../components/Loading'
 import { Button } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import PDF from '../../components/PDF/pdfHistorique'
 function JourJ() {
   const date = dayjs().format('YYYY-MM-DD')
 
@@ -87,6 +88,7 @@ function JourJ() {
           <div className="JourJ">
              <p>{site}</p>
              <div style={{ display: 'inline-block', position: 'absolute', right: '0px', margin: 'auto', top: '10px',color:'#fff'}}>
+                <PDF data={trains} periode={[date, date]} site={site} />
                 <Button variant="primary" onClick={loadTrains}><RefreshIcon /> Rafraîchir</Button>
               </div>
             <Tableau trains={trains} />

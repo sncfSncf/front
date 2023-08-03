@@ -125,28 +125,10 @@ function Journal() {
     myRef.current.childMethod()
   }
 
-  const loadCapteurs = async () => {
-    try {
-      if (trains.length === 0) setChargement(true)
-
-      const response = await axios.get(`${config.API_URL}/allcapteurs`)
-      setChargement(false)
-
-      if (response.status === 200) {
-        const data = response.data
-        setCapteurs(data)
-      }
-    } catch (error) {
-      setChargement(false)
-
-      console.log('Error:', error)
-    }
-  }
+  
  
 
-  useEffect(() => {
-    loadCapteurs()
-  }, [])
+  
   const loadCategories = async () => {
     try {
       if (trains.length === 0) setChargement(true)

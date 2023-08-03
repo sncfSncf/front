@@ -708,7 +708,18 @@ span.second-image:after {
         display: block;
     }
 }
+@media screen and (max-width: 1500px) {
+    .tableau,
+    .journal,
+    .JourJ, .statistique, .resultat {
+        width: auto;
+       /* min-width: calc( 100% - 350px);*/
+       
+    }
+    .tableau p, .journal p, .JourJ p, .statistique p, .rapports p {
+        min-width: 800px;
+    }
 
-.css-9npbnl-MuiFormLabel-root-MuiInputLabel-root {
-    color: white;
 }
+
+   

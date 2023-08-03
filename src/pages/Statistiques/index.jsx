@@ -59,7 +59,7 @@ function Statistique() {
   const [resultSAM, setResultSAM] = useState('')
   const [result50592, setResult50592] = useState('')
   const [typemr, setTypemr] = useState([])
-  const [disabled50, setDisabled50] = useState(false)
+  const [disabled50, setDisabled50] = useState(true)
   const [disabledSam, setDisabledSam] = useState(false)
   const [optionBE_CE, setOptionBE_CE] = useState([])
   const optionSAM = [
@@ -98,9 +98,9 @@ function Statistique() {
     if (newRes === 'uniquement sam') {
       setResult50592('')
       // handleResult50592Change(result50592)
-      setDisabled50(true)
+     // setDisabled50(true)
     } else {
-      setDisabled50(false)
+      //setDisabled50(false)
     }
     setResultSAM(newRes)
     console.log(resultSAM)
@@ -146,7 +146,7 @@ function Statistique() {
       onMouseLeave,
       style,
     }
-
+    
     return (
       <components.Option
         {...rest}
@@ -372,7 +372,7 @@ function Statistique() {
       if (result50592 === 'uniquement 50592' || result50592 === 'NOK') {
         const myChartData = []
         const chartTitles = []
-        setDisabled50(false)
+       // setDisabled50(false)
         if (infos.VueParTypeMR.length !== 0) {
           infos.VueParTypeMR?.forEach((item) => {
             let mrKey = item.TypeDeTrain
@@ -581,6 +581,12 @@ function Statistique() {
   }, [token, history])
   useEffect(() => {
     loadInfos()
+    if(result50592 === 'NOK' || result50592 === 'uniquement 50592'){
+      setDisabled50(false)
+    }
+    else{
+      setDisabled50(true)
+    }
   }, [site, startDate, endDate, MR, result50592, resultSAM, BE, BL])
   useEffect(() => {
     createChart()
@@ -941,7 +947,7 @@ function Statistique() {
                           style={{
                             flexBasis: '40%',
                             padding: '30px',
-                            width: '40%',
+                            //width: '40%',
                           }}
                         >
                           {/* <h1>{MR[idx]}</h1> */}
@@ -969,7 +975,7 @@ function Statistique() {
                           style={{
                             flexBasis: '40%',
                             padding: '30px',
-                            width: '40%',
+                           // width: '40%',
                           }}
                         >
                           {/* <h1>{MR[idx]}</h1> */}
@@ -995,7 +1001,7 @@ function Statistique() {
                       style={{
                         flexBasis: '40%',
                         padding: '10px',
-                        width: '40%',
+                       // width: '40%',
                       }}
                     >
                       {/* <h1>{MR[idx]}</h1> */}
@@ -1020,7 +1026,7 @@ function Statistique() {
                       style={{
                         flexBasis: '40%',
                         padding: '10px',
-                        width: '40%',
+                        //width: '40%',
                       }}
                     >
                       {/* <h1>{MR[idx]}</h1> */}
