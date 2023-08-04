@@ -111,6 +111,10 @@ function Statistique() {
 
     setEndDate(dayjs(ranges.selection.endDate).format('YYYY-MM-DD'))
   }
+  const handleRaffraichir = (e) => {
+    e.preventDefault()
+    window.location.reload()
+  }
   const InputOption = ({
     getStyles,
     Icon,
@@ -302,7 +306,8 @@ function Statistique() {
   const handleDownloadPdf = () => {
     setShowToolbar(true) // Change the value of showToolbar after the PDF is saved
     const element = document.getElementById('pdf-content')
-
+    document.getElementById('page2el').style.paddingTop='20px'
+   
     handleScroll()
     html2pdf()
       .set({
@@ -310,6 +315,7 @@ function Statistique() {
         pagebreak: { mode: 'avoid-all', before: '#page2el' },
         jsPDF: {
           orientation: 'landscape',
+          
         },
         html2canvas: {
           scale: 2, // Adjust the scale as needed for better quality
@@ -591,6 +597,7 @@ function Statistique() {
   useEffect(() => {
     createChart()
   }, [infos])
+  
 
   return (
     <>
@@ -619,8 +626,8 @@ function Statistique() {
                 Exporter
               </Button>
 
-              <Button variant="primary" onClick={loadInfos}>
-                <RefreshIcon /> Rafaîchir
+              <Button variant="primary" onClick={handleRaffraichir}>
+                <RefreshIcon /> Rafraîchir
               </Button>
             </div>
           </p>
@@ -660,7 +667,7 @@ function Statistique() {
                     <img
                       src={logo}
                       alt="logo sncf"
-                      style={{ height: '40%', width: '70%' }}
+                      style={{ height: '80px', width: '100px' }}
                     />
                   )}
                 </div>
@@ -945,7 +952,7 @@ function Statistique() {
                       return (
                         <div
                           style={{
-                            flexBasis: '40%',
+                            //flexBasis: '40%',
                             padding: '30px',
                             //width: '40%',
                           }}
@@ -953,7 +960,7 @@ function Statistique() {
                           {/* <h1>{MR[idx]}</h1> */}
                           <div
                             style={{
-                              width: '500px',
+                              width: '600px',
                               height: 'auto',
                               //transform: 'scale(0.85)',
                             }}
@@ -981,7 +988,7 @@ function Statistique() {
                           {/* <h1>{MR[idx]}</h1> */}
                           <div
                             style={{
-                              width: '500px',
+                              width: '600px',
                               height: 'auto',
                               //transform: 'scale(0.85)',
                             }}
@@ -1007,7 +1014,7 @@ function Statistique() {
                       {/* <h1>{MR[idx]}</h1> */}
                       <div
                         style={{
-                          width: '500px',
+                          width: '600px',
                           height: 'auto',
                     
                         }}
@@ -1032,7 +1039,7 @@ function Statistique() {
                       {/* <h1>{MR[idx]}</h1> */}
                       <div
                         style={{
-                          width: '500px',
+                          width: '600px',
                           height: 'auto',
                           
                         }}
@@ -1055,8 +1062,10 @@ function Statistique() {
                     flexDirection: 'column',
                     perspective: '1000px',
                     paddingBottom: '50px',
+                    marginTop: '50px'
                   }}
                 >
+
                   {myChartDataSamOK !== null &&
                     (resultSAM === 'OK' || resultSAM === 'uniquement sam') &&
                     myChartDataSamOK.datasets !== null &&
@@ -1248,7 +1257,7 @@ function Statistique() {
                               style={{ fontWeight: 'bold', color: 'black' }}
                               colSpan={2}
                             >
-                              Syrenne
+                              SYRENE
                             </TableCell>
                             <TableCell
                               style={{ fontWeight: 'bold', color: 'black' }}
@@ -1358,7 +1367,7 @@ function Statistique() {
                               rowSpan={4}
                               colSpan={2}
                             >
-                              Syrenne
+                              SYRENE
                             </TableCell>
                             <TableCell
                               style={{ fontWeight: 'bold', color: 'black' }}

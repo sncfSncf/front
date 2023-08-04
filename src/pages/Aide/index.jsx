@@ -2,7 +2,7 @@ import { Card, CardContent, Typography } from "@mui/material";
 import image1 from '../../exemples/images/image00.png'
 import image2 from '../../exemples/images/image01.png'
 import image3 from '../../exemples/images/image03.png'
-import image4 from '../../exemples/images/image04..png'
+import image4 from '../../exemples/images/image04.png'
 import '../../App.css';
 import React, { useState, useEffect } from 'react';
 

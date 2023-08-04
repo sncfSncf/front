@@ -333,7 +333,7 @@ if(infoSamOK.length>0){
                 ' ',
                 'Type Matériel Roulant',
                 'Nombre de passages observés',
-                'Nombre de passages avec des occultations induites',
+                'Nombre de passages sans des occultations induites',
                
               ],
             
@@ -365,7 +365,7 @@ if(Info50592OK.length>0){
                 ' ',
                 'Type Matériel Roulant',
                 'Nombre de passages observés',
-                'Nombre de passages avec des occultations induites',
+                'Nombre de passages sans des occultations induites',
               ],
              
               Body: Info50592OK?.map((section, index) => [

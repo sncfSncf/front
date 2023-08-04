@@ -140,10 +140,14 @@ const StatsChart = ({ data, chartType, title }) => {
         ],
       },
       options: {
-        indexAxis: 'y', // Set the indexAxis to 'y' to swap the labels with the data points
+        indexAxis: 'y',// Set the indexAxis to 'y' to swap the labels with the data points
+        maintainAspectRatio: false, // Désactivez le maintien du rapport hauteur / largeur
+        aspectRatio: 1,
         scales: {
           x: {
             beginAtZero: true,
+            min: 0,      // Valeur minimale de l'échelle x
+            max: 100,    // Valeur maximale de l'échelle x
           },
         },
         plugins: {
