@@ -341,14 +341,15 @@ function Statistique() {
         if (infos.VueParTypeMR.length !== 0) {
           infos.VueParTypeMR?.forEach((item) => {
             let mrKey = item.TypeDeTrain
-            let pourcentageMr = item.PassagesSam005.PourcentageOK
-            let nbrPassages = item.PassagesSam005.NombreOK
+            let pourcentageMr = item.Passages50592.PourcentageOK
+            let nbrPassages = item.Passages50592.NombreOK
+           
 
-            if (!mrKey) {
+            /*if (!mrKey) {
               mrKey = 'le poucentage des 50592 ok'
               pourcentageMr = infos.Compteurs50592.PourcentageOK
               nbrPassages = infos.Compteurs50592.NombreOK
-            }
+            }*/
             if (pourcentageMr) {
               chartData.labels.push(mrKey)
               chartData.datasets.push(pourcentageMr)
