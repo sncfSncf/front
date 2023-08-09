@@ -844,7 +844,7 @@ function Statistique() {
                         }}
                       >
                         <InputLabel style={{ fontWeight: 'bold' }}>
-                          Option D39-D50
+                          Option D39-D50 *¹
                         </InputLabel>
                         <Resultats
                           onChange={handleBEChange}
@@ -864,7 +864,7 @@ function Statistique() {
                         }}
                       >
                         <InputLabel style={{ fontWeight: 'bold' }}>
-                          Bande étroite - autre CE
+                          Bande étroite - autre CE *²
                         </InputLabel>
                         <Resultats
                           onChange={handleBLChange}
@@ -878,7 +878,7 @@ function Statistique() {
                 </>
               )}
             </div>
-
+            {disabled50 &&( <span style={{width: '490px',marginTop:'-45px',marginRight:'50px',float:'right'}}> Les options *¹ et *² sont affichés uniquement lorsque 50592 est en statut NOK</span>)}
             {myChartTotal && (
               <Table
                 style={{

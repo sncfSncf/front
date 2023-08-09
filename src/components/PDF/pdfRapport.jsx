@@ -35,6 +35,7 @@ export default function PDFRapport({ customData, periodeL, siteSelectionne,filtr
     let Info50592OK=[]
     let infoSamNOK=[]
     let Info50592NOK=[]
+    const [debut,fin]=periode
     const doc = new jsPDF()
     let  [infos, categorie] = data
     console.debug("infos",infos)
@@ -65,7 +66,7 @@ infos=[]
         titre: 'Objet',
         contenu: [
           {
-             p: `Le département DGII GE SF Produits dispose d’un site de test des Compteurs d’Essieux (Ou DER : Détecteurs Electronique de Roues) à ${site}.\n\nDans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.\n\nDans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.\n\n Les objectifs sont multiples sur ce site d'essais: `,
+             p: `Le département DGII GE SF Produits dispose d’un site de test des Compteurs d’Essieux (Ou DER : Détecteurs Electronique de Roues) à ${site}.\n\nDans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.\n\n Les objectifs sont multiples sur ce site d'essais: `,
           },
           {
             //  p: 'Dans le cadre de la comparaison des deux méthodes de mesures respectives à l’interopérabilité et à la méthode nationale ; permettant de vérifier la compatibilité entre un Matériel Roulant et les Compteurs d’Essieux (ou des détecteurs), une instrumentation du site a été réalisée afin de disposer d’un système d’enregistrement autonome et continu sur ces différentes chaines.',
@@ -102,25 +103,25 @@ infos=[]
           {
             acro: 'DGII GE SF ',
             explication:
-              'Direction Générale et Industrielle, département Génie Electrique, division Signalisation Ferroviaire.',
+              ' Direction Générale et Industrielle, département Génie Electrique, division Signalisation Ferroviaire.',
           },
           {
             acro: 'DGII IP3M AME',
             explication:
-              'Direction Générale et Industrielle, département Intégration, Projets Multi-Métiers & Mesure, Agence Mesure & Essais.',
+              ' Direction Générale et Industrielle, département Intégration, Projets Multi-Métiers & Mesure, Agence Mesure & Essais.',
           },
-          { acro: 'TSV ', explication: 'TéléSurVeillance' },
-          { acro: 'DER', explication: 'Détecteur Électronique de Roues' },
-          { acro: 'CE ', explication: 'Compteur d’Essieux' },
-          { acro: 'PK ', explication: 'Point Kilométrique' },
-          { acro: 'EV ', explication: 'Ensemble à la Voie (Capteur),' },
+          { acro: 'TSV ', explication: ' TéléSurVeillance' },
+          { acro: 'DER', explication: ' Détecteur Électronique de Roues' },
+          { acro: 'CE ', explication: ' Compteur d’Essieux' },
+          { acro: 'PK ', explication: ' Point Kilométrique' },
+          { acro: 'EV ', explication: ' Ensemble à la Voie (Capteur),' },
           {
             acro: 'SAM ',
-            explication: 'Spécification D’admission de Matériel roulant',
+            explication: ' Spécification D’admission de Matériel roulant',
           },
           {
             acro: 'CEM ',
-            explication: 'Compatibilité ÉlectroMagnétiques',
+            explication: ' Compatibilité ÉlectroMagnétiques',
           },
           {
             acro: 'RFN',
@@ -128,44 +129,44 @@ infos=[]
           },
           {
             acro: 'SYRENE',
-            explication: 'Système de Reconnaissance des Numéros d’Engins',
+            explication: ' Système de Reconnaissance des Numéros d’Engins',
           },
           {
             acro: 'FFT',
-            explication: 'Fast Fourier Transform',
+            explication: ' Fast Fourier Transform',
           },
           {
             acro: 'mV',
-            explication: 'milli-Volts',
+            explication: ' milli-Volts',
           },
           {
             acro: 'µS',
-            explication: 'Microseconde',
+            explication: ' Microseconde',
           },
           {
             acro: 'Urepos',
             explication:
-              'Tension de référence du signal SAM S005 lorsqu’aucune atténuation du signal n’est détectée. ',
+              ' Tension de référence du signal SAM S005 lorsqu’aucune atténuation du signal n’est détectée. ',
           },
           {
             acro: 'NF EN 50592',
             explication:
-              "Norme Française - Applications ferroviaires - Essais du matériel roulant pour la compatibilité électromagnétique avec les compteurs d'essieux",
+              " Norme Française - Applications ferroviaires - Essais du matériel roulant pour la compatibilité électromagnétique avec les compteurs d'essieux",
           },
           {
             acro: 'SAM S005',
             explication:
-              'Protocole de vérification de la compatibilité des matériels roulants avec les détecteurs électroniques de roues ',
+              ' Protocole de vérification de la compatibilité des matériels roulants avec les détecteurs électroniques de roues ',
           },
           {
             acro: 'CLC/TS 50238-3',
             explication:
-              'Railway applications - Compatibility between rolling stock and train detection systems - Part 3: Compatibility with axle counters',
+              ' Railway applications - Compatibility between rolling stock and train detection systems - Part 3: Compatibility with axle counters',
           },
           {
             acro: 'ERA/ERTMS/033281',
             explication:
-              'INTERFACES BETWEEN CONTROL-COMMAND AND SIGNALLING TRACKSIDE AND OTHER SUBSYSTEMS',
+              ' INTERFACES BETWEEN CONTROL-COMMAND AND SIGNALLING TRACKSIDE AND OTHER SUBSYSTEMS',
           },
         ],
       },
@@ -180,7 +181,7 @@ infos=[]
                 l: "Capteurs de déclenchement pour détecter le passage d'un train et lancer les acquisitions.",
               },
               {
-                l: 'Système de reconnaissance SYRENE pour relever le numéro d’engin (Information à venir récupérer sur un serveur existant).',
+                l: 'Système de reconnaissance SYRENE pour relever le numéro d’engin.',
               },
 
               {
@@ -198,10 +199,10 @@ infos=[]
             ],
           },
           {
-            p: 'Réserve : autres types de Compteurs d’Essieux en fonction de demandes spécifiques.',
+            p: `Réserve: autres types de Compteurs d’Essieux en fonction de demandes spécifiques. \n\nLe schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`,
           },
           {
-            xx: `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`,
+           image: sites,
           },
           
           
@@ -212,7 +213,7 @@ infos=[]
         titre: 'Contenu du livrable ',
         contenu: [
           {
-            p: `Ce rapport de synthèse produit trimestriellement – accessible directement sur l’IHM comprend les éléments synthétiques et statistiques sur les événements observés sur le site de ${site} : `,
+            p: `Ce rapport de synthèse produit trimestriellement, annuellement ou à la demande, accessible directement sur l’IHM comprend les éléments synthétiques et statistiques sur les événements observés sur le site de ${site} : `,
             Listes: [
               {
                 l: 'par type/famille de trains,',
@@ -274,7 +275,7 @@ infos=[]
                     'Type Matériel Roulant',
                     'Nombre de passages observés',
                     'Nombre de passages avec des occultations induites',
-                    'pourcentage de perturbation de chaque capteur ',
+                    'Pourcentage d’occultations observés par EV ',
                   ],
                   
                   Body: infoSamNOK?.map((section, index) => [
@@ -299,7 +300,7 @@ infos=[]
         contenu: [
           (Info50592NOK.length>0 ?(
             { 
-              p: 'Ce tableau est le Pourcentage de rame ayant dépassé les limites sur au moins un axe d\'une voie (%)',
+              p: 'Le tableau ci-après présente le pourcentage (%) de dépassements de plus de 0 dB de la limite par type de détecteur sur la période choisie.',
               Table: [
                 {
                   Headers: [
@@ -333,7 +334,7 @@ if(infoSamOK.length>0){
                 ' ',
                 'Type Matériel Roulant',
                 'Nombre de passages observés',
-                'Nombre de passages sans des occultations induites',
+                'Nombre de passages observés sans occultations',
                
               ],
             
@@ -365,7 +366,7 @@ if(Info50592OK.length>0){
                 ' ',
                 'Type Matériel Roulant',
                 'Nombre de passages observés',
-                'Nombre de passages sans des occultations induites',
+                ' Nombre de passages observés sans perturbation',
               ],
              
               Body: Info50592OK?.map((section, index) => [
@@ -410,7 +411,7 @@ if(Info50592OK.length>0){
       doc.setFont('helvetica', 'bold')
       doc.setFontSize(10)
       doc.setTextColor('gray')
-      doc.text(`Rapport sur les résultats observés sur la période  : ${periode}`, 20, 10)
+      doc.text(`Rapport sur les résultats observés sur la période  : ${debut} au ${fin}`, 20, 10)
     }
     const resetFont = () => {
       doc.setFont('helvetica', 'normal')
@@ -434,15 +435,15 @@ if(Info50592OK.length>0){
     const PiedDePage = async (contenu) => {
       const y = pageHeight - 20;
     
-      const imageWidth = pageWidth * 0.99;
-      const imageHeight = 20;
-      const imageX = 0;
+      const imageWidth = pageWidth-16;
+      const imageHeight = 19;
+      const imageX = 16;
       const imageY = pageHeight - imageHeight;
     
       doc.addImage(imageFixe, 'png', imageX, imageY, imageWidth, imageHeight);
     
       const paginationWidth = 14;
-      const paginationHeight = 20;
+      const paginationHeight = 18;
       const paginationX = 2;
       const paginationY = pageHeight - paginationHeight;
     
@@ -481,7 +482,7 @@ if(Info50592OK.length>0){
       doc.setFontSize(8);
       doc.setTextColor('#000000'); // Couleur du texte (noir)
       const pageCount = doc.getNumberOfPages();
-      doc.text(`Page ${pageCount }`, paginationX + 2, paginationY + 8); // Affiche le numéro de page dans le rectangle
+      doc.text(`Page ${pageCount }`, paginationX + 2, paginationY + 5); // Affiche le numéro de page dans le rectangle
     };
     
     
@@ -564,33 +565,6 @@ if(Info50592OK.length>0){
           y += textLines.length * lineHeight; // Utilisation de la nouvelle valeur de l'interligne
         }
 
-
-        if (item.xx) {
-          const text = `Le schéma suivant reprend l’implémentation globale des capteurs dans la zone d’essai de ${site}`;
-          const image = sites; // Replace "sites" with your image
-          //const pageWidth = 297; // A4 width in portrait mode
-          //const pageHeight = 210; // A4 height in portrait mode
-      
-          // Add a new page with custom dimensions (landscape mode)
-          doc.addPage({format:'a4',orientation:'landscape'});
-      
-          // Set the page orientation to landscape
-          
-      
-          // Display the text
-          doc.setFontSize(12);
-          doc.setFont('helvetica', 'normal');
-          doc.text(text, 20, 20);
-      
-          // Display the image
-          const blockHeight = 90; // Height of the image
-          doc.addImage(image, 'JPEG', 20, startY + 15, pageWidth- 20, blockHeight);
-          doc.setPage(doc.getNumberOfPages());
-      
-          y = startY + blockHeight;
-        }
-        
-        
         if (item.Listes) {
           item.Listes.forEach((liste) => {
             const lines = doc.splitTextToSize(liste.l, pageWidth - 40);
@@ -608,7 +582,7 @@ if(Info50592OK.length>0){
           });
         }
         
-        if (item.acro) {
+       /* if (item.acro) {
           let def;
           doc.setFont('helvetica', 'normal');
           def = `${item.acro}:${item.explication}`;
@@ -632,15 +606,32 @@ if(Info50592OK.length>0){
         
             y += lineHeight; // Utilisation de la nouvelle valeur de l'interligne
           });
+        }*/
+         if (item.acro) {
+          let def
+          doc.setFontSize(12)
+          doc.setFont('helvetica', 'normal')
+          def = `${item.acro}:${item.explication}`
+          const lines = doc.splitTextToSize(def, pageWidth - 40)
+          const lineHeight = 8;
+          lines.forEach((line, i) => {
+            if (i === 0) {
+              let accro = line.split(':')[0]
+              let exp= line.split(':')[1]
+              let acroWidth = doc.getTextWidth(accro +':')
+              
+              doc.setFont('helvetica','bold')
+              doc.text(`• ${accro}:`, 30, y)
+              doc.setFont('helvetica','normal')
+              doc.text(`${exp}`,33 + acroWidth,y)
+            } else {
+              doc.text(`${line}`, 30, y)
+            }
+            y += lineHeight
+          })
         }
-        
-        
-        
-        
-        
-        
-        
         if (item.image) {
+          await PiedDePage(pageGarde)
           const img = new Image()
           img.src = item.image
         
@@ -650,10 +641,11 @@ if(Info50592OK.length>0){
               
             }
           })
-          //doc.setPage();
-          doc.addImage(loadedImg, 'JPEG', 0, 0, pageWidth, 200)
+          doc.addPage();
+          addHeader()
+          Heading(' ', '')
+          doc.addImage(loadedImg, 'JPEG', 0, 22, pageWidth, pageHeight-30)
           doc.setPage(doc.getNumberOfPages())
-          //doc.setPage('landscape')
           y += 30
         }
         if (item.Table) {
