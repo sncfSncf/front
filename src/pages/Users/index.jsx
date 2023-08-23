@@ -99,7 +99,9 @@ export default function Users() {
         await axios.post(`${config.API_URLV2}/user/update`, formData);
         alert('La modification a été prise en compte!');
         history.push('/administration');
-      } catch (error) {}
+      } catch (error) {
+        alert(error.response.data);
+      }
     } else {
       try {
         await axios.post(`${config.API_URLV2}/user/create`, formData);
@@ -111,7 +113,7 @@ export default function Users() {
         } else if (error.response && error.response.status === 404) {
           alert('La ressource que vous demandez est inconnue');
         } else {
-          alert('erreur');
+          alert(error.response.data);
         }
       }
     }
@@ -250,6 +252,7 @@ export default function Users() {
             disabled={id}
           />
         </FormControl>
+        
         <FormControl variant="outlined" className="select-ajout">
           <InputLabel htmlFor="outlined-adornment-password">
             Mot de passe
@@ -314,6 +317,7 @@ export default function Users() {
             />
           </FormControl>
         )}
+        
         {id ? (
           <button className="submit" type="submit">
             Modifier
